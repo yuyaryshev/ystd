@@ -1,8 +1,8 @@
-import moment from "moment";
-import { Severity, severityLongStr } from "./Severity";
-
 export const isoDateFormat = "YYYY-MM-DD HH:mm:ss";
 export let prefixSize = 19;
+
+export type Severity = "F" | "E" | "W" | "I" | "D";
+export type SeverityLong = "FATAL" | "ERROR" | "WARN " | "INFO " | "DEBUG";
 
 export interface YConsoleMsg {
     ts: string;
@@ -12,6 +12,23 @@ export interface YConsoleMsg {
     message: string;
     data?: any[];
 }
+
+export const severityLongStr = (severity: Severity): SeverityLong => {
+    switch (severity) {
+        case "D":
+            return "DEBUG";
+        case "E":
+            return "ERROR";
+        case "F":
+            return "FATAL";
+        case "I":
+            return "INFO ";
+        case "W":
+            return "WARN ";
+    }
+    return "ERROR";
+};
+
 export const yconsoleFormatMsg = (m: YConsoleMsg) =>
     `${severityLongStr(m.severity)} ${m.cpl} ${m.ts} ${(m.prefix + "                             ").substr(
         0,
@@ -26,7 +43,7 @@ export const debugMsgFactory = (prefix: string) => {
             if (prefix.startsWith(s))
                 return (cpl: string, message: string, ...data: any[]) => {
                     const m: YConsoleMsg = {
-                        ts: moment().format(isoDateFormat),
+                        ts: new Date().toISOString(),
                         cpl,
                         severity: "D",
                         prefix,
@@ -40,7 +57,7 @@ export const debugMsgFactory = (prefix: string) => {
         // Implementation with debug - not working in VSCode...
         // const debugFunc = debugjs(prefix);
         // return (cpl: string, ...args: any[]) =>
-        //     debugFunc(cpl, moment().format(isoDateFormat), " - ", ...args);
+        //     debugFunc(cpl, (new Date()).toISOString(), " - ", ...args);
     }
 
     return (() => {}) as any;
@@ -54,7 +71,7 @@ export const yconsole = {
         }
 
         const m: YConsoleMsg = {
-            ts: moment().format(isoDateFormat),
+            ts: new Date().toISOString(),
             cpl,
             severity: "D",
             prefix: "",
@@ -72,7 +89,7 @@ export const yconsole = {
         }
 
         const m: YConsoleMsg = {
-            ts: moment().format(isoDateFormat),
+            ts: new Date().toISOString(),
             cpl,
             severity: "I",
             prefix: "",
@@ -90,7 +107,7 @@ export const yconsole = {
         }
 
         const m: YConsoleMsg = {
-            ts: moment().format(isoDateFormat),
+            ts: new Date().toISOString(),
             cpl,
             severity: "W",
             prefix: "",
@@ -108,7 +125,7 @@ export const yconsole = {
         }
 
         const m: YConsoleMsg = {
-            ts: moment().format(isoDateFormat),
+            ts: new Date().toISOString(),
             cpl,
             severity: "E",
             prefix: "",
@@ -126,7 +143,7 @@ export const yconsole = {
         }
 
         const m: YConsoleMsg = {
-            ts: moment().format(isoDateFormat),
+            ts: new Date().toISOString(),
             cpl,
             severity: "F",
             prefix: "",

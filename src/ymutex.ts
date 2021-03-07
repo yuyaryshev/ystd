@@ -10,7 +10,7 @@ export function ysemaphore(n: number = 1, releaseDelay: number = 0): YSemaphore 
     let m = {
         lockCount: 0,
         lockCountNow: 0,
-        lock: async function(asyncCallback: () => Promise<any>, count: number = 1) {
+        lock: async function (asyncCallback: () => Promise<any>, count: number = 1) {
             while (m.lockCount + count > n && m.lockCount) await awaitDelay(100);
 
             let r: any;

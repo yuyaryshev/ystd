@@ -6,6 +6,7 @@ export interface ManageableTimer<Env extends EnvWithTimers = EnvWithTimers> {
     env: Env;
     cpl: string;
     name: string;
+    lastRun?: Date | undefined;
     timeout: number;
     disabled?: boolean;
     timeoutHandle?: any;
@@ -14,6 +15,7 @@ export interface ManageableTimer<Env extends EnvWithTimers = EnvWithTimers> {
     cancel: () => void;
     setTimeout: () => void;
     setInterval: () => void;
+    notSoonerThan: () => undefined | Promise<void>;
     disable: () => void;
     enable: () => void;
     executeNow: () => Promise<void>;
@@ -26,6 +28,16 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     name: string,
     callback: () => void | Promise<void>
 ) {
+    async function directRun() {
+        pthis.lastRun = new Date();
+        try {
+            await callback();
+        } catch (e) {
+            pthis.lastRun = new Date();
+            console.error(`CODE00001008`, `Unhandled exception in timer!`);
+        }
+    }
+
     function stop() {
         if (pthis.timeoutHandle) {
             clearTimeout(pthis.timeoutHandle);
@@ -41,7 +53,7 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
         env.timers.add(pthis);
         pthis.timeoutHandle = setTimeout(async () => {
             stop();
-            await callback();
+            await directRun();
         }, timeout);
     }
 
@@ -51,13 +63,19 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
         if (pthis.disabled) return;
         env.timers.add(pthis);
         pthis.timeoutHandle = setInterval(async () => {
-            await callback();
+            await directRun();
         }, timeout);
     }
 
     async function executeNow() {
         stop();
-        await callback();
+        await directRun();
+    }
+
+    function notSoonerThan(): undefined | Promise<void> {
+        if (!pthis.lastRun || new Date().valueOf() - (pthis.lastRun ? pthis.lastRun.valueOf() : 0) > timeout)
+            return executeNow();
+        return undefined;
     }
 
     function disable() {
@@ -81,6 +99,7 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
         disable,
         enable,
         executeNow,
+        notSoonerThan,
     };
 
     return pthis;
