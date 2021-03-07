@@ -6,11 +6,11 @@ export function sorterFuncSrc(fields: string | string[]) {
         s = `(a.${field} < b.${field} ? -1 : a.${field} > b.${field} ? 1 : ${s})`;
     }
 
-    return `(a,b)=>${s}`;
+    return s;
 }
 
 export function sorterFunc(fields: string | string[]) {
-    return eval(sorterFuncSrc(fields));
+    return new Function('a','b',sorterFuncSrc(fields)) as ((a:any, b:any)=>number);
 }
 
 export function sortObjects(objectsArray: any[], fields: string | string[]) {

@@ -1,6 +1,7 @@
 type any_1 = any;
 import { expect } from "chai";
-import { JsStringify, lexAll, Lexer, tt } from "./index";
+import { lexAll, Lexer, tt } from "./index";
+import { stringify as JsStringify } from "javascript-stringify";
 
 describe("lexer", () => {
     describe("advance() - basic tests", () => {
@@ -133,7 +134,10 @@ describe("lexer", () => {
             let input = `123 CODE{ 345\n7 }CODE abcd`;
 
             let lexed = lexAll(input, "", undefined);
-            for (let t of lexed) delete t.lexer;
+            for (let t of lexed) {
+                // @ts-ignore
+                delete t.lexer;
+            }
             expect(lexed.map(t => t.v)).to.deep.equal([123,` 345\n7 `,`abcd`]);
             // expect(lexed).to.deep.equal(["TBD"]);
             //
@@ -188,7 +192,10 @@ def CODE{
 
             let lexed = lexAll(input, "", undefined);
             for (let t of lexed) {
+                // @ts-ignore
                 delete t.lexer;
+
+                // @ts-ignore
                 delete t.token_type;
             }
             console.log("Actual:\n", JsStringify(lexed));
@@ -250,8 +257,13 @@ def CODE{
             const input = `field scalar`;
             let lexed = lexAll(input, "", undefined);
             for (let t of lexed) {
+                // @ts-ignore
                 delete t.lexer;
+
+                // @ts-ignore
                 delete t.linep;
+
+                // @ts-ignore
                 delete t.line;
             }
             expect(lexed.map(t => t.t)).to.deep.equal([`field`, `scalar`]);
@@ -277,8 +289,13 @@ def CODE{
             const input = `field scalar "91ff802a-7a7d-47cf-b4b2-6cad56ff9c18" parentId string;`;
             let lexed = lexAll(input, "", undefined);
             for (let t of lexed) {
+                // @ts-ignore
                 delete t.lexer;
+
+                // @ts-ignore
                 delete t.linep;
+
+                // @ts-ignore
                 delete t.line;
             }
 
@@ -331,3 +348,5 @@ def CODE{
         });
     });
 });
+
+
