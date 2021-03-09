@@ -13,8 +13,8 @@ export interface ManageableTimer<Env extends EnvWithTimers = EnvWithTimers> {
 
   stop: () => void;
   cancel: () => void;
-  setTimeout: () => void;
-  setInterval: () => void;
+  setTimeout: (timeoutOverride?:number) => void;
+  setInterval: (timeoutOverride?:number) => void;
   notSoonerThan: () => undefined | Promise<void>;
   disable: () => void;
   enable: () => void;
