@@ -85,4 +85,5 @@ export * from "./ymutex"
 export * from "./YSet"
 export * from "./YTimeIntervals"
 export * from "./promiseFuncs"
+export * from "./escapeRegex"
 
