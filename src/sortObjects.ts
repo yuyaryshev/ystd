@@ -9,11 +9,11 @@ export function sorterFuncSrc(fields: string | string[]) {
     return s;
 }
 
-export function sorterFunc(fields: string | string[]) {
+export function sortBy(fields: string | string[]) {
     return new Function('a','b',sorterFuncSrc(fields)) as ((a:any, b:any)=>number);
 }
 
 export function sortObjects(objectsArray: any[], fields: string | string[]) {
-    objectsArray.sort(sorterFunc(fields));
+    objectsArray.sort(sortBy(fields));
     return objectsArray;
 }
