@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "scripts": {
-    "build": "npm run build:clean && npm run build:ts",
+    "build": "inprint & npm run build:clean && npm run build:ts",
     "build:ts": "npx rollup -c",
     "build:clean": "rm -rf ./dist/*",
     "test": "jest",
