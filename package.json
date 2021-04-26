@@ -1,6 +1,6 @@
 {
   "name": "ystd",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -12,8 +12,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
-  "author": "Jan Grzegorowski",
-  "license": "MIT",
+  "author": "Yuri Yaryshev",
+  "license": "Unlicense",
   "devDependencies": {
     "@babel/core": "^7.13.8",
     "@storybook/addon-actions": "^6.1.20",
