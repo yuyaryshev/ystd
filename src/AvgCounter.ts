@@ -26,7 +26,7 @@ export class AvgCounter {
         this.next_part();
         this.closed = false;
 
-        let worker = () => {
+        const worker = () => {
             this.next_part();
             if (!this.closed) setTimeout(worker, interval);
         };
@@ -50,7 +50,7 @@ export class AvgCounter {
     }
 
     stats(n: number = 0) {
-        let r = { keys: 0, values: 0 };
+        const r = { keys: 0, values: 0 };
         for (let i = this.parts.length; i >= n; i--) {
             r.keys += this.parts[i].keys;
             r.values += this.parts[i].values;
@@ -59,9 +59,9 @@ export class AvgCounter {
     }
 
     full(n: number = 0) {
-        let m = new Map();
+        const m = new Map();
         for (let i = this.parts.length; i >= n; i--) {
-            for (let p of this.parts[i].m) m.set(p[0], (m.get(p[1]) || 0) + (p[1] || 0));
+            for (const p of this.parts[i].m) m.set(p[0], (m.get(p[1]) || 0) + (p[1] || 0));
         }
         return Object.assign(this.stats(), { m });
     }

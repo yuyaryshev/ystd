@@ -1,4 +1,4 @@
-import { awaitDelay } from "./awaitDelay";
+import { awaitDelay } from "./awaitDelay.js";
 
 export type YSemaphore = {
     lockCount: number;
@@ -7,7 +7,7 @@ export type YSemaphore = {
 };
 
 export function ysemaphore(n: number = 1, releaseDelay: number = 0): YSemaphore {
-    let m = {
+    const m = {
         lockCount: 0,
         lockCountNow: 0,
         lock: async function (asyncCallback: () => Promise<any>, count: number = 1) {
@@ -25,7 +25,7 @@ export function ysemaphore(n: number = 1, releaseDelay: number = 0): YSemaphore 
                     (async () => {
                         await awaitDelay(releaseDelay);
                         m.lockCount -= count;
-                    })();
+                    })().then();
                 else m.lockCount -= count;
             }
             return r;

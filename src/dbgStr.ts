@@ -9,9 +9,9 @@ export const dbgStr = (v: any, depth: number = 5, indent: string = "\n", set?: a
         if (depth <= 0) return "[>>> DEPTH REACHED <<<]";
 
         if (Array.isArray(v)) {
-            let indent2 = indent + "    ";
+            const indent2 = indent + "    ";
             s += `${indent}[`;
-            for (let item of v) {
+            for (const item of v) {
                 if (f) {
                     f = false;
                     s += `${indent2}`;
@@ -23,14 +23,14 @@ export const dbgStr = (v: any, depth: number = 5, indent: string = "\n", set?: a
         }
 
         if (typeof v === "function" || typeof v === "object") {
-            let indent2 = indent + "    ";
+            const indent2 = indent + "    ";
             s += `${indent}{`;
             if (typeof v === "function") {
                 s += `${indent2}"__type": "${typeof v}"`;
                 f = false;
             }
 
-            for (let k in v) {
+            for (const k in v) {
                 if (f) {
                     f = false;
                     s += `${indent2}`;
@@ -45,10 +45,10 @@ export const dbgStr = (v: any, depth: number = 5, indent: string = "\n", set?: a
 };
 
 export const dbgStrOld = (v: any): string => {
-    let s = new Set();
+    const s = new Set();
     return JSON.stringify(
         v,
-		// @ts-ignore
+        // @ts-ignore
         (k: any, v: any) => {
             if (s.has(v)) return [">>> CIRCULAR REF <<<"];
             s.add(v);

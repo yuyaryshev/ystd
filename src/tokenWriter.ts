@@ -1,4 +1,4 @@
-import { IToken, Lexer } from "./lexer";
+import { IToken, Lexer } from "./lexer.js";
 // @ts-ignore
 //import SourceMapIndexGenerator from "source-map-index-generator"
 
@@ -24,7 +24,7 @@ export function makeTokenWriter(lexer: Lexer) {
             });
         },
         generateWithOutSourcemap() {
-            return r.parts.map(p=>p.r ).join("");
+            return r.parts.map((p) => p.r).join("");
         },
         // Нельзя в Ystd
         //  потому что import SourceMapIndexGenerator from "source-map-index-generator"

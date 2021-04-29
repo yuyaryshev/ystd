@@ -1,7 +1,7 @@
-import { Severity, severityLongStr } from "./Severity";
+import { Severity, severityLongStr } from "./Severity.js";
 
 export const isoDateFormat = "YYYY-MM-DD HH:mm:ss";
-export let prefixSize = 19;
+export const prefixSize = 19;
 
 export interface YConsoleMsg {
     ts: string;
@@ -13,16 +13,13 @@ export interface YConsoleMsg {
 }
 
 export const yconsoleFormatMsg = (m: YConsoleMsg) =>
-    `${severityLongStr(m.severity)} ${m.cpl} ${m.ts} ${(m.prefix + "                             ").substr(
-        0,
-        prefixSize
-    )} - ${m.message}`;
+    `${severityLongStr(m.severity)} ${m.cpl} ${m.ts} ${(m.prefix + "                             ").substr(0, prefixSize)} - ${m.message}`;
 
 export const debugMsgFactory = (prefix: string) => {
     if (process.env.DEBUG) {
         const splitted = process.env.DEBUG.split(" ");
 
-        for (let s of splitted)
+        for (const s of splitted)
             if (prefix.startsWith(s))
                 return (cpl: string, message: string, ...data: any[]) => {
                     const m: YConsoleMsg = {
@@ -34,8 +31,7 @@ export const debugMsgFactory = (prefix: string) => {
                         data,
                     };
 
-                    if (!(global as any).logger || (global as any).logger(m) === true)
-                        console.log(yconsoleFormatMsg(m), ...data);
+                    if (!(global as any).logger || (global as any).logger(m) === true) console.log(yconsoleFormatMsg(m), ...data);
                 };
         // Implementation with debug - not working in VSCode...
         // const debugFunc = debugjs(prefix);

@@ -1,3 +1,5 @@
+/* eslint sonarjs/no-identical-functions: 0 */
+
 export abstract class YDictGeneric<K, V> {
     m: Map<K, V>;
     abstract getKey(v: V): K;
@@ -7,7 +9,7 @@ export abstract class YDictGeneric<K, V> {
     }
 
     construct(k: K): V {
-        let r = ({} as any) as V;
+        const r = ({} as any) as V;
         if ((this as any).setKey) (this as any).setKey(r, k);
         return r;
     }
@@ -38,14 +40,14 @@ export abstract class YDictGeneric<K, V> {
     }
 
     expect(k: K): V {
-        let r = this.get(k);
+        const r = this.get(k);
         if (r === undefined) throw new Error(`YDict.expect '${k}' does not exist`);
         return r;
     }
 
     createOrThrow(k: K) {
         if (this.has(k)) throw new Error(`YDict.createOrThrow '${k}' already exists`);
-        let r = this.construct(k);
+        const r = this.construct(k);
         this.add(r);
         return r;
     }
@@ -60,7 +62,7 @@ export abstract class YDictGeneric<K, V> {
     }
 
     rekeyOrThrow(oldKey: K, newKey: K) {
-        let v = this.get(oldKey);
+        const v = this.get(oldKey);
         if (v === undefined) throw new Error(`YDict.rekey '${oldKey}' does not exist`);
 
         if (this.has(newKey)) throw new Error(`YDict.rekey '${newKey}' already exists`);
@@ -70,13 +72,13 @@ export abstract class YDictGeneric<K, V> {
     }
 
     addOrThrow(v: V) {
-        let k = this.getKey(v);
+        const k = this.getKey(v);
         if (this.has(k)) throw new Error(`YDict.addOrThrow key '${k}' already exists`);
         this.add(v);
     }
 
     *[Symbol.iterator]() {
-        for (let pv of this.m) yield pv[1];
+        for (const pv of this.m) yield pv[1];
     }
 }
 
@@ -92,7 +94,7 @@ export const makeYDictGenericClass = <K, CV extends { new (...args: any): any }>
         }
 
         construct(k: K): V {
-            let v = new elemClass(k) as any;
+            const v = new elemClass(k) as any;
             (v as any)[prop] = k;
             return v;
         }
@@ -118,7 +120,7 @@ export class YDictIdNameSequential<IDT, V extends WithIdAndName<IDT>> {
     }
 
     create(...args: any[]): V {
-        let r = new this.itemClass(...args);
+        const r = new this.itemClass(...args);
         this.add(r);
         return r;
     }
@@ -140,13 +142,13 @@ export class YDictIdNameSequential<IDT, V extends WithIdAndName<IDT>> {
     }
 
     add(v: V) {
-        let id = v.id;
+        const id = v.id;
         if (id !== undefined) {
             if (this.byIdMap.has(id)) throw new Error(`YDictIdNameSequential.add id='${id}' already exist`);
             this.byIdMap.set(v.id, v);
         }
 
-        let name = v.name;
+        const name = v.name;
         if (name) {
             if (this.byNameMap.has(name)) throw new Error(`YDictIdNameSequential.add name='${name}' already exist`);
             this.byNameMap.set(name, v);
@@ -175,13 +177,13 @@ export class YDictIdNameSequential<IDT, V extends WithIdAndName<IDT>> {
     }
 
     expectById(id: IDT): V {
-        let r = this.byIdMap.get(id);
+        const r = this.byIdMap.get(id);
         if (r === undefined) throw new Error(`YDictIdNameSequential.expectById '${id}' does not exist`);
         return r;
     }
 
     expectByName(name: string): V {
-        let r = this.byNameMap.get(name);
+        const r = this.byNameMap.get(name);
         if (r === undefined) throw new Error(`YDictIdNameSequential.expectByName '${name}' does not exist`);
         return r;
     }
@@ -194,34 +196,34 @@ export class YDictIdNameSequential<IDT, V extends WithIdAndName<IDT>> {
     deleteByV(v: V) {
         this.byIdMap.delete(v.id);
         this.byNameMap.delete(v.name);
-        let index = this.sequence.indexOf(v);
+        const index = this.sequence.indexOf(v);
         if (index >= 0) this.sequence.splice(index, 1);
     }
 
     deleteById(id: IDT) {
-        let v = this.byIdMap.get(id);
+        const v = this.byIdMap.get(id);
         if (v) this.deleteByV(v);
     }
 
     deleteByName(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (v) this.deleteByV(v);
     }
 
     deleteByIdOrThrow(id: IDT) {
-        let v = this.byIdMap.get(id);
+        const v = this.byIdMap.get(id);
         if (!v) throw new Error(`YDictIdNameSequential.deleteByIdOrThrow id='${id}' doesn't exist`);
         this.deleteByV(v);
     }
 
     deleteByNameOrThrow(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (!v) throw new Error(`YDictIdNameSequential.deleteByIdOrThrow name='${name}' doesn't exist`);
         this.deleteByV(v);
     }
 
     renameOrThrow(oldName: string, newName: string) {
-        let v = this.byNameMap.get(oldName);
+        const v = this.byNameMap.get(oldName);
         if (v === undefined) throw new Error(`YDictIdNameSequential.renameOrThrow '${oldName}' does not exist`);
 
         if (oldName !== newName) {
@@ -234,7 +236,7 @@ export class YDictIdNameSequential<IDT, V extends WithIdAndName<IDT>> {
     }
 
     changeIdOrThrow(oldId: IDT, newId: IDT) {
-        let v = this.byIdMap.get(oldId);
+        const v = this.byIdMap.get(oldId);
         if (v === undefined) throw new Error(`YDictIdNameSequential.changeIdOrThrow '${oldId}' does not exist`);
 
         if (oldId !== newId) {
@@ -247,14 +249,14 @@ export class YDictIdNameSequential<IDT, V extends WithIdAndName<IDT>> {
     }
 
     *[Symbol.iterator]() {
-        for (let pv of this.sequence) yield pv;
+        for (const pv of this.sequence) yield pv;
     }
 
     map(cb: (v: V, index: number) => any) {
-        let r: any[] = [];
+        const r: any[] = [];
         let index = 0;
-        for (let pv of this.sequence) {
-            let ri = cb(pv, index++);
+        for (const pv of this.sequence) {
+            const ri = cb(pv, index++);
             if (ri !== undefined) r.push(ri);
         }
         return r;
@@ -263,9 +265,9 @@ export class YDictIdNameSequential<IDT, V extends WithIdAndName<IDT>> {
     rebuildIndexes() {
         this.byIdMap = new Map();
         this.byNameMap = new Map();
-        for (let v of this.sequence) {
-            let id = v.id;
-            let name = v.name;
+        for (const v of this.sequence) {
+            const id = v.id;
+            const name = v.name;
             if (id) {
                 if (this.byIdMap.has(id)) throw new Error(`YDictIdNameSequential.add id='${id}' already exist`);
                 this.byIdMap.set(id, v);
@@ -299,7 +301,7 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
     }
 
     create(...args: any[]): V {
-        let r = new this.itemClass(...args);
+        const r = new this.itemClass(...args);
         this.add(r);
         return r;
     }
@@ -321,13 +323,13 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
     }
 
     add(v: V) {
-        let id = v.id;
+        const id = v.id;
         if (id !== undefined) {
             if (this.byIdMap.has(id)) throw new Error(`YDictIdNameSequential.add id='${id}' already exist`);
             this.byIdMap.set(v.id, v);
         }
 
-        let name = v.name;
+        const name = v.name;
         if (name) {
             if (this.byNameMap.has(name)) throw new Error(`YDictIdNameSequential.add name='${name}' already exist`);
             this.byNameMap.set(name, v);
@@ -353,13 +355,13 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
     }
 
     expectById(id: IDT): V {
-        let r = this.byIdMap.get(id);
+        const r = this.byIdMap.get(id);
         if (r === undefined) throw new Error(`YDictIdNameSequential.expectById '${id}' does not exist`);
         return r;
     }
 
     expectByName(name: string): V {
-        let r = this.byNameMap.get(name);
+        const r = this.byNameMap.get(name);
         if (r === undefined) throw new Error(`YDictIdNameSequential.expectByName '${name}' does not exist`);
         return r;
     }
@@ -375,29 +377,29 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
     }
 
     deleteById(id: IDT) {
-        let v = this.byIdMap.get(id);
+        const v = this.byIdMap.get(id);
         if (v) this.deleteByV(v);
     }
 
     deleteByName(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (v) this.deleteByV(v);
     }
 
     deleteByIdOrThrow(id: IDT) {
-        let v = this.byIdMap.get(id);
+        const v = this.byIdMap.get(id);
         if (!v) throw new Error(`YDictIdNameSequential.deleteByIdOrThrow id='${id}' doesn't exist`);
         this.deleteByV(v);
     }
 
     deleteByNameOrThrow(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (!v) throw new Error(`YDictIdNameSequential.deleteByIdOrThrow name='${name}' doesn't exist`);
         this.deleteByV(v);
     }
 
     renameOrThrow(oldName: string, newName: string) {
-        let v = this.byNameMap.get(oldName);
+        const v = this.byNameMap.get(oldName);
         if (v === undefined) throw new Error(`YDictIdNameSequential.renameOrThrow '${oldName}' does not exist`);
 
         if (oldName !== newName) {
@@ -410,7 +412,7 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
     }
 
     changeIdOrThrow(oldId: IDT, newId: IDT) {
-        let v = this.byIdMap.get(oldId);
+        const v = this.byIdMap.get(oldId);
         if (v === undefined) throw new Error(`YDictIdNameSequential.changeIdOrThrow '${oldId}' does not exist`);
 
         if (oldId !== newId) {
@@ -423,13 +425,13 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
     }
 
     *[Symbol.iterator]() {
-        for (let pv of this.byIdMap) yield pv[1];
+        for (const pv of this.byIdMap) yield pv[1];
     }
 
     get array(): V[] {
-        let s = new Set<V>();
-        for (let p of this.byIdMap) s.add(p[1]);
-        for (let p of this.byNameMap) s.add(p[1]);
+        const s = new Set<V>();
+        for (const p of this.byIdMap) s.add(p[1]);
+        for (const p of this.byNameMap) s.add(p[1]);
 
         return [...s.values()];
     }
@@ -443,10 +445,10 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
     }
 
     map(cb: (v: V, index: number) => any) {
-        let r: any[] = [];
+        const r: any[] = [];
         let index = 0;
-        for (let pv of this.byIdMap) {
-            let ri = cb(pv[1], index++);
+        for (const pv of this.byIdMap) {
+            const ri = cb(pv[1], index++);
             if (ri !== undefined) r.push(ri);
         }
         return r;
@@ -454,9 +456,9 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
 
     rebuildIndexesFromNameIndex() {
         this.byIdMap = new Map();
-        for (let p of this.byNameMap) {
-            let v = p[1];
-            let id = v.id;
+        for (const p of this.byNameMap) {
+            const v = p[1];
+            const id = v.id;
             if (id) {
                 if (this.byIdMap.has(id)) throw new Error(`YDictIdNameSequential.add id='${id}' already exist`);
                 this.byIdMap.set(id, v);
@@ -466,9 +468,9 @@ export class YDictIdNameUnordered<IDT, V extends WithIdAndName<IDT>> {
 
     rebuildIndexesFromIdIndex() {
         this.byNameMap = new Map();
-        for (let p of this.byIdMap) {
-            let v = p[1];
-            let name = v.name;
+        for (const p of this.byIdMap) {
+            const v = p[1];
+            const name = v.name;
             if (name) {
                 if (this.byNameMap.has(name)) throw new Error(`YDictIdNameSequential.add name='${name}' already exist`);
                 this.byNameMap.set(name, v);
@@ -497,7 +499,7 @@ export class YDictNameSequential<V extends WithName> {
     }
 
     create(...args: any[]): V {
-        let r = new this.itemClass(...args);
+        const r = new this.itemClass(...args);
         this.add(r);
         return r;
     }
@@ -511,7 +513,7 @@ export class YDictNameSequential<V extends WithName> {
     }
 
     add(v: V) {
-        let name = v.name;
+        const name = v.name;
         if (name) {
             if (this.byNameMap.has(name)) throw new Error(`YDictIdNameSequential.add name='${name}' already exist`);
             this.byNameMap.set(name, v);
@@ -530,7 +532,7 @@ export class YDictNameSequential<V extends WithName> {
     }
 
     expectByName(name: string): V {
-        let r = this.byNameMap.get(name);
+        const r = this.byNameMap.get(name);
         if (r === undefined) throw new Error(`YDictIdNameSequential.expectByName '${name}' does not exist`);
         return r;
     }
@@ -542,23 +544,23 @@ export class YDictNameSequential<V extends WithName> {
 
     deleteByV(v: V) {
         this.byNameMap.delete(v.name);
-        let index = this.sequence.indexOf(v);
+        const index = this.sequence.indexOf(v);
         if (index >= 0) this.sequence.splice(index, 1);
     }
 
     deleteByName(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (v) this.deleteByV(v);
     }
 
     deleteByNameOrThrow(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (!v) throw new Error(`YDictIdNameSequential.deleteByIdOrThrow name='${name}' doesn't exist`);
         this.deleteByV(v);
     }
 
     renameOrThrow(oldName: string, newName: string) {
-        let v = this.byNameMap.get(oldName);
+        const v = this.byNameMap.get(oldName);
         if (v === undefined) throw new Error(`YDictIdNameSequential.renameOrThrow '${oldName}' does not exist`);
 
         if (oldName !== newName) {
@@ -571,14 +573,14 @@ export class YDictNameSequential<V extends WithName> {
     }
 
     *[Symbol.iterator]() {
-        for (let pv of this.sequence) yield pv;
+        for (const pv of this.sequence) yield pv;
     }
 
     map(cb: (v: V, index: number) => any) {
-        let r: any[] = [];
+        const r: any[] = [];
         let index = 0;
-        for (let pv of this.sequence) {
-            let ri = cb(pv, index++);
+        for (const pv of this.sequence) {
+            const ri = cb(pv, index++);
             if (ri !== undefined) r.push(ri);
         }
         return r;
@@ -586,8 +588,8 @@ export class YDictNameSequential<V extends WithName> {
 
     rebuildIndexes() {
         this.byNameMap = new Map();
-        for (let v of this.sequence) {
-            let name = v.name;
+        for (const v of this.sequence) {
+            const name = v.name;
             if (name) {
                 if (this.byNameMap.has(name)) throw new Error(`YDictIdNameSequential.add name='${name}' already exist`);
                 this.byNameMap.set(name, v);
@@ -614,7 +616,7 @@ export class YDictNameUnordered<V extends WithName> {
     }
 
     create(...args: any[]): V {
-        let r = new this.itemClass(...args);
+        const r = new this.itemClass(...args);
         this.add(r);
         return r;
     }
@@ -628,7 +630,7 @@ export class YDictNameUnordered<V extends WithName> {
     }
 
     add(v: V) {
-        let name = v.name;
+        const name = v.name;
         if (name) {
             if (this.byNameMap.has(name)) throw new Error(`YDictIdNameSequential.add name='${name}' already exist`);
             this.byNameMap.set(name, v);
@@ -645,7 +647,7 @@ export class YDictNameUnordered<V extends WithName> {
     }
 
     expectByName(name: string): V {
-        let r = this.byNameMap.get(name);
+        const r = this.byNameMap.get(name);
         if (r === undefined) throw new Error(`YDictIdNameSequential.expectByName '${name}' does not exist`);
         return r;
     }
@@ -660,18 +662,18 @@ export class YDictNameUnordered<V extends WithName> {
     }
 
     deleteByName(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (v) this.deleteByV(v);
     }
 
     deleteByNameOrThrow(name: string) {
-        let v = this.byNameMap.get(name);
+        const v = this.byNameMap.get(name);
         if (!v) throw new Error(`YDictIdNameSequential.deleteByIdOrThrow name='${name}' doesn't exist`);
         this.deleteByV(v);
     }
 
     renameOrThrow(oldName: string, newName: string) {
-        let v = this.byNameMap.get(oldName);
+        const v = this.byNameMap.get(oldName);
         if (v === undefined) throw new Error(`YDictIdNameSequential.renameOrThrow '${oldName}' does not exist`);
 
         if (oldName !== newName) {
@@ -684,14 +686,14 @@ export class YDictNameUnordered<V extends WithName> {
     }
 
     *[Symbol.iterator]() {
-        for (let pv of this.byNameMap) yield pv[1];
+        for (const pv of this.byNameMap) yield pv[1];
     }
 
     map(cb: (v: V, index: number) => any) {
-        let r: any[] = [];
+        const r: any[] = [];
         let index = 0;
-        for (let pv of this.byNameMap) {
-            let ri = cb(pv[1], index++);
+        for (const pv of this.byNameMap) {
+            const ri = cb(pv[1], index++);
             if (ri !== undefined) r.push(ri);
         }
         return r;

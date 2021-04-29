@@ -1,11 +1,11 @@
 export function __STACK__(offset: number = 0): any {
-    let orig = Error.prepareStackTrace;
-    Error.prepareStackTrace = function(_, stack) {
+    const orig = Error.prepareStackTrace;
+    Error.prepareStackTrace = function (_, stack) {
         return stack;
     };
-    let err = new Error();
+    const err = new Error();
     Error.captureStackTrace(err); //, arguments.callee);
-    let stack = err.stack;
+    const stack = err.stack;
     Error.prepareStackTrace = orig;
     (stack as any).splice(0, offset + 1);
     return stack;
@@ -32,16 +32,16 @@ export interface SMSourceLocation {
 }
 
 export const __FULLSOURCELOCATION__ = (offset: number = 0): SMSourceLocation => {
-    let sourceLocation0 = __STACK__(offset + 1)[0];
-    let line = sourceLocation0.getLineNumber();
-    let column = sourceLocation0.getColumnNumber();
-    let typeName = sourceLocation0.getTypeName();
-    let methodName = sourceLocation0.getMethodName();
-    let evalOrigin = sourceLocation0.getEvalOrigin();
-    let functionName = sourceLocation0.getFunctionName() || (typeName ? typeName + "." + methodName : undefined) || evalOrigin;
-    let functionName2 = `functon '${functionName}' at `;
-    let fileName = sourceLocation0.getFileName();
-    let str = `${functionName2}${fileName}:${line}:${column}`;
+    const sourceLocation0 = __STACK__(offset + 1)[0];
+    const line = sourceLocation0.getLineNumber();
+    const column = sourceLocation0.getColumnNumber();
+    const typeName = sourceLocation0.getTypeName();
+    const methodName = sourceLocation0.getMethodName();
+    const evalOrigin = sourceLocation0.getEvalOrigin();
+    const functionName = sourceLocation0.getFunctionName() || (typeName ? typeName + "." + methodName : undefined) || evalOrigin;
+    const functionName2 = `functon '${functionName}' at `;
+    const fileName = sourceLocation0.getFileName();
+    const str = `${functionName2}${fileName}:${line}:${column}`;
 
     return { functionName, fileName, line, column, str };
 };

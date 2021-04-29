@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { aggDuration, approxWorkAggDurationSettings, durationObjToEngStr, unaggDuration } from "./YTimeIntervals";
+import { aggDuration, approxWorkAggDurationSettings, durationObjToEngStr, unaggDuration } from "./YTimeIntervals.js";
 import { Duration } from "luxon";
 
 const makeDur123 = () => ({

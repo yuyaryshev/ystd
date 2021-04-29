@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { linearDataInterpolation } from "./linearDataInterpolation";
+import { linearDataInterpolation } from "./linearDataInterpolation.js";
 
-let data = [
+const data = [
     {
         ms: 100,
         a: 10,
@@ -54,7 +54,7 @@ describe(`linearDataInterpolation`, function () {
             noMs({
                 a: 19.9,
                 b: 19.8,
-            })
+            }),
         );
     });
 
@@ -63,7 +63,7 @@ describe(`linearDataInterpolation`, function () {
             noMs({
                 a: 15,
                 b: 10,
-            })
+            }),
         );
     });
 
@@ -72,7 +72,7 @@ describe(`linearDataInterpolation`, function () {
             noMs({
                 a: 29.8,
                 b: 0,
-            })
+            }),
         );
     });
 
@@ -81,7 +81,7 @@ describe(`linearDataInterpolation`, function () {
             noMs({
                 a: 10.2,
                 b: 0,
-            })
+            }),
         );
     });
 
@@ -90,7 +90,7 @@ describe(`linearDataInterpolation`, function () {
             noMs({
                 a: 20,
                 b: 0,
-            })
+            }),
         );
     });
 });

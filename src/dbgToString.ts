@@ -1,4 +1,4 @@
-import { getClassName } from "./getClassName";
+import { getClassName } from "./getClassName.js";
 
 export const dbgToString = (v: any): string => {
     if (v === undefined) return "undefined";

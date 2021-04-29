@@ -1,4 +1,4 @@
-import { sum } from '../src';
+import { sum } from '../src/index.js';
 
 describe('sum', () => {
   it('adds two numbers together', () => {

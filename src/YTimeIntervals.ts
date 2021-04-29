@@ -16,7 +16,7 @@ export interface DurationObj {
 export function durationEngStrToDurationObj(vv: DurationEngStr): DurationObj {
     let sign = 1;
     let years = 0;
-    let quarters = 0;
+    const quarters = 0;
     let months = 0;
     let weeks = 0;
     let days = 0;
@@ -25,7 +25,8 @@ export function durationEngStrToDurationObj(vv: DurationEngStr): DurationObj {
     let seconds = 0;
     let milliseconds = 0;
 
-    for (let v of vv.split(" ")) {
+    for (const v of vv.split(" ")) {
+        // eslint-disable-next-line prefer-const
         let [n, units] = (v.trim().match(/[0-9]+|[^0-9]+/gi) || [Number(v), "ms"]) as [number, string];
         if (n < 0) {
             sign = -1;
@@ -101,8 +102,8 @@ export function durationEngStrToDurationObj(vv: DurationEngStr): DurationObj {
 }
 
 export function strIntervalsToDurationObjs(vv: DurationEngStr): DurationObj[] {
-    let r: DurationObj[] = [];
-    for (let v of vv.split(",")) r.push(durationEngStrToDurationObj(v));
+    const r: DurationObj[] = [];
+    for (const v of vv.split(",")) r.push(durationEngStrToDurationObj(v));
     return r;
 }
 
@@ -148,16 +149,8 @@ export const strict24_7_AggDurationSettings: AggDurationSettings = {
 };
 
 export function aggDuration(durationObj: DurationObj, aggDurationSettings: AggDurationSettings = {}): DurationObj {
-    let {
-        HoursPerDay,
-        DaysPerWeek,
-        DaysPerMonth,
-        DaysPerYear,
-        WeeksPerMonth,
-        WeeksPerYear,
-        MonthPerYear,
-    } = aggDurationSettings;
-    let sign = durationObj.sign || 1;
+    const { HoursPerDay, DaysPerWeek, DaysPerMonth, DaysPerYear, WeeksPerMonth, WeeksPerYear, MonthPerYear } = aggDurationSettings;
+    const sign = durationObj.sign || 1;
     let years = durationObj.years || 0;
     let months = durationObj.months || 0;
     let weeks = durationObj.weeks || 0;
@@ -181,29 +174,21 @@ export function aggDuration(durationObj: DurationObj, aggDurationSettings: AggDu
         if(WeeksPerYear) {      t = Math.floor((weeks||0)/WeeksPerYear); weeks -= t*WeeksPerYear;        months += t;}
         if(MonthPerYear) {      t = Math.floor((months||0)/MonthPerYear); months -= t*MonthPerYear;      years += t;}
     }
-    let rr: DurationObj = { years, months, weeks, days, hours, minutes, seconds, milliseconds };
+    const rr: DurationObj = { years, months, weeks, days, hours, minutes, seconds, milliseconds };
     if (sign < 0) rr.sign = -1;
     return rr;
 }
 
 export function unaggDuration(durationObj: DurationObj, aggDurationSettings: AggDurationSettings): DurationObj {
-    let {
-        HoursPerDay,
-        DaysPerWeek,
-        DaysPerMonth,
-        DaysPerYear,
-        WeeksPerMonth,
-        WeeksPerYear,
-        MonthPerYear,
-    } = aggDurationSettings;
-    let sign = durationObj.sign || 1;
+    const { HoursPerDay, DaysPerWeek, DaysPerMonth, DaysPerYear, WeeksPerMonth, WeeksPerYear, MonthPerYear } = aggDurationSettings;
+    const sign = durationObj.sign || 1;
     let years = durationObj.years || 0;
     let months = durationObj.months || 0;
     let weeks = durationObj.weeks || 0;
     let days = durationObj.days || 0;
     let hours = durationObj.hours || 0;
-    let minutes = durationObj.minutes || 0;
-    let seconds = durationObj.seconds || 0;
+    const minutes = durationObj.minutes || 0;
+    const seconds = durationObj.seconds || 0;
     let milliseconds = durationObj.milliseconds || 0;
 
     // prettier-ignore
@@ -218,17 +203,14 @@ export function unaggDuration(durationObj: DurationObj, aggDurationSettings: Agg
             if(DaysPerMonth) {days += months * DaysPerMonth; months = 0;} else
             if(WeeksPerMonth) {weeks += months * WeeksPerMonth; months = 0;}
         }
-        if(weeks) {
-            if(DaysPerWeek) {days += weeks * DaysPerWeek; weeks = 0;}
+        if(weeks && DaysPerWeek) {
+            days += weeks * DaysPerWeek; weeks = 0;
         }
-        if(days) {
-            if(HoursPerDay) {hours += days * HoursPerDay; days = 0;}
+        if(days && HoursPerDay) {
+            hours += days * HoursPerDay; days = 0;
         }
 
         milliseconds += hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000;
-        hours = 0;
-        minutes = 0;
-        seconds = 0;
     }
     const rr: DurationObj = { years, months, weeks, days, milliseconds };
     if (sign < 0) rr.sign = -1;
@@ -237,11 +219,10 @@ export function unaggDuration(durationObj: DurationObj, aggDurationSettings: Agg
 
 export function isOnlyMsDuration(durationObj: DurationObj | undefined) {
     if (!durationObj) return true;
-    for (let k in durationObj) if (k !== "sign" && k !== "milliseconds" && (durationObj as any)[k]) return false;
+    for (const k in durationObj) if (k !== "sign" && k !== "milliseconds" && (durationObj as any)[k]) return false;
     return true;
 }
 export function expectOnlyMsDuration(durationObj: DurationObj | undefined): DurationMs {
-    if (!isOnlyMsDuration(durationObj))
-        throw new Error(`CODE00000184 onlyMsDuration failed!\ndurationObj = ${JSON.stringify(durationObj)}`);
+    if (!isOnlyMsDuration(durationObj)) throw new Error(`CODE00000184 onlyMsDuration failed!\ndurationObj = ${JSON.stringify(durationObj)}`);
     return (durationObj?.milliseconds || 0) * (durationObj?.sign || 1);
 }

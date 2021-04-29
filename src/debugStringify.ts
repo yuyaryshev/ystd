@@ -1,5 +1,5 @@
 const makeDebugReplacer = () => {
-    let context = {
+    const context = {
         recurringValues: new Set<any>(),
     };
     return (k: any, v: any) => {

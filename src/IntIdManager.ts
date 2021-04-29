@@ -42,14 +42,14 @@ export class IntIdManager {
     }
 
     removeId(id: IntId) {
-        let ln = this.intervals.length;
+        const ln = this.intervals.length;
         for (let i = 0; i < ln; i++) {
             const interval = this.intervals[i];
             if (interval.a <= id && id < interval.b) {
                 this.changed = true;
                 if (interval.a === id) {
                     interval.a++;
-                    if (!(interval.a < interval.b)) this.intervals.splice(i, 1);
+                    if (interval.a >= interval.b) this.intervals.splice(i, 1);
                 } else {
                     this.intervals.splice(i, 1);
                     const newIntervs: IntInterval[] = [];
@@ -63,7 +63,7 @@ export class IntIdManager {
     }
 
     newId(): IntId {
-        let ln = this.intervals.length;
+        const ln = this.intervals.length;
         if (!ln) return 0;
 
         this.changed = true;
@@ -84,7 +84,7 @@ export class IntIdManager {
         }
 
         const r = minInterval.a++;
-        if (!(minInterval.a < minInterval.b)) this.intervals.splice(minIntervalIndex, 1);
+        if (minInterval.a >= minInterval.b) this.intervals.splice(minIntervalIndex, 1);
 
         return r;
     }
@@ -94,8 +94,8 @@ export class IntIdManager {
         this.changed = false;
     }
 
-    makeIntervalsSql(tableName:string, limit: number = 10000): string {
-        const sql = `
+    makeIntervalsSql(tableName: string, limit: number = 10000): string {
+        return `
             select *
             from
                 (
@@ -118,13 +118,10 @@ export class IntIdManager {
             order by id
             limit ${limit}
             `;
-
-
-        return sql;
     }
 
-    intervalsSqlRowsToIntervals(orderedIntervalsSqlRows:IntervalsSqlRow[]) {
-        for(let r of orderedIntervalsSqlRows) {
+    intervalsSqlRowsToIntervals(orderedIntervalsSqlRows: IntervalsSqlRow[]) {
+        for (const r of orderedIntervalsSqlRows) {
             if (r.c === 1) {
                 // TODO C=1 => точка
             } else if (r.c === 2) {
@@ -133,10 +130,10 @@ export class IntIdManager {
                 } else if (r.m === 1) {
                     // TODO C=2 => интервал, m=1 конец
                 } else {
-                    throw new Error(`CODE00000000 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`)
+                    throw new Error(`CODE00000000 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`);
                 }
             } else {
-                throw new Error(`CODE00000000 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`)
+                throw new Error(`CODE00000000 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`);
             }
         }
     }

@@ -5,7 +5,7 @@ try {
     formatjs = require("prettier");
 } catch (e) {}
 
-let format = formatjs ? formatjs.format : undefined;
+const format = formatjs ? formatjs.format : undefined;
 
 export const formatTypescript = (typescriptSourceCode: string): string => {
     if (!format) return typescriptSourceCode;

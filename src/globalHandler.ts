@@ -1,4 +1,4 @@
-import { yconsole } from "./consoleMsg";
+import { yconsole } from "./consoleMsg.js";
 
 export const globalHandler = (callback: (args?: any) => void | Promise<void>) =>
     async function (args?: any) {

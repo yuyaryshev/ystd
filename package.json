@@ -1,20 +1,22 @@
 {
   "name": "ystd",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "",
   "main": "dist/index.js",
+  "type": "module",
   "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "inprint & npm run build:clean && npm run build:ts",
+    "build": "inprint & npm run lint && npm run build:clean && npm run build:ts",
     "build:ts": "tsc",
     "build_old:ts": "npx rollup -c",
     "build:clean": "rm -rf ./dist/*",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-	"tsc":"tsc",
-	"republish": "npm run build && npm publish"
+    "tsc": "tsc",
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
+    "republish": "npm run build && npm publish"
   },
   "author": "Yuri Yaryshev",
   "homepage": "https://github.com/yuyaryshev/ystd",
@@ -37,8 +39,14 @@
     "@types/jest": "^26.0.23",
     "@types/luxon": "^1.26.5",
     "@types/react": "^17.0.4",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "babel-loader": "^8.2.2",
     "chai": "^4.3.4",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-sonarjs": "^0.7.0",
     "javascript-stringify": "^2.1.0",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
@@ -48,7 +56,7 @@
     "rollup": "^2.45.2",
     "ts-jest": "^26.5.5",
     "tslib": "^2.2.0",
-    "typescript": "^4.3.0-dev.20210427"
+    "typescript": "^4.2.4"
   },
   "jest": {
     "transform": {

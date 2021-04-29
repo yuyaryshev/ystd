@@ -13,7 +13,7 @@
 
 export const mapMirrorDelta = <K, V>(m: Map<K, V>) => {
     const deleted = new Map<K, V>();
-    for (let [k, v] of m) deleted.set(k, v);
+    for (const [k, v] of m) deleted.set(k, v);
 
     return {
         deleted,

@@ -1,22 +1,22 @@
 /// *
-import { CompilationError } from "./compilationError";
+import { CompilationError } from "./compilationError.js";
 
 type any_1 = any;
 
 export const tt = {
-    none: 0 as 0,
-    punctuator: 1 as 1,
-    space: 2 as 2,
-    identifier: 4 as 4,
-    int: 32 as 32,
-    float: 64 as 64,
+    none: 0 as const,
+    punctuator: 1 as const,
+    space: 2 as const,
+    identifier: 4 as const,
+    int: 32 as const,
+    float: 64 as const,
     number: 32 | (64 as 32 | 64),
-    squoted: 128 as 128,
-    dquoted: 256 as 256,
-    tquoted: 512 as 512,
+    squoted: 128 as const,
+    dquoted: 256 as const,
+    tquoted: 512 as const,
     string: (128 | 256 | 512) as 128 | 256 | 512,
-    comment: 1024 as 1024,
-    code: 2048 as 2048,
+    comment: 1024 as const,
+    code: 2048 as const,
 };
 
 const tokenFilterStr = (token_filter: ITokenFilterType): string => {
@@ -108,18 +108,26 @@ export type SplitCallback = (item: ReadTillMatched | IToken<string>) => boolean 
 export type BreakpointCallback = (token: IToken) => void;
 
 export const parseEscapedStringValue = (s: string) => {
-    const len = s.length-1;
+    const len = s.length - 1;
     let r = "";
     let i = 1;
     while (i < len) {
         const c = s.charAt(i);
-        if(c === '\\') {
-            const c2 = s.charAt(i+1);
+        if (c === "\\") {
+            const c2 = s.charAt(i + 1);
             switch (c2) {
-                case "n": r+= "\n"; break;
-                case "r": r+= "\r"; break;
-                case "t": r+= "\t"; break;
-                default: r+= c2; break;
+                case "n":
+                    r += "\n";
+                    break;
+                case "r":
+                    r += "\r";
+                    break;
+                case "t":
+                    r += "\t";
+                    break;
+                default:
+                    r += c2;
+                    break;
             }
         }
         r += c;
@@ -129,10 +137,10 @@ export const parseEscapedStringValue = (s: string) => {
 };
 
 export const parseCODEBlock = (s: string) => {
-    return s.substr(5,s.length - 10);
+    return s.substr(5, s.length - 10);
 };
 
-export type TokenValueParser<T> = (s:string) => T;
+export type TokenValueParser<T> = (s: string) => T;
 
 export class Lexer<CompilationContextT = unknown> {
     context: CompilationContextT;
@@ -168,6 +176,7 @@ export class Lexer<CompilationContextT = unknown> {
 
         this.onBreakpoint = (token: IToken) => {
             console.log(`CODE00000478 Triggered lexer debugger! token = `, token);
+            // eslint-disable-next-line no-debugger
             debugger;
             console.log(`CODE00000479 Triggered lexer debugger! token = `, token);
         };
@@ -198,18 +207,18 @@ export class Lexer<CompilationContextT = unknown> {
         const linep = this.p - this.linestartp + 1;
         const p = this.p;
         const t = this.substr_with_adjusted_linenums(len);
-        const v = parserFunc? parserFunc(t) : t;
+        const v = parserFunc ? parserFunc(t) : t;
         const token = { lexer: this, token_type, line, linep, p, len, t, v };
         if (this.breakpoint !== undefined && this.p >= this.breakpoint && this.onBreakpoint) this.onBreakpoint(token as IToken<any>);
         return token as IToken<any>;
     }
 
     emptyToken(): IToken<undefined> {
-        return this.readToken<undefined>(0,0, undefined);
+        return this.readToken<undefined>(0, 0, undefined);
     }
 
     advance() {
-        let r = this.next();
+        const r = this.next();
         if (r) this.next_tokens.splice(0, 1);
         return r;
     }
@@ -236,7 +245,7 @@ export class Lexer<CompilationContextT = unknown> {
         return r;
     }
 
-    read_fixed(len: number): IToken<string>  {
+    read_fixed(len: number): IToken<string> {
         this.uncache_next_tokens();
         return this.readToken(len);
     }
@@ -249,7 +258,7 @@ export class Lexer<CompilationContextT = unknown> {
         let minR: RegExpMatchArray | null | undefined;
         let matchedWith: string | RegExp | undefined;
 
-        for (let regexp of regexps) {
+        for (const regexp of regexps) {
             if (typeof regexp === "string") {
                 const index = input.indexOf(regexp);
                 if (index < minIndex) {
@@ -315,12 +324,12 @@ export class Lexer<CompilationContextT = unknown> {
     split(regexp_or_regexps: RegExp | RegExp[], callback?: SplitCallback) {
         const parts: IToken<string>[] = [];
         while (true) {
-            let r = this.read_till(regexp_or_regexps);
-            if (callback && callback(r.prefix) === false) return parts;
+            const r = this.read_till(regexp_or_regexps);
+            if (callback && !callback(r.prefix)) return parts;
             parts.push(r.prefix);
 
             if (r.matched) {
-                if (callback && callback(r.matched) === false) return parts;
+                if (callback && !callback(r.matched)) return parts;
                 parts.push(r.matched);
             } else break;
         }
@@ -337,7 +346,7 @@ export class Lexer<CompilationContextT = unknown> {
             // В этом месте нужно добавить чтенеи в переменную s до тех пор пока в ней не будет как минимум
             // max_token_size данных или пока не будет достигнут конец потока.
 
-            let next_token = this.read_next_token();
+            const next_token = this.read_next_token();
             if (!next_token) return undefined;
             this.next_tokens.push(next_token);
         }
@@ -354,7 +363,7 @@ export class Lexer<CompilationContextT = unknown> {
     read(token_filter: ITokenFilterType): IToken | undefined;
 
     read(token_filter: ITokenFilterType) {
-        let r = this.next();
+        const r = this.next();
         if (!r) return undefined;
 
         if (typeof token_filter === "number") {
@@ -383,7 +392,7 @@ export class Lexer<CompilationContextT = unknown> {
     expect(token_filter: ITokenFilterType, expected_name?: string, cpl?: string): IToken;
 
     expect(token_filter: ITokenFilterType, expected_name?: string, cpl?: string): IToken {
-        let r = this.read(token_filter);
+        const r = this.read(token_filter);
         if (!r) throw new LexerError("E", cpl || "CODE00000155", this, `Expected ${expected_name || tokenFilterStr(token_filter)}`);
         return r;
     }
@@ -553,7 +562,7 @@ export class Lexer<CompilationContextT = unknown> {
         // noinspection UnreachableCodeJS
         {
             const len = p2 - this.p;
-            if (this.s.charAt(p2) !== ".") return this.readToken(len,tt.int, Number.parseInt);
+            if (this.s.charAt(p2) !== ".") return this.readToken(len, tt.int, Number.parseInt);
         }
 
         second_while: while (true)
@@ -609,6 +618,7 @@ export class Lexer<CompilationContextT = unknown> {
                         break;
                 }
 
+            // noinspection UnreachableCodeJS
             return this.readToken(p2 - this.p, tt.comment);
         }
         return undefined;
@@ -636,6 +646,7 @@ export class Lexer<CompilationContextT = unknown> {
                         p2++;
                         break;
                 }
+            // noinspection UnreachableCodeJS
             throw new LexerError("E", "CODE00000171", this, `Missing closing */`);
         }
         return undefined;
@@ -648,7 +659,7 @@ export class Lexer<CompilationContextT = unknown> {
                 switch (this.s.charAt(p2)) {
                     case "}":
                         if (this.s.substr(p2, 5) === "}CODE") {
-                            p2+=5;
+                            p2 += 5;
                             return this.readToken(p2 - this.p, tt.code, parseCODEBlock);
                         } else {
                             p2++;
@@ -663,6 +674,7 @@ export class Lexer<CompilationContextT = unknown> {
                         p2++;
                         break;
                 }
+            // noinspection UnreachableCodeJS
             throw new LexerError("E", "CODE00000172", this, `Missing closing }CODE.`);
         }
         return undefined;
@@ -777,10 +789,6 @@ export class Lexer<CompilationContextT = unknown> {
                     if (this.s.charAt(this.p + 1) === "-" || this.s.charAt(this.p + 1) === "=") return this.readToken(2, tt.punctuator);
                     return this.readToken(1, tt.punctuator);
 
-                case "*":
-                    if (this.s.charAt(this.p + 1) === "=") return this.readToken(2, tt.punctuator);
-                    return this.readToken(1, tt.punctuator);
-
                 case "/":
                     if (this.s.charAt(this.p + 1) === "*") {
                         const r = this.read_next_token_multiline_comment();
@@ -797,14 +805,9 @@ export class Lexer<CompilationContextT = unknown> {
                     if (this.s.charAt(this.p + 1) === "&") return this.readToken(2, tt.punctuator);
                     return this.readToken(1, tt.punctuator);
 
+                case "*":
                 case "<":
-                    if (this.s.charAt(this.p + 1) === "=") return this.readToken(2, tt.punctuator);
-                    return this.readToken(1, tt.punctuator);
-
                 case ">":
-                    if (this.s.charAt(this.p + 1) === "=") return this.readToken(2, tt.punctuator);
-                    return this.readToken(1, tt.punctuator);
-
                 case "=":
                     if (this.s.charAt(this.p + 1) === "=") return this.readToken(2, tt.punctuator);
                     return this.readToken(1, tt.punctuator);
@@ -834,6 +837,7 @@ export class Lexer<CompilationContextT = unknown> {
 
                 case "C":
                     if (this.s.substr(this.p, 5) === "CODE{") return this.read_next_token_code();
+                // eslint-disable-next-line no-fallthrough
                 case "_":
                 case "a":
                 case "b":
@@ -975,16 +979,17 @@ export class Lexer<CompilationContextT = unknown> {
                 case "\r":
                 case "\n":
                 case " ":
-                case "\t":
+                case "\t": {
                     const r = this.read_next_token_space();
-                    if(this.skip_spaces)
-                        continue;
+                    if (this.skip_spaces) continue;
                     return r;
+                }
 
-                default:
-                    let s = "Char '" + this.s.charAt(this.p) + "' not in switch";
+                default: {
+                    const s = "Char '" + this.s.charAt(this.p) + "' not in switch";
                     console.log(s);
                     throw new LexerError("E", "CODE00000159", this, s);
+                }
             }
         }
     }

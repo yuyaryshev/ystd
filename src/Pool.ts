@@ -1,4 +1,4 @@
-import { makePromise, SavedPromise, SavedPromiseArray } from "./promiseFuncs";
+import { makePromise, SavedPromise, SavedPromiseArray } from "./promiseFuncs.js";
 
 export interface Poolable {
     pool?: AbstractPool<any>;
@@ -37,7 +37,7 @@ export abstract class PoolBase<T extends Poolable> {
     factory: Factory<T>;
     closing?: SavedPromise<void>;
 
-    constructor(settings: PoolSettings<T>) {
+    protected constructor(settings: PoolSettings<T>) {
         this.factory = settings.factory;
     }
 
@@ -45,7 +45,7 @@ export abstract class PoolBase<T extends Poolable> {
     abstract release(t: T): void;
 
     async exec(callback: PoolCallback<T>): Promise<any> {
-        let c = await this.get();
+        const c = await this.get();
         let r;
         try {
             r = await callback(c);
@@ -58,7 +58,7 @@ export abstract class PoolBase<T extends Poolable> {
     }
 
     async call(funcName: string, ...args: any[]): Promise<any> {
-        let c = await this.get();
+        const c = await this.get();
         let r;
         try {
             r = await ((await c) as any)[funcName](...args);
@@ -122,7 +122,7 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
         this.regularWorkRunsLeft = this.regularWorkRuns;
         if (!this.regularWorkScheduled) {
             setTimeout(() => {
-                this._regularWork();
+                this._regularWork().then();
             }, this.regularWorkDelay);
         }
     }
@@ -140,14 +140,14 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
 
         while (this.totalCount < this.maxCount && (this.totalCount < this.minCount || this.freeCount < 1)) {
             // TODO_STABILITY если вдруг factory делает throw, то он не перехватывается тут никак!
-            let c = await this.factory.produce();
+            const c = await this.factory.produce();
             c.pool = this;
             this.freeClients.push(c);
             this.allClients.push(c);
         }
 
         while (this.totalCount > this.minCount && this.totalCount > this.worksetCount + 1 && this.freeCount > 1) {
-            let c = this.freeClients.pop();
+            const c = this.freeClients.pop();
             if (c) {
                 await c.close();
             } else break; // Should be unreachable
@@ -185,7 +185,7 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
             })();
         }
 
-        let p = makePromise<T>();
+        const p = makePromise<T>();
         this.waitingQueue.push(p);
         return p.promise;
     }
@@ -197,11 +197,11 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
         if (this.closing) {
             client.close();
             if (!this.allClients.length) this.closing.resolve(undefined);
-            for (let item of this.waitingQueue) item.reject(new Error(`Pool have been closed.`));
+            for (const item of this.waitingQueue) item.reject(new Error(`Pool have been closed.`));
             this.waitingQueue = [];
             return;
         }
-        let r = this.waitingQueue.pop();
+        const r = this.waitingQueue.pop();
 
         if (r) r.resolve(client);
         else this.freeClients.push(client);
@@ -218,14 +218,14 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
         this.minCount = 0;
         this.worksetCount = 0;
 
-        for (let c of this.freeClients) {
+        for (const c of this.freeClients) {
             c.close();
             this.freeClients.splice(this.freeClients.indexOf(c), 1);
             this.allClients.splice(this.allClients.indexOf(c), 1);
         }
 
         if (forced) {
-            for (let c of this.allClients) {
+            for (const c of this.allClients) {
                 c.close();
                 this.allClients.splice(this.allClients.indexOf(c), 1);
             }
@@ -277,14 +277,14 @@ export class SingleConnectionPool<T extends Poolable> extends PoolBase<T> implem
                 return this.get();
             })();
 
-        let client = this.client as T;
+        const client = this.client as T;
 
         if (this.isFree) {
             this.isFree = false;
             return client;
         }
 
-        let p = makePromise<T>();
+        const p = makePromise<T>();
         this.waitingQueue.push(p);
         return p.promise;
     }
@@ -294,12 +294,12 @@ export class SingleConnectionPool<T extends Poolable> extends PoolBase<T> implem
 
         if (this.closing) {
             client.close();
-            for (let item of this.waitingQueue) item.reject(new Error(`Pool have been closed.`));
+            for (const item of this.waitingQueue) item.reject(new Error(`Pool have been closed.`));
             this.waitingQueue = [];
             return;
         }
 
-        let r = this.waitingQueue.pop();
+        const r = this.waitingQueue.pop();
         if (r) r.resolve(client);
         else this.isFree = true;
     }
@@ -310,11 +310,9 @@ export class SingleConnectionPool<T extends Poolable> extends PoolBase<T> implem
     close(forced: boolean = false): Promise<void> | void {
         if (!this.closing) this.closing = makePromise<void>();
 
-        if (this.isFree) {
-            if (this.client) {
-                this.client.close();
-                return;
-            }
+        if (this.isFree && this.client) {
+            this.client.close();
+            return;
         }
 
         return this.closing.promise;

@@ -1,6 +1,6 @@
-import { AnyObject } from "./AnyObject";
+import { AnyObject } from "./AnyObject.js";
 
 export const valueByPath = (v: AnyObject, path: string[]) => {
-    for (let part of path) v = v[part];
+    for (const part of path) v = v[part];
     return v;
 };
