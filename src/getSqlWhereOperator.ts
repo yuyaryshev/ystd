@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function getSqlWhereOperator(mode: string) {
     switch (mode) {
         case "like": {

@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function containerAdd<T>(cont: T[] | Set<T>, value: T): T | undefined {
     if (Array.isArray(cont)) {
         if (!cont.includes(value)) {
@@ -10,6 +13,9 @@ export function containerAdd<T>(cont: T[] | Set<T>, value: T): T | undefined {
     return undefined;
 }
 
+/**
+ *
+ */
 export function containerDelete<T>(cont: T[] | Set<T> | undefined, value: T): T | undefined {
     if (!cont) return undefined;
 
@@ -26,6 +32,9 @@ export interface ObjectWithCont<T> {
     container: T[] | Set<T> | undefined;
 }
 
+/**
+ *
+ */
 export function moveToContainer<T extends ObjectWithCont<T>>(cont: T[] | Set<T> | undefined, value: T) {
     if (value && value.container) containerDelete(value.container, value);
     if (cont) {

@@ -1,5 +1,8 @@
 export type ExpectOneCallback<T, R> = (item: T, index: number) => R | undefined;
 
+/**
+ *
+ */
 export function expectOne<T, R>(container: T[] | Set<T>, filterFunc: ExpectOneCallback<T, R>): R {
     let index = 0;
     let r: R | undefined;

@@ -13,6 +13,9 @@ export interface DurationObj {
     milliseconds?: number;
 }
 
+/**
+ *
+ */
 export function durationEngStrToDurationObj(vv: DurationEngStr): DurationObj {
     let sign = 1;
     let years = 0;
@@ -101,12 +104,18 @@ export function durationEngStrToDurationObj(vv: DurationEngStr): DurationObj {
     return rr;
 }
 
+/**
+ *
+ */
 export function strIntervalsToDurationObjs(vv: DurationEngStr): DurationObj[] {
     const r: DurationObj[] = [];
     for (const v of vv.split(",")) r.push(durationEngStrToDurationObj(v));
     return r;
 }
 
+/**
+ *
+ */
 export function durationObjToEngStr(durationObj: DurationObj, maxParts: number = 3): DurationEngStr {
     const { sign, years, months, weeks, days, hours, minutes, seconds, milliseconds } = durationObj;
     const parts = [];
@@ -148,6 +157,9 @@ export const strict24_7_AggDurationSettings: AggDurationSettings = {
     DaysPerWeek: 7,
 };
 
+/**
+ *
+ */
 export function aggDuration(durationObj: DurationObj, aggDurationSettings: AggDurationSettings = {}): DurationObj {
     const { HoursPerDay, DaysPerWeek, DaysPerMonth, DaysPerYear, WeeksPerMonth, WeeksPerYear, MonthPerYear } = aggDurationSettings;
     const sign = durationObj.sign || 1;
@@ -179,6 +191,9 @@ export function aggDuration(durationObj: DurationObj, aggDurationSettings: AggDu
     return rr;
 }
 
+/**
+ *
+ */
 export function unaggDuration(durationObj: DurationObj, aggDurationSettings: AggDurationSettings): DurationObj {
     const { HoursPerDay, DaysPerWeek, DaysPerMonth, DaysPerYear, WeeksPerMonth, WeeksPerYear, MonthPerYear } = aggDurationSettings;
     const sign = durationObj.sign || 1;
@@ -217,11 +232,17 @@ export function unaggDuration(durationObj: DurationObj, aggDurationSettings: Agg
     return rr;
 }
 
+/**
+ *
+ */
 export function isOnlyMsDuration(durationObj: DurationObj | undefined) {
     if (!durationObj) return true;
     for (const k in durationObj) if (k !== "sign" && k !== "milliseconds" && (durationObj as any)[k]) return false;
     return true;
 }
+/**
+ *
+ */
 export function expectOnlyMsDuration(durationObj: DurationObj | undefined): DurationMs {
     if (!isOnlyMsDuration(durationObj)) throw new Error(`CODE00000184 onlyMsDuration failed!\ndurationObj = ${JSON.stringify(durationObj)}`);
     return (durationObj?.milliseconds || 0) * (durationObj?.sign || 1);

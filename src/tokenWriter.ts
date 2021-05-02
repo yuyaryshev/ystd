@@ -7,6 +7,9 @@ export interface WriterPart {
     r: string;
 }
 
+/**
+ *
+ */
 export function makeTokenWriter(lexer: Lexer) {
     const r = {
         lexer,

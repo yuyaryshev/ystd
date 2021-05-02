@@ -995,6 +995,9 @@ export class Lexer<CompilationContextT = unknown> {
     }
 }
 
+/**
+ *
+ */
 export function lexAll<CompilationContextT = unknown>(s: string, filePath: string, context: CompilationContextT): IToken[] {
     return new Lexer<CompilationContextT>(s, filePath, context).read_all();
 }

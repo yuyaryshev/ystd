@@ -1,7 +1,13 @@
+/**
+ *
+ */
 export function strNvl(a: string | undefined | null, b: string): string {
     return a && a.length ? a : b;
 }
 
+/**
+ *
+ */
 export function strNvlT(strings: TemplateStringsArray, ...args: (string | undefined | null | number | boolean)[]): string {
     let r = "";
     for (const a of args) if (a === null || a === undefined || a === false || (typeof a === "string" && !a.length)) return "";

@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function fmap<T, R>(array: T[], callback: (item: T, index: number) => R | null | undefined): R[] {
     const r: R[] = [];
     const len = array.length || 0;

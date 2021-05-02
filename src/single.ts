@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function single<T>(array: T[]): T {
     if (!Array.isArray(array)) throw new Error(`Expected array with a single value, but not an array given!`);
 

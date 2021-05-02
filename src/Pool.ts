@@ -130,7 +130,8 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
     /**
      * Private. Should not be used directly.
      * Calculates workset and adjusts current pool-object count accordingly, runs periodically on setTimeout.
-     * @private
+     *
+     * @internal
      */
     async _regularWork() {
         if (this.closing) return;
@@ -168,7 +169,6 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
      *
      * UNSAFE! Better use exec(callback)
      *
-     * @returns {Promise<T> | T}
      */
     get(): Promise<T> | T {
         this.scheduleRegularWork();
@@ -266,7 +266,6 @@ export class SingleConnectionPool<T extends Poolable> extends PoolBase<T> implem
      *
      * UNSAFE! Better use exec(callback)
      *
-     * @returns {Promise<T> | T}
      */
     get(): Promise<T> | T {
         if (!this.client)

@@ -21,6 +21,9 @@ export interface ManageableTimer<Env extends EnvWithTimers = EnvWithTimers> {
   executeNow: () => Promise<void>;
 }
 
+/**
+ *
+ */
 export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
   env: Env,
   timeout: number,
@@ -28,6 +31,9 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
   name: string,
   callback: () => void | Promise<void>
 ) {
+  /**
+   *
+   */
   async function directRun() {
     pthis.lastRun = new Date();
     try {
@@ -38,6 +44,9 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     }
   }
 
+  /**
+   *
+   */
   function stop() {
     if (pthis.timeoutHandle) {
       clearTimeout(pthis.timeoutHandle);
@@ -46,6 +55,9 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     }
   }
 
+  /**
+   *
+   */
   function mSetTimeout(timeoutOverride?: number) {
     if (!env)
       throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
@@ -61,6 +73,9 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     );
   }
 
+  /**
+   *
+   */
   function mSetInterval(timeoutOverride?: number) {
     if (!env)
       throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
@@ -75,11 +90,17 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     );
   }
 
+  /**
+   *
+   */
   async function executeNow() {
     stop();
     await directRun();
   }
 
+  /**
+   *
+   */
   function notSoonerThan(): undefined | Promise<void> {
     if (
       !pthis.lastRun ||
@@ -90,11 +111,17 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     return undefined;
   }
 
+  /**
+   *
+   */
   function disable() {
     pthis.disabled = true;
     stop();
   }
 
+  /**
+   *
+   */
   function enable() {
     delete pthis.disabled;
   }
@@ -118,6 +145,9 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
 }
 
 // Синоним. Но список параметров совместим со стандартным setTimeout
+/**
+ *
+ */
 export function manageableSetTimeout<Env extends EnvWithTimers = EnvWithTimers>(
   callback: () => void | Promise<void>,
   timeout: number,
@@ -129,6 +159,9 @@ export function manageableSetTimeout<Env extends EnvWithTimers = EnvWithTimers>(
 }
 
 // Синоним. Но список параметров совместим со стандартным setTimeout
+/**
+ *
+ */
 export function manageableSetInterval<
   Env extends EnvWithTimers = EnvWithTimers
 >(

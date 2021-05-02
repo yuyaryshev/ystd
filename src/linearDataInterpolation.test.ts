@@ -20,6 +20,9 @@ const data = [
 ];
 const times = [0, 100, 300, 400];
 
+/**
+ *
+ */
 function noMs(x: any) {
     const { ms, ...r } = x;
     return r;

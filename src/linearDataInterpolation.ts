@@ -5,6 +5,9 @@ export interface AnimatedDataItem {
     [key: string]: any;
 }
 
+/**
+ *
+ */
 export function linearDataInterpolation<T extends AnimatedDataItem>(items: T[], timePos: number = new Date().getTime(), timeScale: number = 1): T {
     if (items.length === 1) return items[0];
 

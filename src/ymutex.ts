@@ -6,6 +6,9 @@ export type YSemaphore = {
     lock: <T>(asyncCallback: () => Promise<T>) => Promise<T>;
 };
 
+/**
+ *
+ */
 export function ysemaphore(n: number = 1, releaseDelay: number = 0): YSemaphore {
     const m = {
         lockCount: 0,

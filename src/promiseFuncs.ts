@@ -7,6 +7,9 @@ export interface SavedPromise<T> {
     reject: (err: any) => void;
 }
 
+/**
+ *
+ */
 export function makePromise<T>(): SavedPromise<T> {
     const r: SavedPromise<T> = {} as any;
     r.promise = new Promise((resolve, reject) => {

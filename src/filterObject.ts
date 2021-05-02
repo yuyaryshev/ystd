@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function filterObject(object: any, keysOrFilterCallback: string[] | ((key: string, object: any) => boolean), invert?: boolean): any {
     const r = {} as any;
     if (Array.isArray(keysOrFilterCallback)) {

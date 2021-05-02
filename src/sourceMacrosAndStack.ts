@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function __STACK__(offset: number = 0): any {
     const orig = Error.prepareStackTrace;
     Error.prepareStackTrace = function (_, stack) {

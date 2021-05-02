@@ -1,5 +1,8 @@
 import moment, { Duration } from "moment";
 
+/**
+ *
+ */
 export function makeMomentInterval(vv: string): Duration {
     const d: Duration = moment.duration(0);
     for (const v of vv.split(" ")) {
@@ -10,6 +13,9 @@ export function makeMomentInterval(vv: string): Duration {
     return d;
 }
 
+/**
+ *
+ */
 export function makeMomentIntervals(vv: string): Duration[] {
     const r: Duration[] = [];
     for (const v of vv.split(",")) r.push(makeMomentInterval(v));

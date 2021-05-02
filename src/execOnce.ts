@@ -4,6 +4,9 @@ interface ExecOnceRecord {
 }
 const execOnceMap: Map<Symbol | Object, ExecOnceRecord> = new Map();
 
+/**
+ *
+ */
 export async function execOnce(symbolOrObject: Symbol | Object, delay: number, callback: () => Promise<any> | any) {
     if (!execOnceMap.get(symbolOrObject)) {
         let resolve: any;

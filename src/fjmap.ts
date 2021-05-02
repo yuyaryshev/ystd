@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function fjmap<T>(
     array: T[],
     sep: string,
