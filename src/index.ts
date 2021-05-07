@@ -18,6 +18,7 @@ export * from "./YDict.js";
 export * from "./YSet.js";
 export * from "./YTimeIntervals.js";
 export * from "./addToField.js";
+export * from "./arrayExpectOne.js";
 export * from "./asTypedValue.js";
 export * from "./assert.js";
 export * from "./assertNever.js";

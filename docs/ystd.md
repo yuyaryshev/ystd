@@ -30,7 +30,9 @@
 |  --- | --- |
 |  [\_\_STACK\_\_(offset)](./ystd.__stack__.md) |  |
 |  [addToField(object, field, value)](./ystd.addtofield.md) | Increments <b>value</b> of <b>object</b>\[<b>field</b>\]. If <b>field</b> is undefined it is assigned to <b>value</b>. |
+|  [afterTokenPosStr(token)](./ystd.aftertokenposstr.md) |  |
 |  [aggDuration(durationObj, aggDurationSettings)](./ystd.aggduration.md) |  |
+|  [arrayExpectOne(array, cond, msg)](./ystd.arrayexpectone.md) |  |
 |  [assertNever(x, msg, data)](./ystd.assertnever.md) |  |
 |  [assertNeverNoThrow(x, msg, data)](./ystd.assertnevernothrow.md) |  |
 |  [awaitDelay(ms)](./ystd.awaitdelay.md) |  |
@@ -53,6 +55,7 @@
 |  [isNumber(v)](./ystd.isnumber.md) |  |
 |  [isOnlyMsDuration(durationObj)](./ystd.isonlymsduration.md) |  |
 |  [lexAll(s, filePath, context)](./ystd.lexall.md) |  |
+|  [lexerPosStr(lexer)](./ystd.lexerposstr.md) |  |
 |  [linearDataInterpolation(items, timePos, timeScale)](./ystd.lineardatainterpolation.md) |  |
 |  [makeMomentInterval(vv)](./ystd.makemomentinterval.md) |  |
 |  [makeMomentIntervals(vv)](./ystd.makemomentintervals.md) |  |
@@ -78,6 +81,7 @@
 |  [strNvl(a, b)](./ystd.strnvl.md) |  |
 |  [strNvlT(strings, args)](./ystd.strnvlt.md) |  |
 |  [strReplace(containerString, sourceString, targetString)](./ystd.strreplace.md) |  |
+|  [tokenPosStr(token)](./ystd.tokenposstr.md) |  |
 |  [unaggDuration(durationObj, aggDurationSettings)](./ystd.unaggduration.md) |  |
 |  [undefinedKeys(o, keys)](./ystd.undefinedkeys.md) |  |
 |  [waitAll(promises)](./ystd.waitall.md) |  |
