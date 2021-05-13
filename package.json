@@ -1,6 +1,6 @@
 {
   "name": "ystd",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "dist/index.js",
   "type": "module",
@@ -17,7 +17,7 @@
     "build-storybook": "build-storybook",
     "tsc": "tsc",
     "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
-    "republish": "npm run build && npm publish"
+    "republish": "npm run build && npx version-select && npm publish"
   },
   "author": "Yuri Yaryshev",
   "homepage": "https://github.com/yuyaryshev/ystd",
@@ -26,6 +26,9 @@
     "url": "https://github.com/yuyaryshev/ystd"
   },
   "license": "Unlicense",
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
   "devDependencies": {
     "@babel/core": "^7.13.16",
     "@microsoft/api-documenter": "^7.13.5",
