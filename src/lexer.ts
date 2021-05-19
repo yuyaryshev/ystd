@@ -833,6 +833,7 @@ export class Lexer<CompilationContextT = unknown> {
                 case "]":
                 case "$":
                 case "@":
+                case "^":
                     return this.readToken(1, tt.punctuator);
 
                 case "C":

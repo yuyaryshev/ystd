@@ -1,11 +1,17 @@
 import { ITokenLike, Lexer } from "./lexer.js";
 import { Severity, severityLongStr } from "./Severity.js";
 
+/**
+ *
+ */
 export function tokenPosStr(token: ITokenLike<any> | undefined) {
     if (!token) return `Unknown location - see cpl if available`;
     return `at source file (${token?.lexer?.filePath || "Unknown file"}:${token.line}:${token.linep}) p = ${token.p}`;
 }
 
+/**
+ *
+ */
 export function afterTokenPosStr(token: ITokenLike<any> | undefined) {
     if (!token) return `Unknown location - see cpl if available`;
     return `at source file (${token?.lexer?.filePath || "Unknown file"}:${token.line}:${(token.linep || 0) + (token.len || 0)}) p = ${
@@ -13,11 +19,17 @@ export function afterTokenPosStr(token: ITokenLike<any> | undefined) {
     }`;
 }
 
+/**
+ *
+ */
 export function lexerPosStr(lexer: Lexer<any> | undefined) {
     if (!lexer) return `Unknown location`;
     return `\n\tat source file (${lexer.filePath}:${lexer.line}:${lexer.p - lexer.linestartp}) p = ${lexer.p}`;
 }
 
+/**
+ *
+ */
 function isLexer(a: any): a is Lexer {
     return a?.constructor?.name === "Lexer";
 }

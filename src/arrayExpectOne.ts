@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export function arrayExpectOne<T>(array: T[], cond: (v: T) => boolean, msg?: string) {
     let v1;
     for (const v of array)
