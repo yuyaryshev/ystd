@@ -19,6 +19,10 @@ export const tt = {
     code: 2048 as const,
 };
 
+export interface LexerReadOpts {
+    disableStrings?: boolean;
+}
+
 const tokenFilterStr = (token_filter: ITokenFilterType): string => {
     if (typeof token_filter === "string") return token_filter;
 
@@ -188,6 +192,10 @@ export class Lexer<CompilationContextT = unknown> {
         // Это сделано для поддержки Stream в будущем, но, поскольку я не разобрался со чтением файла по частям я не доделал это.
     }
 
+    debugString(cursorStr: string = "[-->>>--]") {
+        return this.s.substr(0, this.p) + cursorStr + this.s.substr(this.p);
+    }
+
     setBreakpoint(position: number | string, breakpointCallback?: BreakpointCallback) {
         if (breakpointCallback !== undefined) this.onBreakpoint = breakpointCallback;
 
@@ -217,14 +225,14 @@ export class Lexer<CompilationContextT = unknown> {
         return this.readToken<undefined>(0, 0, undefined);
     }
 
-    advance() {
-        const r = this.next();
+    advance(opts?: LexerReadOpts | undefined) {
+        const r = this.next(0, opts);
         if (r) this.next_tokens.splice(0, 1);
         return r;
     }
 
-    done() {
-        return !this.next();
+    done(opts?: LexerReadOpts | undefined) {
+        return !this.next(0, opts);
     }
 
     substr_with_adjusted_linenums(len: number): string {
@@ -336,7 +344,7 @@ export class Lexer<CompilationContextT = unknown> {
         return parts;
     }
 
-    next(offset: number = 0): IToken | undefined {
+    next(offset: number = 0, opts?: LexerReadOpts | undefined): IToken | undefined {
         while (!this.next_tokens.hasOwnProperty(offset)) {
             if (this.p >= this.s.length) {
                 return undefined;
@@ -346,7 +354,7 @@ export class Lexer<CompilationContextT = unknown> {
             // В этом месте нужно добавить чтенеи в переменную s до тех пор пока в ней не будет как минимум
             // max_token_size данных или пока не будет достигнут конец потока.
 
-            const next_token = this.read_next_token();
+            const next_token = this.read_next_token(opts);
             if (!next_token) return undefined;
             this.next_tokens.push(next_token);
         }
@@ -358,12 +366,12 @@ export class Lexer<CompilationContextT = unknown> {
         while ((next_token = this.next_tokens.pop())) this.p = this.p - next_token.len;
     }
 
-    read(token_filter: 32 | 64 | 96): IToken<number> | undefined;
-    read(token_filter: 1 | 2 | 4 | 128 | 256 | 512 | 896 | (128 | 256 | 512)): IToken<string> | undefined;
-    read(token_filter: ITokenFilterType): IToken | undefined;
+    read(token_filter: 32 | 64 | 96, opts?: LexerReadOpts | undefined): IToken<number> | undefined;
+    read(token_filter: 1 | 2 | 4 | 128 | 256 | 512 | 896 | (128 | 256 | 512), opts?: LexerReadOpts | undefined): IToken<string> | undefined;
+    read(token_filter: ITokenFilterType, opts?: LexerReadOpts | undefined): IToken | undefined;
 
-    read(token_filter: ITokenFilterType) {
-        const r = this.next();
+    read(token_filter: ITokenFilterType, opts?: LexerReadOpts | undefined) {
+        const r = this.next(0, opts);
         if (!r) return undefined;
 
         if (typeof token_filter === "number") {
@@ -774,7 +782,7 @@ export class Lexer<CompilationContextT = unknown> {
         return r;
     }
 
-    read_next_token(): IToken | undefined {
+    read_next_token(opts?: LexerReadOpts | undefined): IToken | undefined {
         while (true) {
             switch (this.s.charAt(this.p)) {
                 case "":
@@ -971,10 +979,13 @@ export class Lexer<CompilationContextT = unknown> {
                 case "9":
                     return this.read_next_token_number();
                 case "'":
+                    if (opts?.disableStrings) return this.readToken(1, tt.punctuator);
                     return this.read_next_token_squoted();
                 case '"':
+                    if (opts?.disableStrings) return this.readToken(1, tt.punctuator);
                     return this.read_next_token_dquoted();
                 case "`":
+                    if (opts?.disableStrings) return this.readToken(1, tt.punctuator);
                     return this.read_next_token_tquoted();
 
                 case "\r":
