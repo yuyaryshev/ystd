@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "declarationDir": "./lib/types-cjs",
+        "outDir": "lib/types-cjs",
+        "target": "es2015"
+    }
+}
