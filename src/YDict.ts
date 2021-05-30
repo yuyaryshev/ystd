@@ -9,7 +9,7 @@ export abstract class YDictGeneric<K, V> {
     }
 
     construct(k: K): V {
-        const r = ({} as any) as V;
+        const r = {} as any as V;
         if ((this as any).setKey) (this as any).setKey(r, k);
         return r;
     }
@@ -86,7 +86,7 @@ export const makeYDictGenericClass = <K, CV extends { new (...args: any): any }>
     type V = InstanceType<typeof elemClass>;
     return class LambdaYDict extends YDictGeneric<K, V> {
         getKey(v: V): K {
-            return ((v as any)[prop] as any) as K;
+            return (v as any)[prop] as any as K;
         }
 
         setKey(v: V, k: K): void {

@@ -1,147 +1,140 @@
 export interface EnvWithTimers {
-  timers: Set<ManageableTimer>;
+    timers: Set<ManageableTimer>;
 }
 
 export interface ManageableTimer<Env extends EnvWithTimers = EnvWithTimers> {
-  env: Env;
-  cpl: string;
-  name: string;
-  lastRun?: Date | undefined;
-  timeout: number;
-  disabled?: boolean;
-  timeoutHandle?: any;
+    env: Env;
+    cpl: string;
+    name: string;
+    lastRun?: Date | undefined;
+    timeout: number;
+    disabled?: boolean;
+    timeoutHandle?: any;
 
-  stop: () => void;
-  cancel: () => void;
-  setTimeout: (timeoutOverride?:number) => void;
-  setInterval: (timeoutOverride?:number) => void;
-  notSoonerThan: () => undefined | Promise<void>;
-  disable: () => void;
-  enable: () => void;
-  executeNow: () => Promise<void>;
+    stop: () => void;
+    cancel: () => void;
+    setTimeout: (timeoutOverride?: number) => void;
+    setInterval: (timeoutOverride?: number) => void;
+    notSoonerThan: () => undefined | Promise<void>;
+    disable: () => void;
+    enable: () => void;
+    executeNow: () => Promise<void>;
 }
 
 /**
  *
  */
 export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
-  env: Env,
-  timeout: number,
-  cpl: string,
-  name: string,
-  callback: () => void | Promise<void>
+    env: Env,
+    timeout: number,
+    cpl: string,
+    name: string,
+    callback: () => void | Promise<void>,
 ) {
-  /**
-   *
-   */
-  async function directRun() {
-    pthis.lastRun = new Date();
-    try {
-      await callback();
-    } catch (e) {
-      pthis.lastRun = new Date();
-      console.error(`CODE00001008`, `Unhandled exception in timer!`);
+    /**
+     *
+     */
+    async function directRun() {
+        pthis.lastRun = new Date();
+        try {
+            await callback();
+        } catch (e) {
+            pthis.lastRun = new Date();
+            console.error(`CODE00001008`, `Unhandled exception in timer!`);
+        }
     }
-  }
 
-  /**
-   *
-   */
-  function stop() {
-    if (pthis.timeoutHandle) {
-      clearTimeout(pthis.timeoutHandle);
-      delete pthis.timeoutHandle;
-      env?.timers.delete(pthis);
+    /**
+     *
+     */
+    function stop() {
+        if (pthis.timeoutHandle) {
+            clearTimeout(pthis.timeoutHandle);
+            delete pthis.timeoutHandle;
+            env?.timers.delete(pthis);
+        }
     }
-  }
 
-  /**
-   *
-   */
-  function mSetTimeout(timeoutOverride?: number) {
-    if (!env)
-      throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
-    stop();
-    if (pthis.disabled) return;
-    env.timers.add(pthis);
-    pthis.timeoutHandle = setTimeout(
-      async () => {
+    /**
+     *
+     */
+    function mSetTimeout(timeoutOverride?: number) {
+        if (!env) throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
+        stop();
+        if (pthis.disabled) return;
+        env.timers.add(pthis);
+        pthis.timeoutHandle = setTimeout(
+            async () => {
+                stop();
+                await directRun();
+            },
+            timeoutOverride === undefined ? timeout : timeoutOverride,
+        );
+    }
+
+    /**
+     *
+     */
+    function mSetInterval(timeoutOverride?: number) {
+        if (!env) throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
+        stop();
+        if (pthis.disabled) return;
+        env.timers.add(pthis);
+        pthis.timeoutHandle = setInterval(
+            async () => {
+                await directRun();
+            },
+            timeoutOverride === undefined ? timeout : timeoutOverride,
+        );
+    }
+
+    /**
+     *
+     */
+    async function executeNow() {
         stop();
         await directRun();
-      },
-      timeoutOverride === undefined ? timeout : timeoutOverride
-    );
-  }
+    }
 
-  /**
-   *
-   */
-  function mSetInterval(timeoutOverride?: number) {
-    if (!env)
-      throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
-    stop();
-    if (pthis.disabled) return;
-    env.timers.add(pthis);
-    pthis.timeoutHandle = setInterval(
-      async () => {
-        await directRun();
-      },
-      timeoutOverride === undefined ? timeout : timeoutOverride
-    );
-  }
+    /**
+     *
+     */
+    function notSoonerThan(): undefined | Promise<void> {
+        if (!pthis.lastRun || new Date().valueOf() - (pthis.lastRun ? pthis.lastRun.valueOf() : 0) > timeout) return executeNow();
+        return undefined;
+    }
 
-  /**
-   *
-   */
-  async function executeNow() {
-    stop();
-    await directRun();
-  }
+    /**
+     *
+     */
+    function disable() {
+        pthis.disabled = true;
+        stop();
+    }
 
-  /**
-   *
-   */
-  function notSoonerThan(): undefined | Promise<void> {
-    if (
-      !pthis.lastRun ||
-      new Date().valueOf() - (pthis.lastRun ? pthis.lastRun.valueOf() : 0) >
-        timeout
-    )
-      return executeNow();
-    return undefined;
-  }
+    /**
+     *
+     */
+    function enable() {
+        delete pthis.disabled;
+    }
 
-  /**
-   *
-   */
-  function disable() {
-    pthis.disabled = true;
-    stop();
-  }
+    const pthis: ManageableTimer<Env> = {
+        env,
+        cpl,
+        name,
+        timeout,
+        stop,
+        cancel: stop,
+        setTimeout: mSetTimeout,
+        setInterval: mSetInterval,
+        disable,
+        enable,
+        executeNow,
+        notSoonerThan,
+    };
 
-  /**
-   *
-   */
-  function enable() {
-    delete pthis.disabled;
-  }
-
-  const pthis: ManageableTimer<Env> = {
-    env,
-    cpl,
-    name,
-    timeout,
-    stop,
-    cancel: stop,
-    setTimeout: mSetTimeout,
-    setInterval: mSetInterval,
-    disable,
-    enable,
-    executeNow,
-    notSoonerThan,
-  };
-
-  return pthis;
+    return pthis;
 }
 
 // Синоним. Но список параметров совместим со стандартным setTimeout
@@ -149,27 +142,25 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
  *
  */
 export function manageableSetTimeout<Env extends EnvWithTimers = EnvWithTimers>(
-  callback: () => void | Promise<void>,
-  timeout: number,
-  env: Env,
-  cpl: string,
-  name: string
+    callback: () => void | Promise<void>,
+    timeout: number,
+    env: Env,
+    cpl: string,
+    name: string,
 ) {
-  return manageableTimer(env, timeout, cpl, name, callback).setTimeout();
+    return manageableTimer(env, timeout, cpl, name, callback).setTimeout();
 }
 
 // Синоним. Но список параметров совместим со стандартным setTimeout
 /**
  *
  */
-export function manageableSetInterval<
-  Env extends EnvWithTimers = EnvWithTimers
->(
-  callback: () => void | Promise<void>,
-  timeout: number,
-  env: Env,
-  cpl: string,
-  name: string
+export function manageableSetInterval<Env extends EnvWithTimers = EnvWithTimers>(
+    callback: () => void | Promise<void>,
+    timeout: number,
+    env: Env,
+    cpl: string,
+    name: string,
 ) {
-  return manageableTimer(env, timeout, cpl, name, callback).setInterval();
+    return manageableTimer(env, timeout, cpl, name, callback).setInterval();
 }

@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { aggDuration, approxWorkAggDurationSettings, durationObjToEngStr, unaggDuration } from "./YTimeIntervals.js";
 import { Duration } from "luxon";
 
@@ -18,11 +17,11 @@ const makeDur123Str = () => "1y 2M 3w 4d 5h 6m 7s 8ms";
 describe(`YTimeIntervals`, function () {
     it(`dur123 -> ms`, function () {
         const ms = Duration.fromObject(makeDur123()).as("milliseconds");
-        expect(ms).to.deep.equal(makeDur123Ms());
+        expect(ms).toEqual(makeDur123Ms());
     });
 
     it(`dur123 -> str`, function () {
-        expect(durationObjToEngStr(makeDur123(), 0)).to.deep.equal(makeDur123Str());
+        expect(durationObjToEngStr(makeDur123(), 0)).toEqual(makeDur123Str());
     });
 
     it(`agg unagg`, function () {
@@ -34,6 +33,6 @@ describe(`YTimeIntervals`, function () {
         console.log("t2=", JSON.stringify(t2, undefined, "    "));
         const t3 = unaggDuration(t2, approxWorkAggDurationSettings);
         console.log("t3=", JSON.stringify(t3, undefined, "    "));
-        expect(t3).to.deep.equal(t1);
+        expect(t3).toEqual(t1);
     });
 });

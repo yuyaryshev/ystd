@@ -17,10 +17,11 @@ const stringBuilderHandler = {
             case "i":
             case "indent":
                 target.indent = value;
-                target.indent_str = "\n                                                                                                                                                                          ".substr(
-                    0,
-                    1 + target.indent * 4,
-                );
+                target.indent_str =
+                    "\n                                                                                                                                                                          ".substr(
+                        0,
+                        1 + target.indent * 4,
+                    );
                 return true;
         }
         target.s += target.indent_str + value;
@@ -28,10 +29,11 @@ const stringBuilderHandler = {
     },
     apply: (target: any, indent_diff: any) => {
         target.indent += indent_diff;
-        target.indent_str = "\n                                                                                                                                                                          ".substr(
-            0,
-            1 + target.indent * 4,
-        );
+        target.indent_str =
+            "\n                                                                                                                                                                          ".substr(
+                0,
+                1 + target.indent * 4,
+            );
     },
 };
 

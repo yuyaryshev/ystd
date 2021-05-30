@@ -1,5 +1,5 @@
 type any_1 = any;
-import { expect } from "chai";
+
 import { lexAll, Lexer, tt } from "./index.js";
 import { stringify as JsStringify } from "javascript-stringify";
 
@@ -11,10 +11,10 @@ describe("lexer", () => {
 
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(1);
-            expect(res[0].token_type).equal(tt.identifier);
-            expect(res[0].t).equal("select");
-            expect(res[0].len).equal(6);
+            expect(res.length).toEqual(1);
+            expect(res[0].token_type).toEqual(tt.identifier);
+            expect(res[0].t).toEqual("select");
+            expect(res[0].len).toEqual(6);
         });
         it("3", () => {
             const input = `'Иван Иваныч'`;
@@ -22,11 +22,11 @@ describe("lexer", () => {
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(1);
+            expect(res.length).toEqual(1);
 
-            expect(res[0].token_type).equal(tt.squoted);
-            expect(res[0].v).equal(`Иван Иваныч`);
-            expect(res[0].len).equal(input.length);
+            expect(res[0].token_type).toEqual(tt.squoted);
+            expect(res[0].v).toEqual(`Иван Иваныч`);
+            expect(res[0].len).toEqual(input.length);
         });
         it("3.2", () => {
             const input = `"Иван Иваныч"`;
@@ -34,40 +34,40 @@ describe("lexer", () => {
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(1);
+            expect(res.length).toEqual(1);
 
-            expect(res[0].token_type).equal(tt.dquoted);
-            expect(res[0].v).equal(`Иван Иваныч`);
-            expect(res[0].len).equal(input.length);
+            expect(res[0].token_type).toEqual(tt.dquoted);
+            expect(res[0].v).toEqual(`Иван Иваныч`);
+            expect(res[0].len).toEqual(input.length);
         });
         it("4", () => {
             const lex = new Lexer("2", "", undefined);
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(1);
-            expect(res[0].token_type).equal(tt.int);
-            expect(res[0].v).equal(2);
-            expect(res[0].len).equal(1);
+            expect(res.length).toEqual(1);
+            expect(res[0].token_type).toEqual(tt.int);
+            expect(res[0].v).toEqual(2);
+            expect(res[0].len).toEqual(1);
         });
         it("5", () => {
             const lex = new Lexer("(", "", undefined);
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(1);
-            expect(res[0].token_type).equal(tt.punctuator);
-            expect(res[0].t).equal("(");
-            expect(res[0].len).equal(1);
+            expect(res.length).toEqual(1);
+            expect(res[0].token_type).toEqual(tt.punctuator);
+            expect(res[0].t).toEqual("(");
+            expect(res[0].len).toEqual(1);
         });
         it("6", () => {
             const lex = new Lexer(`"English Symbols"`, "", undefined);
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(1);
-            expect(res[0].token_type).equal(tt.dquoted);
-            expect(res[0].v).equal("English Symbols");
+            expect(res.length).toEqual(1);
+            expect(res[0].token_type).toEqual(tt.dquoted);
+            expect(res[0].v).toEqual("English Symbols");
         });
 
         it("single line comment (skip)", () => {
@@ -75,12 +75,12 @@ describe("lexer", () => {
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(2);
-            expect(res[0].token_type).equal(tt.int);
-            expect(res[0].v).equal(123);
+            expect(res.length).toEqual(2);
+            expect(res[0].token_type).toEqual(tt.int);
+            expect(res[0].v).toEqual(123);
 
-            expect(res[1].token_type).equal(tt.int);
-            expect(res[1].v).equal(678);
+            expect(res[1].token_type).toEqual(tt.int);
+            expect(res[1].v).toEqual(678);
         });
 
         it("single line comment (no skip)", () => {
@@ -89,15 +89,15 @@ describe("lexer", () => {
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(3);
-            expect(res[0].token_type).equal(tt.int);
-            expect(res[0].v).equal(123);
+            expect(res.length).toEqual(3);
+            expect(res[0].token_type).toEqual(tt.int);
+            expect(res[0].v).toEqual(123);
 
-            expect(res[1].token_type).equal(tt.comment);
-            expect(res[1].v).equal(`// 345\n`);
+            expect(res[1].token_type).toEqual(tt.comment);
+            expect(res[1].v).toEqual(`// 345\n`);
 
-            expect(res[2].token_type).equal(tt.int);
-            expect(res[2].v).equal(678);
+            expect(res[2].token_type).toEqual(tt.int);
+            expect(res[2].v).toEqual(678);
         });
 
         it("multi line comment (skip)", () => {
@@ -105,12 +105,12 @@ describe("lexer", () => {
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(2);
-            expect(res[0].token_type).equal(tt.int);
-            expect(res[0].v).equal(123);
+            expect(res.length).toEqual(2);
+            expect(res[0].token_type).toEqual(tt.int);
+            expect(res[0].v).toEqual(123);
 
-            expect(res[1].token_type).equal(tt.int);
-            expect(res[1].v).equal(678);
+            expect(res[1].token_type).toEqual(tt.int);
+            expect(res[1].v).toEqual(678);
         });
 
         it("multi line comment (no skip)", () => {
@@ -119,15 +119,15 @@ describe("lexer", () => {
             const res: any_1 = [];
             let token;
             while ((token = lex.advance())) res.push(token);
-            expect(res.length).equal(3);
-            expect(res[0].token_type).equal(tt.int);
-            expect(res[0].v).equal(123);
+            expect(res.length).toEqual(3);
+            expect(res[0].token_type).toEqual(tt.int);
+            expect(res[0].v).toEqual(123);
 
-            expect(res[1].token_type).equal(tt.comment);
-            expect(res[1].v).equal(`/* 345\n7*/`);
+            expect(res[1].token_type).toEqual(tt.comment);
+            expect(res[1].v).toEqual(`/* 345\n7*/`);
 
-            expect(res[2].token_type).equal(tt.int);
-            expect(res[2].v).equal(678);
+            expect(res[2].token_type).toEqual(tt.int);
+            expect(res[2].v).toEqual(678);
         });
 
         it("CODE{ ... }CODE", () => {
@@ -138,21 +138,21 @@ describe("lexer", () => {
                 // @ts-ignore
                 delete t.lexer;
             }
-            expect(lexed.map((t) => t.v)).to.deep.equal([123, ` 345\n7 `, `abcd`]);
-            // expect(lexed).to.deep.equal(["TBD"]);
+            expect(lexed.map((t) => t.v)).toEqual([123, ` 345\n7 `, `abcd`]);
+            // expect(lexed).toEqual(["TBD"]);
             //
             // ////////////////////////////////
             //
             // while ((token = lex.advance())) res.push(token);
-            // expect(res.length).equal(3);
-            // expect(res[0].token_type).equal(tt.int);
-            // expect(res[0].v).equal(123);
+            // expect(res.length).toEqual(3);
+            // expect(res[0].token_type).toEqual(tt.int);
+            // expect(res[0].v).toEqual(123);
             //
-            // expect(res[1].token_type).equal(tt.code);
-            // expect(res[1].v).equal(` 345\n7 `);
+            // expect(res[1].token_type).toEqual(tt.code);
+            // expect(res[1].v).toEqual(` 345\n7 `);
             //
-            // expect(res[2].token_type).equal(tt.int);
-            // expect(res[2].v).equal(678);
+            // expect(res[2].token_type).toEqual(tt.int);
+            // expect(res[2].v).toEqual(678);
         });
     });
 
@@ -160,24 +160,24 @@ describe("lexer", () => {
         it("string", () => {
             const lex = new Lexer(`"string"`, "", undefined);
             const token = lex.read(tt.string);
-            expect((token as any_1).v).equal("string");
+            expect((token as any_1).v).toEqual("string");
         });
         it("number", () => {
             const lex = new Lexer(`112`, "", undefined);
             const token = lex.read(tt.number);
-            expect((token as any_1).v).equal(112);
+            expect((token as any_1).v).toEqual(112);
         });
         it("punctuator", () => {
             const lex = new Lexer(`++`, "", undefined);
             const token = lex.read(tt.punctuator);
-            expect((token as any_1).t).equal("++");
+            expect((token as any_1).t).toEqual("++");
         });
     });
 
     describe("split to array", () => {
         it("split", () => {
             const parts = new Lexer(`aaaa 1234 CD07 bce CD09 9999 CD11`, "", undefined).split(/[C][D][0-9][0-9]/);
-            expect(parts.map((p) => p.v)).to.deep.equal(["aaaa 1234 ", "CD07", " bce ", "CD09", " 9999 ", "CD11", ""]);
+            expect(parts.map((p) => p.v)).toEqual(["aaaa 1234 ", "CD07", " bce ", "CD09", " 9999 ", "CD11", ""]);
         });
     });
 
@@ -199,7 +199,7 @@ def CODE{
                 delete t.token_type;
             }
             console.log("Actual:\n", JsStringify(lexed));
-            expect(lexed).to.deep.equal([
+            expect(lexed).toEqual([
                 {
                     line: 1,
                     linep: 1,
@@ -266,8 +266,8 @@ def CODE{
                 // @ts-ignore
                 delete t.line;
             }
-            expect(lexed.map((t) => t.t)).to.deep.equal([`field`, `scalar`]);
-            expect(lexed).to.deep.equal([
+            expect(lexed.map((t) => t.t)).toEqual([`field`, `scalar`]);
+            expect(lexed).toEqual([
                 {
                     token_type: tt.identifier,
                     p: 0,
@@ -299,9 +299,9 @@ def CODE{
                 delete t.line;
             }
 
-            expect(lexed.map((t) => t.t)).to.deep.equal([`field`, `scalar`, `"91ff802a-7a7d-47cf-b4b2-6cad56ff9c18"`, `parentId`, `string`, `;`]);
+            expect(lexed.map((t) => t.t)).toEqual([`field`, `scalar`, `"91ff802a-7a7d-47cf-b4b2-6cad56ff9c18"`, `parentId`, `string`, `;`]);
 
-            expect(lexed).to.deep.equal([
+            expect(lexed).toEqual([
                 {
                     token_type: 4,
                     p: 0,

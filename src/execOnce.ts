@@ -12,7 +12,7 @@ export async function execOnce(symbolOrObject: Symbol | Object, delay: number, c
         let resolve: any;
         const execOnceRecord: ExecOnceRecord = {
             running: true,
-            promise: new Promise<void>(p_resolve => {
+            promise: new Promise<void>((p_resolve) => {
                 resolve = p_resolve;
             }),
         };
