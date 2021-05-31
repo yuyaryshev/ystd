@@ -1,6 +1,6 @@
 {
     "name": "ystd",
-    "version": "1.0.12",
+    "version": "1.0.14",
     "description": "",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -16,21 +16,26 @@
         "precompile_full": "npm run precompile && prettier src --write",
         "clean:cjs": "yb clean_cjs",
         "build:cjs": "npm run clean:cjs && babel src --config-file ./babel.cjs.config.cjs --out-dir lib/cjs --extensions \".ts,.tsx,.js,.jsx\" --source-maps && node cjs_require.test.cjs && echo cjs require is ok!",
+        "watch:cjs": "npm run clean:cjs && babel src --config-file ./babel.cjs.config.cjs --out-dir lib/cjs --extensions \".ts,.tsx,.js,.jsx\" --source-maps -w",
         "clean:esm": "yb clean_esm",
         "build:esm": "npm run clean:esm && babel src --config-file ./babel.esm.config.cjs --out-dir lib/esm --extensions \".ts,.tsx,.js,.jsx\" --source-maps && node mjs_import.test.mjs && echo mjs import is ok!",
+        "watch:esm": "npm run clean:esm && babel src --config-file ./babel.esm.config.cjs --out-dir lib/esm --extensions \".ts,.tsx,.js,.jsx\" --source-maps -w",
         "clean:types": "yb clean_types",
-        "build:types": "tsc -p tsconfig.json",
+        "build:types": "npm run clean:types && tsc -p tsconfig-declarations.json",
+        "watch:types": "npm run clean:types && tsc -p tsconfig-declarations.json -w",
         "clear:docs": "rm -rf docs/*",
         "build:docs": "api-extractor run --local && api-documenter markdown --input-folder temp --output-folder docs",
-        "clean:all": "yb clean_all && npm run clear:docs",
+        "clean:all": "rm -rf dist/* && yb clean_all && npm run clear:docs",
+        "clean:ts": "yb clean_ts",
+        "build:ts": "npm run clean:ts && tsc",
         "build": "npm run precompile_full && npm run clean:all && npm run build:esm && npm run build:cjs && npm run build:types && npm run build:docs && npm run lint && npm run test",
+        "test_module": "node cjs_require.test.cjs && node mjs_import.test.mjs && echo ok",
         "test": "npm run test_module && jest",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "tsc": "tsc",
+        "tsc": "npm run build:ts",
         "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
-        "republish": "npm run build && npx version-select && npx genversion --es6 --semi version.js && npm publish",
-        "test_module": "node cjs_require.test.cjs && node mjs_import.test.mjs && echo ok"
+        "republish": "npm run build && npx version-select && npx genversion --es6 --semi version.js && npm publish"
     },
     "author": "Yuri Yaryshev",
     "homepage": "https://github.com/yuyaryshev/ystd",
@@ -101,10 +106,13 @@
         "typescript": "^4.3.2"
     },
     "jest": {
+        "rootDir": "lib/cjs",
+        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$"
+    },
+    "jest_DISABLES": {
         "transform": {
             ".(ts|tsx)": "ts-jest"
         },
-        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
         "moduleFileExtensions": [
             "ts",
             "tsx",
