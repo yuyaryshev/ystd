@@ -1,122 +1,122 @@
 [
-    {
-        "cpl": 628,
-        "filePath": "src\\arrayExpectOne.ts",
-        "pos": 349
-    },
-    {
-        "cpl": 629,
-        "filePath": "src\\arrayExpectOne.ts",
-        "pos": 416
-    },
-    {
-        "cpl": 193,
-        "filePath": "src\\execOnce.ts",
-        "pos": 954
-    },
-    {
-        "cpl": 294,
-        "filePath": "src\\expectOne.ts",
-        "pos": 538
-    },
-    {
-        "cpl": 295,
-        "filePath": "src\\expectOne.ts",
-        "pos": 601
-    },
-    {
-        "cpl": 278,
-        "filePath": "src\\globalHandler.ts",
-        "pos": 290
-    },
-    {
-        "cpl": 154,
-        "filePath": "src\\IntIdManager.ts",
-        "pos": 3999
-    },
-    {
-        "cpl": 156,
-        "filePath": "src\\IntIdManager.ts",
-        "pos": 4260
-    },
-    {
-        "cpl": 131,
-        "filePath": "src\\lexer.ts",
-        "pos": 4035
-    },
-    {
-        "cpl": 478,
-        "filePath": "src\\lexer.ts",
-        "pos": 5741
-    },
-    {
-        "cpl": 479,
-        "filePath": "src\\lexer.ts",
-        "pos": 13509
-    },
-    {
-        "cpl": 153,
-        "filePath": "src\\lexer.ts",
-        "pos": 14043
-    },
-    {
-        "cpl": 155,
-        "filePath": "src\\lexer.ts",
-        "pos": 21122
-    },
-    {
-        "cpl": 171,
-        "filePath": "src\\lexer.ts",
-        "pos": 21296
-    },
-    {
-        "cpl": 172,
-        "filePath": "src\\lexer.ts",
-        "pos": 22067
-    },
-    {
-        "cpl": 173,
-        "filePath": "src\\lexer.ts",
-        "pos": 23515
-    },
-    {
-        "cpl": 157,
-        "filePath": "src\\lexer.ts",
-        "pos": 24680
-    },
-    {
-        "cpl": 158,
-        "filePath": "src\\lexer.ts",
-        "pos": 27785
-    },
-    {
-        "cpl": 159,
-        "filePath": "src\\lexer.ts",
-        "pos": 32600
-    },
-    {
-        "cpl": 285,
-        "filePath": "src\\linearDataInterpolation.ts",
-        "pos": 1254
-    },
-    {
-        "cpl": 286,
-        "filePath": "src\\linearDataInterpolation.ts",
-        "pos": 1322
-    },
-    {
-        "cpl": 1008,
-        "filePath": "src\\manageableTimer.ts",
-        "pos": 3809
-    },
-    {
-        "cpl": 472,
-        "filePath": "src\\tokenWriter.ts",
-        "pos": 4446
-    },
-    {
-        "cpl": 184,
-        "filePath": "src\\YTimeIntervals.ts",
-        "pos": 8157
-    }
+ {
+  "cpl": 628,
+  "filePath": "src\\arrayExpectOne.ts",
+  "pos": 349
+ },
+ {
+  "cpl": 629,
+  "filePath": "src\\arrayExpectOne.ts",
+  "pos": 416
+ },
+ {
+  "cpl": 193,
+  "filePath": "src\\execOnce.ts",
+  "pos": 954
+ },
+ {
+  "cpl": 294,
+  "filePath": "src\\expectOne.ts",
+  "pos": 538
+ },
+ {
+  "cpl": 295,
+  "filePath": "src\\expectOne.ts",
+  "pos": 601
+ },
+ {
+  "cpl": 278,
+  "filePath": "src\\globalHandler.ts",
+  "pos": 290
+ },
+ {
+  "cpl": 154,
+  "filePath": "src\\IntIdManager.ts",
+  "pos": 3999
+ },
+ {
+  "cpl": 156,
+  "filePath": "src\\IntIdManager.ts",
+  "pos": 4260
+ },
+ {
+  "cpl": 131,
+  "filePath": "src\\lexer.ts",
+  "pos": 4035
+ },
+ {
+  "cpl": 478,
+  "filePath": "src\\lexer.ts",
+  "pos": 5741
+ },
+ {
+  "cpl": 479,
+  "filePath": "src\\lexer.ts",
+  "pos": 13509
+ },
+ {
+  "cpl": 153,
+  "filePath": "src\\lexer.ts",
+  "pos": 14043
+ },
+ {
+  "cpl": 155,
+  "filePath": "src\\lexer.ts",
+  "pos": 21122
+ },
+ {
+  "cpl": 171,
+  "filePath": "src\\lexer.ts",
+  "pos": 21296
+ },
+ {
+  "cpl": 172,
+  "filePath": "src\\lexer.ts",
+  "pos": 22067
+ },
+ {
+  "cpl": 173,
+  "filePath": "src\\lexer.ts",
+  "pos": 23515
+ },
+ {
+  "cpl": 157,
+  "filePath": "src\\lexer.ts",
+  "pos": 24680
+ },
+ {
+  "cpl": 158,
+  "filePath": "src\\lexer.ts",
+  "pos": 27785
+ },
+ {
+  "cpl": 159,
+  "filePath": "src\\lexer.ts",
+  "pos": 32600
+ },
+ {
+  "cpl": 285,
+  "filePath": "src\\linearDataInterpolation.ts",
+  "pos": 1254
+ },
+ {
+  "cpl": 286,
+  "filePath": "src\\linearDataInterpolation.ts",
+  "pos": 1322
+ },
+ {
+  "cpl": 1008,
+  "filePath": "src\\manageableTimer.ts",
+  "pos": 3809
+ },
+ {
+  "cpl": 472,
+  "filePath": "src\\tokenWriter.ts",
+  "pos": 4446
+ },
+ {
+  "cpl": 184,
+  "filePath": "src\\YTimeIntervals.ts",
+  "pos": 8157
+ }
 ]
