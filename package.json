@@ -55,7 +55,8 @@
         "clean": "yb clean_all && npm run clear:docs",
         "watch:test:cjs": "npm run test_module && npm run build:cjs && jest --config=jest.config-cjs.cjs --passWithNoTests -w",
         "test:cjs": "npm run test_module && npm run build:cjs && jest --config=jest.config-cjs.cjs --passWithNoTests",
-        "test:ts": "npm run test_module && jest --config=jest.config-ts.cjs --passWithNoTests"
+        "test:ts": "npm run test_module && jest --config=jest.config-ts.cjs --passWithNoTests",
+        "start": "node lib/cjs/start.js"
     },
     "devDependencies": {
         "@babel/cli": "7.14.3",
