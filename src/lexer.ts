@@ -148,7 +148,7 @@ export type TokenValueParser<T> = (s: string) => T;
 
 export class Lexer<CompilationContextT = unknown> {
     context: CompilationContextT;
-    filePath: string;
+    sourcePath: string;
     s: string;
     line: number; // line, 1 based index
     linestartp: number; // position in line, 1 based index
@@ -160,7 +160,7 @@ export class Lexer<CompilationContextT = unknown> {
     breakpoint?: number | undefined;
     onBreakpoint: BreakpointCallback | undefined;
 
-    constructor(s: string, filePath: string, context: CompilationContextT) {
+    constructor(s: string, sourcePath: string, context: CompilationContextT) {
         // TODO вообще мне лексер нужен расширяемый. Ведь мне трубуется читать различные лексемы, а не только комментарии
         // Логично было бы переделать лексер: сделать его просто набором функций, которому передается структура с полями в текущем Lexer'е
         // Одно из полей должно быть - errorFunс
@@ -168,7 +168,7 @@ export class Lexer<CompilationContextT = unknown> {
         // Важно еще и то, что expect вероятно будет совместим с parser'ом, а не только с lexer'ом
 
         this.context = context;
-        this.filePath = filePath;
+        this.sourcePath = sourcePath;
         this.s = s;
         this.line = 1;
         this.p = 0;
@@ -1010,6 +1010,6 @@ export class Lexer<CompilationContextT = unknown> {
 /**
  *
  */
-export function lexAll<CompilationContextT = unknown>(s: string, filePath: string, context: CompilationContextT): IToken[] {
-    return new Lexer<CompilationContextT>(s, filePath, context).read_all();
+export function lexAll<CompilationContextT = unknown>(s: string, sourcePath: string, context: CompilationContextT): IToken[] {
+    return new Lexer<CompilationContextT>(s, sourcePath, context).read_all();
 }

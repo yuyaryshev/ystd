@@ -39,6 +39,7 @@ specifiers:
   jest-ts-webcompat-resolver: ^1.0.0
   json5: ^2.2.0
   luxon: ^1.27.0
+  modify-filepath: ^0.0.2
   moment: ^2.29.1
   prettier: ^2.3.1
   pretty-quick: ^3.1.0
@@ -93,6 +94,7 @@ devDependencies:
   jest: 27.0.4
   jest-ts-webcompat-resolver: 1.0.0
   json5: 2.2.0
+  modify-filepath: 0.0.2
   prettier: 2.3.1
   pretty-quick: 3.1.0_prettier@2.3.1
   sinon: 11.1.1
@@ -4081,6 +4083,10 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: true
+
+  /modify-filepath/0.0.2:
+    resolution: {integrity: sha512-9zp+A+mEELQki+bmidps5igln8SbXF8i1z94VrZa5pj35GURPJMv6cmEFne1C2C+Z9N/oOjh9Z3ImT7acLsNzQ==}
     dev: true
 
   /moment/2.29.1:
