@@ -23,19 +23,20 @@ export interface SourceFullPos {
     p: number;
 }
 
-export function posToLinep(s: string, p0: number): SourcePos {
-    let p = p0;
+export function posToLinep(s: string, p: number): SourcePos {
+    let linep = p + 1;
     const lines = s.split("\n");
     for (let line = 0; line < lines.length; line++) {
         const ll = lines[line].length;
-        if (p > ll) p -= ll;
-        else return { line: line + 1, linep: p + 1, p };
+        if (linep > ll + 1) linep -= ll + 1;
+        else return { line: line + 1, linep, p };
     }
     return { line: lines.length, linep: 1, p };
 }
 
 export function normalizeSourcePos(anySourcePos: AnySourcePos | undefined): SourceFullPos {
-    const sourcePos: AnySourcePos = (anySourcePos || ({} as any as AnySourcePos)) as any;
+    const sourcePos: AnySourcePos = { ...((anySourcePos || ({} as any as AnySourcePos)) as any) };
+    if (!sourcePos?.source && (sourcePos as any)?.s) sourcePos.source = (sourcePos as any).s;
     if (sourcePos?.p && sourcePos?.source && (!sourcePos?.line || !sourcePos?.linep))
         Object.assign(sourcePos, posToLinep(sourcePos?.source, sourcePos.p));
     if (!sourcePos.sourcePath) sourcePos.sourcePath = "UNKNOWN_PATH";
@@ -54,7 +55,7 @@ export function posAdd(firstPos: AnySourcePos, len: number): SourcePos {
 
 export function linePosStr(anySourcePos: AnySourcePos | undefined) {
     const sp = normalizeSourcePos(anySourcePos);
-    return `at source file (${sp.sourcePath}:${sp?.line || "?"}:${sp?.linep || "?"}) p = ${sp.p}`;
+    return `\n\tat source file p = ${sp.p} (${sp.sourcePath}:${sp?.line || "?"}:${sp?.linep || "?"})`;
 }
 
 /**
@@ -111,23 +112,23 @@ export class CompilationError<CompilationContextT> extends Error {
     token?: ITokenLike | undefined;
     shortMessage: string;
 
-    constructor(severity: Severity, cpl: string, where: Lexer<CompilationContextT> | ITokenLike | undefined, shortMessage: string) {
-        let lexer: Lexer<CompilationContextT> | ITokenLike | undefined = isLexer(where) ? where : undefined;
+    constructor(severity: Severity, cpl: string, where: AnySourcePos | undefined, shortMessage: string) {
+        let lexer: Lexer<CompilationContextT> | AnySourcePos | ITokenLike | undefined = isLexer(where) ? where : undefined;
         const token: ITokenLike | undefined = !lexer && where && (where as any).line ? (where as any) : undefined;
         if (token) lexer = token.lexer as Lexer<CompilationContextT> | undefined;
 
         let positionStr: string = "";
-        if (token && token.lexer) positionStr = `\n\t${tokenPosStr(token)}`;
-        //`\n\tat source file (${token.lexer!.sourcePath}:${token.line}:${token.linep}) p = ${token.p}`;
-        else if (lexer && lexer.line) positionStr = `\n\t${lexerPosStr(lexer)}`; //
+        if (token) positionStr = tokenPosStr(token);
+        else if (lexer) positionStr = lexerPosStr(lexer);
+        else positionStr = linePosStr(where);
 
         super(`${severityLongStr(severity)} ${cpl} ${shortMessage}${positionStr}`);
         this.compilationContext = lexer
-            ? (lexer.context as CompilationContextT)
+            ? ((lexer as any)?.context as CompilationContextT)
             : token && token.lexer
             ? (token.lexer.context as CompilationContextT)
             : undefined;
-        this.lexer = lexer;
+        this.lexer = lexer as any;
         this.severity = severity;
         this.cpl = cpl;
         this.token = token;
