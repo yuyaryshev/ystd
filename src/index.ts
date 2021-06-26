@@ -1,4 +1,4 @@
-// @INPRINT_START {exclude:[]}
+// @INPRINT_START {exclude:["projmeta"]}
 export * from "./AnyObject.js";
 export * from "./AvgCounter.js";
 export * from "./CancelFunction.js";
@@ -70,7 +70,6 @@ export * from "./nonEmptyStr.js";
 export * from "./noop.js";
 export * from "./objectIterator.js";
 export * from "./pad.js";
-export * from "./projmeta.js";
 export * from "./promiseFuncs.js";
 export * from "./recursiveDeleteKey.js";
 export * from "./removeDublicates.js";
