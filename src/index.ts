@@ -49,8 +49,6 @@ export * from "./filterObject.js";
 export * from "./firstChar.js";
 export * from "./fjmap.js";
 export * from "./fmap.js";
-export * from "./formatSql.js";
-export * from "./formatTypescript.js";
 export * from "./getClassName.js";
 export * from "./getSqlWhereOperator.js";
 export * from "./globalHandler.js";
