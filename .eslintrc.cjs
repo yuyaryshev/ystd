@@ -57,6 +57,7 @@ module.exports = {
         "sonarjs/no-collapsible-if": 0,
         "sonarjs/prefer-immediate-return": 0,
         "sonarjs/no-duplicate-string": 0,
+        "sonarjs/no-nested-switch": 0,
         "no-unused-labels": nonImportantError,
         "no-debugger": keepDebug ? 0 : nonImportantError,
         "@typescript-eslint/no-non-null-asserted-optional-chain": 0,

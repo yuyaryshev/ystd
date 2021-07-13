@@ -42,6 +42,7 @@ export * from "./equal.js";
 export * from "./escapeRegex.js";
 export * from "./exceptFields.js";
 export * from "./execOnce.js";
+export * from "./expectDefined.js";
 export * from "./expectOne.js";
 export * from "./expectThrow.js";
 export * from "./extractFields.js";
