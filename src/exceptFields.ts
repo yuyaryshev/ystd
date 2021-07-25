@@ -9,6 +9,12 @@ export const splitIfString = (v: any, sep: any = " ") => {
     return typeof v === "string" ? v.split(sep) : v;
 };
 
+function mapToObject(m: Map<any, any>): any {
+    const r: any = {};
+    for (const [k, v] of m) r[k] = v;
+    return r;
+}
+
 export const objectFilter = (v: any, filterSettings?: FilterSettings): any => {
     const keepFunctions = filterSettings ? filterSettings.keepFunctions : undefined;
     const excluded = filterSettings ? splitIfString(filterSettings.excluded) : undefined;
@@ -16,6 +22,9 @@ export const objectFilter = (v: any, filterSettings?: FilterSettings): any => {
     let reduce = filterSettings ? splitIfString(filterSettings.reduce) : undefined;
 
     if (reduce) reduce = reduce.map((a: any) => splitIfString(a, "."));
+
+    if (v instanceof Map) return objectFilter(mapToObject(v), filterSettings);
+    if (v instanceof Set) return objectFilter([...v], filterSettings);
 
     if (typeof v !== "object" || !v) return v;
 
