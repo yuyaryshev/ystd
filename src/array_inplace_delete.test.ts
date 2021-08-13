@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { array_inplace_defrag_delete, array_inplace_filter } from "./array_inplace_delete.js";
 
-describe.only(`array_inplace_delete`, function () {
+describe(`array_inplace_delete`, function () {
     it(`array_strict_delete - 1`, function () {
         expect(array_inplace_filter([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], (x) => !(3 <= x && x <= 5)).join("\n")).to.deep.equal(
             [0, 1, 2, 6, 7, 8, 9].join("\n"),
