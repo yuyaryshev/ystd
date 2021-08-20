@@ -1,12 +1,25 @@
-export function array_inplace_filter<T>(a: T[], cond: (t: T) => boolean) {
+import { alwaysTrue } from "./alwaysTrue.js";
+import { stopCursorSymbol, StopCursorSymbol } from "./StopCursorSymbol.js";
+
+export function array_inplace_filter<T>(a: T[], cond: (t: T, index: number) => boolean | StopCursorSymbol): T[] {
     let n = a.length;
     let i = 0;
-    while (i < n && cond(a[i])) i++;
+    while (i < n) {
+        const r = cond(a[i], i);
+        if (r) {
+            i++;
+            if (r === stopCursorSymbol) return a;
+        } else {
+            break;
+        }
+    }
 
     if (i < n) {
         let j = i + 1;
         for (; j < n; j++) {
-            if (cond(a[j])) {
+            const r = cond(a[j], j);
+            if (r === stopCursorSymbol) cond = alwaysTrue;
+            if (r) {
                 a[i] = a[j];
                 i++;
             }

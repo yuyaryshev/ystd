@@ -33,6 +33,14 @@ export class ManualLRUCache<T> {
         }
     }
 
+    shift(): T | undefined {
+        return this.a.shift();
+    }
+
+    empty() {
+        return !this.a.length;
+    }
+
     clear() {
         this.a.length = 0;
     }

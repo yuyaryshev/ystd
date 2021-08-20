@@ -58,6 +58,8 @@ module.exports = {
         "sonarjs/prefer-immediate-return": 0,
         "sonarjs/no-duplicate-string": 0,
         "sonarjs/no-nested-switch": 0,
+        "sonarjs/no-nested-template-literals": 0,
+        "sonarjs/no-gratuitous-expressions": 0,
         "no-unused-labels": nonImportantError,
         "no-debugger": keepDebug ? 0 : nonImportantError,
         "@typescript-eslint/no-non-null-asserted-optional-chain": 0,
