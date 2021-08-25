@@ -80,6 +80,7 @@ export * from "./removeEmpty.js";
 export * from "./removePrefix.js";
 export * from "./removeSecurityData.js";
 export * from "./removeSuffix.js";
+export * from "./repeatStr.js";
 export * from "./returnSame.js";
 export * from "./setIntervalEx.js";
 export * from "./single.js";

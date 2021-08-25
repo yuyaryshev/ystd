@@ -1,5 +1,3 @@
-/* eslint sonarjs/no-identical-functions: 0 */
-
 export abstract class YDictGeneric<K, V> {
     m: Map<K, V>;
     abstract getKey(v: V): K;
