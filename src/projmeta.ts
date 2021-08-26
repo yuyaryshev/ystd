@@ -1,2 +1,2 @@
-export const version = '1.5.12';
-export const packageName = 'ystd';
+export const version = "1.5.12";
+export const packageName = "ystd";
