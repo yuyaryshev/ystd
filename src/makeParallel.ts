@@ -8,7 +8,7 @@ export const makeParallel = () => {
                 (async () => {
                     try {
                         await promise_or_promises;
-                    } catch (e) {
+                    } catch (e: any) {
                         errors.push(e);
                     }
                 })(),

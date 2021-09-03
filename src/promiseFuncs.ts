@@ -21,9 +21,10 @@ export function makePromise<T>(): SavedPromise<T> {
 
 export type SavedPromiseArray<T> = Array<SavedPromise<T>>;
 
-export const maybePromiseApply = <S, R>(v: MaybePromise<S>, f: (v: S) => R): MaybePromise<R> => {
+export const maybePromiseApply = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R> | R): MaybePromise<R> => {
     return v instanceof Promise ? (async () => f(await v))() : f(v);
 };
+export const maybeAwait = maybePromiseApply;
 
 export interface ReversePromise {
     cpl?: string;
@@ -96,3 +97,7 @@ export const reversePromiseRejectItem = (reversePromise: ReversePromise | undefi
     if (reversePromise) reversePromise.rejectItem(e);
     else throw e;
 };
+
+export function unnestMaybePromise<T>(v: MaybePromise<MaybePromise<T>>): MaybePromise<T> {
+    return v as any;
+}

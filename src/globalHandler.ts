@@ -4,7 +4,7 @@ export const globalHandler = (callback: (args?: any) => void | Promise<void>) =>
     async function (args?: any) {
         try {
             await callback(args);
-        } catch (e) {
+        } catch (e: any) {
             yconsole.fatal(`CODE00000278`, e);
         }
     };

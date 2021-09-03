@@ -9,7 +9,7 @@ export function dbgMonitorValue(callback: DbgMonitorValueCallback, interval: num
         let newV;
         try {
             newV = callback();
-        } catch (e) {
+        } catch (e: any) {
             newV = `ERROR: ${e.message}`;
         }
 
