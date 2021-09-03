@@ -21,8 +21,12 @@ export function makePromise<T>(): SavedPromise<T> {
 
 export type SavedPromiseArray<T> = Array<SavedPromise<T>>;
 
+export function isPromise<T>(v: MaybePromise<T>): v is Promise<T> {
+    return typeof v === "object" && (v as any).then;
+}
+
 export const maybePromiseApply = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R> | R): MaybePromise<R> => {
-    return v instanceof Promise ? (async () => f(await v))() : f(v);
+    return typeof v === "object" && (v as any).then ? (async () => f(await v))() : f(v as any);
 };
 export const maybeAwait = maybePromiseApply;
 
