@@ -1,4 +1,8 @@
-export const makeParallel = () => {
+export interface MakeParallelInput {
+    ignoreErrors?: boolean;
+}
+export const makeParallel = (input?: MakeParallelInput) => {
+    const { ignoreErrors } = input || {};
     const errors: Error[] = [];
     const promises: Promise<any>[] = [];
     const add = (promise_or_promises: Promise<any> | Promise<any>[]) => {
@@ -9,7 +13,9 @@ export const makeParallel = () => {
                     try {
                         await promise_or_promises;
                     } catch (e: any) {
-                        errors.push(e);
+                        if (!ignoreErrors) {
+                            errors.push(e);
+                        }
                     }
                 })(),
             );
