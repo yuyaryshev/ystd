@@ -1,6 +1,6 @@
 {
     "name": "ystd",
-    "version": "1.5.17",
+    "version": "1.6.1",
     "description": "",
     "author": "Yuri Yaryshev",
     "main": "lib/cjs/index.js",
@@ -19,7 +19,7 @@
     },
     "license": "Unlicense",
     "publishConfig": {
-        "registry": "http://registry.npmjs.org"
+        "registry": "https://registry.npmjs.org"
     },
     "jest": {
         "rootDir": "src",
