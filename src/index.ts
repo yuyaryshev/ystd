@@ -5,6 +5,7 @@ export * from "./CancelFunction.js";
 export * from "./CplType.js";
 export * from "./IntIdManager.js";
 export * from "./Jsonable.js";
+export * from "./KeyValueEvent.js";
 export * from "./ManualLRUCache.js";
 export * from "./ObjectWithId.js";
 export * from "./Omit.js";
