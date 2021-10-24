@@ -63,6 +63,7 @@ dependencies:
   app-root-path: 3.0.0
   clone-deep: 4.0.1
   fast-deep-equal: 3.1.3
+  javascript-stringify: 2.1.0
   luxon: 1.28.0
   moment: 2.29.1
   sql-prettier: 0.1.12
@@ -101,7 +102,6 @@ devDependencies:
   eslint-plugin-react-hooks: 4.2.0_eslint@8.0.1
   eslint-plugin-sonarjs: 0.10.0_eslint@8.0.1
   eslint-plugin-tsdoc: 0.2.14
-  javascript-stringify: 2.1.0
   jest: 27.3.1
   jest-ts-webcompat-resolver: 1.0.0
   json5: 2.2.0
@@ -3276,7 +3276,7 @@ packages:
 
   /javascript-stringify/2.1.0:
     resolution: {integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==}
-    dev: true
+    dev: false
 
   /jest-changed-files/27.3.0:
     resolution: {integrity: sha512-9DJs9garMHv4RhylUMZgbdCJ3+jHSkpL9aaVKp13xtXAD80qLTLrqcDZL1PHA9dYA0bCI86Nv2BhkLpLhrBcPg==}
