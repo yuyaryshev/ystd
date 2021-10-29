@@ -1,6 +1,6 @@
 {
     "name": "ystd",
-    "version": "1.6.8",
+    "version": "1.7.1",
     "description": "",
     "isApp": false,
     "author": "Yuri Yaryshev",
@@ -49,7 +49,7 @@
         "test": "npm run test_module &&  npm run test:cjs_mocha",
         "tsc": "npm run build:ts",
         "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
-        "republish": "npm run build && npx version-select && yb genprojmeta && yb dir_hash && npm publish && yb commit-tag-push",
+        "republish": "yb check-snapshot && npm run build && npx version-select && yb genprojmeta && yb dir_hash && npm publish && yb commit-tag-push",
         "deps": "echo Finding loops in .js requires... & del deps.png & madge dist -c -i deps.png && deps.png",
         "deps_all": "echo Generating full .js requires tree... & del deps.png & madge dist -i deps.png && deps.png",
         "deps_orphans": "echo Finding orphans .js requires... & del deps.png & madge dist --orphans -i deps.png && deps.png",
