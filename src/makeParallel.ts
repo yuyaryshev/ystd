@@ -30,7 +30,7 @@ export const makeParallel = (input?: MakeParallelInput) => {
     };
     const wait = (): MaybePromise<void> => {
         if (promises.length) {
-            (async () => {
+            return (async () => {
                 await Promise.all(promises);
                 if (errors.length) throw errors[0];
             })();
