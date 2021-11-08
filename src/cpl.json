@@ -40,6 +40,21 @@
         "pos": 4260
     },
     {
+        "cpl": 18,
+        "filePath": "src\\JsRef.ts",
+        "pos": 513
+    },
+    {
+        "cpl": 19,
+        "filePath": "src\\JsRef.ts",
+        "pos": 825
+    },
+    {
+        "cpl": 20,
+        "filePath": "src\\JsRef.ts",
+        "pos": 1058
+    },
+    {
         "cpl": 131,
         "filePath": "src\\lexer.ts",
         "pos": 4035
