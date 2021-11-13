@@ -34,7 +34,28 @@ export function getMaybePromiseDebug() {
     return maybePromiseDebug;
 }
 
-export const maybePromiseApply = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R> | R): MaybePromise<R> => {
+/**
+ * Usage:
+ * return maybeAwait(maybePromiseValue, callbackWhenItsResolved);     // return is MADANTORY here!
+ *
+ * Whats the difference between this and just await? The difference is that maybeAwait WILL resolve syncroniously
+ * if possible, async/await - will never resolve syncroniously. Async function will always return a Promise.
+ *
+ * Example:
+ * OLD CODE: const foo = async ()=> { const data = await getCachedDataOrCallAPI(); console.log(data); return data; };
+ * foo will always return Promise, even if data was cached and is available
+ *
+ * NEW CODE: const baz = ()=> { return maybeAwait(getCachedDataOrCallAPI(), data => { console.log(data); return data; }); };
+ * The first return is MADANTORY here!
+ * baz will return data (not Promise) if data was cached. And will return Promise if data wasn't cached.
+ *
+ * So new code can be called from React:
+ * <div>{baz()?.field1}</div>
+ *
+ * And also the same 'baz' can be called with await if needed:
+ * (await baz()).field1
+ */
+export const maybeAwait = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R> | R): MaybePromise<R> => {
     // =================== maybePromiseDebug START ===================
     // if (maybePromiseDebug) {
     //     const v_isPromise = typeof v === "object" && (v as any).then ? 1 : 0;
@@ -47,7 +68,7 @@ export const maybePromiseApply = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePr
     // =================== maybePromiseDebug END =====================
     return typeof v === "object" && (v as any).then ? (async () => f(await v))() : f(v as any);
 };
-export const maybeAwait = maybePromiseApply;
+export const maybePromiseApply = maybeAwait;
 
 export const maybeAwaitSequentalMap = <T, R>(array: T[], f: (v: T) => MaybePromise<R>): MaybePromise<R[]> => {
     let arrayResult = [];
