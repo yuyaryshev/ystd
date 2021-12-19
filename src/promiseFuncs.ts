@@ -55,7 +55,7 @@ export function getMaybePromiseDebug() {
  * And also the same 'baz' can be called with await if needed:
  * (await baz()).field1
  */
-export const maybeAwait = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R> | R): MaybePromise<R> => {
+export const maybeAwait = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R>): MaybePromise<R> => {
     // =================== maybePromiseDebug START ===================
     // if (maybePromiseDebug) {
     //     const v_isPromise = typeof v === "object" && (v as any).then ? 1 : 0;
