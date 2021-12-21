@@ -109,7 +109,7 @@ export const maybeAwaitSequentalMap = <T, R>(array: T[], f: (v: T) => MaybePromi
     return arrayResult;
 };
 
-export const maybeAwaitReduce = <T, A>(
+export const maybeAwaitReduce = <A>(
     initalAccumulator: MaybePromise<A>,
     f: (accumulator: A, index: number) => MaybePromise<[A, boolean | undefined]>,
 ): MaybePromise<A> => {
@@ -154,6 +154,22 @@ export const maybeAwaitReduce = <T, A>(
         accumulator = r[0];
         if (!r[1]) {
             return accumulator;
+        }
+    }
+};
+
+export const maybeAwaitWhile = (f: (index: number) => MaybePromise<boolean | undefined>): MaybePromise<void> => {
+    let index = 0;
+    while (true) {
+        const r = f(index++);
+        if (isPromise(r)) {
+            return (async () => {
+                await r;
+                while (await f(index++)) {}
+            })();
+        }
+        if (!r) {
+            return;
         }
     }
 };
