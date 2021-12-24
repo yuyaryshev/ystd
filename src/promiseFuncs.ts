@@ -60,15 +60,55 @@ export const maybeAwait = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R
     // if (maybePromiseDebug) {
     //     const v_isPromise = typeof v === "object" && (v as any).then ? 1 : 0;
     //     if (v_isPromise) {
-    //         console.trace(`maybePromiseDebug CODE00000473 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.trace(`maybePromiseDebug CODE00000280 - maybePromiseApply isPromise=${v_isPromise}`);
     //     } else {
-    //         console.log(`maybePromiseDebug CODE00000476 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.log(`maybePromiseDebug CODE00000281 - maybePromiseApply isPromise=${v_isPromise}`);
     //     }
     // }
     // =================== maybePromiseDebug END =====================
     return typeof v === "object" && (v as any).then ? (async () => f(await v))() : f(v as any);
 };
 export const maybePromiseApply = maybeAwait;
+
+export type MaybePromiseFunc<T = unknown> = () => MaybePromise<T>;
+export const maybeAwaitAll = <R, T = unknown>(
+    maybePromises: (MaybePromise<T> | MaybePromiseFunc<T>)[],
+    f: (resolvedPromises: T[]) => MaybePromise<R>,
+): MaybePromise<R> => {
+    // =================== maybePromiseDebug START ===================
+    // if (maybePromiseDebug) {
+    //     const v_isPromise = typeof v === "object" && (v as any).then ? 1 : 0;
+    //     if (v_isPromise) {
+    //         console.trace(`maybePromiseDebug CODE00000282 - maybePromiseApply isPromise=${v_isPromise}`);
+    //     } else {
+    //         console.log(`maybePromiseDebug CODE00000283 - maybePromiseApply isPromise=${v_isPromise}`);
+    //     }
+    // }
+    // =================== maybePromiseDebug END =====================
+    const resolvedPromises: T[] = [];
+    let i = 0;
+    for (let i = 0; i < maybePromises.length; i++) {
+        if (typeof maybePromises[i] === "function") {
+            maybePromises[i] = (maybePromises[i] as MaybePromiseFunc<T>)();
+        }
+        if (isPromise(maybePromises[i])) {
+            return (async () => {
+                resolvedPromises.push(await (maybePromises[i] as MaybePromise<T>));
+                i++;
+                for (; i < maybePromises.length; i++) {
+                    if (typeof maybePromises[i] === "function") {
+                        maybePromises[i] = (maybePromises[i] as MaybePromiseFunc<T>)();
+                    }
+                    resolvedPromises.push(await (maybePromises[i] as MaybePromise<T>));
+                }
+                return await f(resolvedPromises);
+            })();
+        } else {
+            resolvedPromises.push(maybePromises[i] as T);
+        }
+    }
+    return f(resolvedPromises);
+};
 
 export const maybeAwaitSequentalMap = <T, R>(array: T[], f: (v: T) => MaybePromise<R>): MaybePromise<R[]> => {
     let arrayResult = [];
