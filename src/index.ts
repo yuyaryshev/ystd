@@ -77,6 +77,7 @@ export * from "./nonEmptyStr.js";
 export * from "./noop.js";
 export * from "./objectIterator.js";
 export * from "./pad.js";
+export * from "./plainWithNoLoops.js";
 export * from "./promiseFuncs.js";
 export * from "./recursiveDeleteKey.js";
 export * from "./removeDublicates.js";

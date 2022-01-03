@@ -125,6 +125,11 @@
         "pos": 3809
     },
     {
+        "cpl": 284,
+        "filePath": "src\\plainWithNoLoops.ts",
+        "pos": 1780
+    },
+    {
         "cpl": 280,
         "filePath": "src\\promiseFuncs.ts",
         "pos": 2350
