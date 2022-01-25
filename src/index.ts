@@ -97,6 +97,7 @@ export * from "./splitToLines.js";
 export * from "./strNvl.js";
 export * from "./strPosToRC.js";
 export * from "./strReplace.js";
+export * from "./strReplaceAll.js";
 export * from "./timeUnits.js";
 export * from "./tokenWriter.js";
 export * from "./trimAll.js";

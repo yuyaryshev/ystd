@@ -1,2 +1,2 @@
-export const version = '1.10.3';
+export const version = '1.11.0';
 export const packageName = 'ystd';
