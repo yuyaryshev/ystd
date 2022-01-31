@@ -1,6 +1,7 @@
 // @INPRINT_START {exclude:["projmeta"]}
 export * from "./AnyObject.js";
 export * from "./AvgCounter.js";
+export * from "./BaseTestOpts.js";
 export * from "./CancelFunction.js";
 export * from "./CplType.js";
 export * from "./IntIdManager.js";

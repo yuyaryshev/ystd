@@ -10,6 +10,11 @@
         "pos": 416
     },
     {
+        "cpl": 473,
+        "filePath": "src\\BaseTestOpts.ts",
+        "pos": 131
+    },
+    {
         "cpl": 193,
         "filePath": "src\\execOnce.ts",
         "pos": 954
