@@ -4,13 +4,11 @@ export interface MakeParallelInput {
     ignoreErrors?: boolean;
 }
 
-export type ParallelAddInputItem = Promise<any> | void | undefined;
-
 export const makeParallel = (input?: MakeParallelInput) => {
     const { ignoreErrors } = input || {};
     const errors: Error[] = [];
     const promises: Promise<any>[] = [];
-    const add = (promise_or_promises: ParallelAddInputItem | ParallelAddInputItem[]) => {
+    const add = (promise_or_promises: any) => {
         if (Array.isArray(promise_or_promises)) for (const p of promise_or_promises) add(p);
         else {
             if (promise_or_promises !== undefined && promise_or_promises.then) {
