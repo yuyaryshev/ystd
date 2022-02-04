@@ -289,3 +289,9 @@ export const reversePromiseRejectItem = (reversePromise: ReversePromise | undefi
 export function unnestMaybePromise<T>(v: MaybePromise<MaybePromise<T>>): MaybePromise<T> {
     return v as any;
 }
+
+/**
+ * If 'MaybePromise' is a Promise returns undefined. Returns value otherwise.
+ * @param v - MaybePromise<T>
+ */
+export const maybeValue = <T>(v: MaybePromise<T>): T | undefined => (isPromise(v) ? undefined : v);
