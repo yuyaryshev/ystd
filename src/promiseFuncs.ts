@@ -295,3 +295,13 @@ export function unnestMaybePromise<T>(v: MaybePromise<MaybePromise<T>>): MaybePr
  * @param v - MaybePromise<T>
  */
 export const maybeValue = <T>(v: MaybePromise<T>): T | undefined => (isPromise(v) ? undefined : v);
+
+export const maybePromiseAll = (...args: MaybePromise<any>[]): MaybePromise<void> => {
+    const promises: Promise<void>[] = [];
+    for (const arg of args) {
+        if (isPromise(arg)) {
+            promises.push(arg as Promise<any>);
+        }
+    }
+    return promises.length ? (Promise.all(promises) as Promise<any>) : (undefined as any);
+};
