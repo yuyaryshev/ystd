@@ -12,6 +12,7 @@ export class YstdHasher {
 
     update(data: any) {
         this.__hash.update(data);
+        return this;
     }
 
     digest() {
