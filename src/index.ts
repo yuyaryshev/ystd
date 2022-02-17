@@ -63,6 +63,7 @@ export * from "./getSqlWhereOperator.js";
 export * from "./globalHandler.js";
 export * from "./globalObj.js";
 export * from "./globalVar.js";
+export * from "./hasher.js";
 export * from "./isNumber.js";
 export * from "./lexer.js";
 export * from "./linearDataInterpolation.js";
