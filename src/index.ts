@@ -4,6 +4,7 @@ export * from "./AvgCounter.js";
 export * from "./BaseTestOpts.js";
 export * from "./CancelFunction.js";
 export * from "./CplType.js";
+export * from "./GenericGenResult.js";
 export * from "./IntIdManager.js";
 export * from "./JsRef.js";
 export * from "./Jsonable.js";
