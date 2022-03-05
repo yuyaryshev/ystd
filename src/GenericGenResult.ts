@@ -56,8 +56,7 @@ export interface GenericGenResult {
 //     return r;
 // }
 
-export function mergeGenResults<T extends GenericGenResult>(...genResults: T[]): T {
-    const targetGenResult = {} as any as T;
+export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
     for (const sourceGenResult of genResults) {
         for (let k in sourceGenResult) {
             if (targetGenResult[k] === undefined) {
@@ -70,7 +69,7 @@ export function mergeGenResults<T extends GenericGenResult>(...genResults: T[]):
                         )}`,
                     );
                 }
-                targetGenResult[k].push(sourceGenResult[k]);
+                (targetGenResult as any)[k].push(sourceGenResult[k]);
 
                 // switch (expectMatchingGenResultTypes(targetGenResult[k], sourceGenResult[k])) {
                 //     case "array":
@@ -87,4 +86,8 @@ export function mergeGenResults<T extends GenericGenResult>(...genResults: T[]):
         }
     }
     return targetGenResult;
+}
+
+export function mergeGenResults<T extends GenericGenResult>(...genResults: T[]): T {
+    return appendGenResults({} as any, ...genResults);
 }
