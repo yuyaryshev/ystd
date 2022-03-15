@@ -59,7 +59,9 @@ export interface GenericGenResult {
 export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
     for (const sourceGenResult of genResults) {
         for (let k in sourceGenResult) {
-            if (targetGenResult[k] === undefined) {
+            if (sourceGenResult[k] === undefined) {
+                continue;
+            } else if (targetGenResult[k] === undefined) {
                 targetGenResult[k] = sourceGenResult[k];
             } else {
                 if (!Array.isArray(targetGenResult[k])) {
@@ -69,7 +71,12 @@ export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
                         )}`,
                     );
                 }
-                (targetGenResult as any)[k].push(sourceGenResult[k]);
+                try {
+                    (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]);
+                } catch (e: any) {
+                    console.trace(`CODE00000188 appendGenResults failed!`, e);
+                    (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]); // retry for debug purposes
+                }
 
                 // switch (expectMatchingGenResultTypes(targetGenResult[k], sourceGenResult[k])) {
                 //     case "array":
