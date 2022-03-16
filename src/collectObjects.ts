@@ -1,7 +1,7 @@
 export type CollectObjectsFilter = (o: any) => boolean | undefined;
 export const collectObjectsWithTFilter = (o: any) => typeof o.t === "string";
 
-const collectObjects = (
+export const collectObjects = (
     a: any,
     filter: CollectObjectsFilter = collectObjectsWithTFilter,
     c: any = { knownValues: new Set(), collected: [] },
