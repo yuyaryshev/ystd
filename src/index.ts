@@ -31,6 +31,7 @@ export * from "./asTypedValue.js";
 export * from "./assert.js";
 export * from "./assertNever.js";
 export * from "./awaitDelay.js";
+export * from "./collectObjects.js";
 export * from "./compareFunc.js";
 export * from "./compilationError.js";
 export * from "./consoleLogFile.js";

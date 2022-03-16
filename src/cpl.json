@@ -225,6 +225,16 @@
         "pos": 10326
     },
     {
+        "cpl": 189,
+        "filePath": "src\\removePrefix.ts",
+        "pos": 416
+    },
+    {
+        "cpl": 190,
+        "filePath": "src\\removeSuffix.ts",
+        "pos": 440
+    },
+    {
         "cpl": 472,
         "filePath": "src\\tokenWriter.ts",
         "pos": 4446
@@ -243,10 +253,5 @@
         "cpl": 184,
         "filePath": "src\\YTimeIntervals.ts",
         "pos": 8157
-    },
-    {
-        "cpl": 190,
-        "filePath": "src\\removeSuffix.ts",
-        "pos": 440
     }
 ]
