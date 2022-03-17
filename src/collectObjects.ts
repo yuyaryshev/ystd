@@ -4,7 +4,8 @@ export const collectObjectsWithTFilter = (o: any) => typeof o.t === "string";
 export const collectObjects = (
     a: any,
     filter: CollectObjectsFilter = collectObjectsWithTFilter,
-    c: any = { knownValues: new Set(), collected: [] },
+    resultArray: any[] = [],
+    c: any = { knownValues: new Set(), resultArray },
 ): unknown[] => {
     switch (typeof a) {
         case "undefined":
@@ -13,27 +14,27 @@ export const collectObjects = (
         case "number":
         case "boolean":
         case "bigint":
-            return c.collected;
+            return c.resultArray;
 
         case "function":
         case "object":
             if (c.knownValues.has(a)) {
-                return c.collected;
+                return c.resultArray;
             }
             c.knownValues.add(a);
             if (Array.isArray(a)) {
                 for (const item of a) {
-                    collectObjects(item, filter, c);
+                    collectObjects(item, filter, c.resultArray, c);
                 }
             } else {
                 if (typeof a.t === "string") {
-                    c.collected.push(a);
+                    c.resultArray.push(a);
                 }
                 for (const k in a) {
-                    collectObjects(a[k], filter, c);
+                    collectObjects(a[k], filter, c.resultArray, c);
                 }
             }
             break;
     }
-    return c.collected;
+    return c.resultArray;
 };
