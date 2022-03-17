@@ -24,6 +24,7 @@ export * from "./YDict.js";
 export * from "./YSet.js";
 export * from "./YTimeIntervals.js";
 export * from "./addToField.js";
+export * from "./aggTo.js";
 export * from "./alwaysTrue.js";
 export * from "./arrayExpectOne.js";
 export * from "./array_inplace_delete.js";
