@@ -104,6 +104,55 @@ function isLexer(a: any): a is Lexer {
     return a?.constructor?.name === "Lexer";
 }
 
+export const detectSourcePos = (where: AnySourcePos | undefined) => {
+    let lexer: Lexer<any> | AnySourcePos | ITokenLike | undefined = isLexer(where) ? where : undefined;
+    let token: ITokenLike | undefined;
+    if (!lexer && where && ((where as any).line !== undefined || (where as any).lexer !== undefined)) {
+        token = where as any;
+    }
+
+    // Convert any data to token if possible
+    if (where && (where as any).tokens) {
+        if ((where as any).tokens.default) {
+            token = (where as any).tokens.default;
+        } else {
+            for (const k of (where as any).tokens) {
+                token = (where as any).tokens[k];
+                break;
+            }
+        }
+    }
+
+    // If token has sub-tokens - take them instead
+    while ((token as any) && (token as any).tokens) {
+        if ((token as any).tokens.default) {
+            token = (token as any).tokens.default;
+        } else {
+            for (const k of (token as any).tokens) {
+                token = (token as any).tokens[k];
+                break;
+            }
+        }
+    }
+
+    if (token) lexer = token.lexer as Lexer<any> | undefined;
+
+    let positionStr: string = "";
+    if (token) positionStr = tokenPosStr(token);
+    else if (lexer) positionStr = lexerPosStr(lexer);
+    else positionStr = linePosStr(where);
+
+    const compilationContext = lexer ? (lexer as any)?.context : token && token.lexer ? token.lexer.context : undefined;
+    return { compilationContext, lexer, token, positionStr };
+};
+
+export const detectSourcePosToStr = (where0: AnySourcePos[] | AnySourcePos | undefined): string => {
+    if (!where0) {
+        return "";
+    }
+    return (Array.isArray(where0) ? where0 : [where0]).map((item) => detectSourcePos(item).positionStr).join("");
+};
+
 export class CompilationError<CompilationContextT> extends Error {
     compilationContext?: CompilationContextT | undefined;
     lexer?: Lexer<CompilationContextT> | undefined;
@@ -111,23 +160,22 @@ export class CompilationError<CompilationContextT> extends Error {
     cpl: string;
     token?: ITokenLike | undefined;
     shortMessage: string;
-
-    constructor(severity: Severity, cpl: string, where: AnySourcePos | undefined, shortMessage: string) {
-        let lexer: Lexer<CompilationContextT> | AnySourcePos | ITokenLike | undefined = isLexer(where) ? where : undefined;
-        const token: ITokenLike | undefined = !lexer && where && (where as any).line ? (where as any) : undefined;
-        if (token) lexer = token.lexer as Lexer<CompilationContextT> | undefined;
-
-        let positionStr: string = "";
-        if (token) positionStr = tokenPosStr(token);
-        else if (lexer) positionStr = lexerPosStr(lexer);
-        else positionStr = linePosStr(where);
-
-        super(`${severityLongStr(severity)} ${cpl} ${shortMessage}${positionStr}`);
-        this.compilationContext = lexer
-            ? ((lexer as any)?.context as CompilationContextT)
-            : token && token.lexer
-            ? (token.lexer.context as CompilationContextT)
-            : undefined;
+    constructor(
+        severity: Severity,
+        cpl: string,
+        where: AnySourcePos | undefined,
+        shortMessage: string,
+        public readonly additionalPlaces?: { [key: string]: AnySourcePos | AnySourcePos[] },
+    ) {
+        const { compilationContext, lexer, token, positionStr } = detectSourcePos(where);
+        let fullMessage = `${severityLongStr(severity)} ${cpl} ${shortMessage}${positionStr}`;
+        if (additionalPlaces) {
+            for (const k in additionalPlaces) {
+                fullMessage += `\n\t${k} = ${detectSourcePosToStr(additionalPlaces[k])}`;
+            }
+        }
+        super(fullMessage);
+        this.compilationContext = compilationContext;
         this.lexer = lexer as any;
         this.severity = severity;
         this.cpl = cpl;
