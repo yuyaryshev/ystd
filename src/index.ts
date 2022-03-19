@@ -96,6 +96,7 @@ export * from "./setIntervalEx.js";
 export * from "./single.js";
 export * from "./sortObjects.js";
 export * from "./sourceMacrosAndStack.js";
+export * from "./splitParse.js";
 export * from "./splitPath.js";
 export * from "./splitToLines.js";
 export * from "./strNvl.js";
