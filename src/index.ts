@@ -28,6 +28,7 @@ export * from "./aggTo.js";
 export * from "./alwaysTrue.js";
 export * from "./arrayExpectOne.js";
 export * from "./array_inplace_delete.js";
+export * from "./asArray.js";
 export * from "./asTypedValue.js";
 export * from "./assert.js";
 export * from "./assertNever.js";

@@ -235,6 +235,16 @@
         "pos": 440
     },
     {
+        "cpl": 191,
+        "filePath": "src\\splitParse.ts",
+        "pos": 2328
+    },
+    {
+        "cpl": 192,
+        "filePath": "src\\splitParse.ts",
+        "pos": 2572
+    },
+    {
         "cpl": 472,
         "filePath": "src\\tokenWriter.ts",
         "pos": 4446
@@ -253,10 +263,5 @@
         "cpl": 184,
         "filePath": "src\\YTimeIntervals.ts",
         "pos": 8157
-    },
-    {
-        "cpl": 192,
-        "filePath": "src\\splitParse.ts",
-        "pos": 2414
     }
 ]
