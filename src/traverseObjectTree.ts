@@ -3,7 +3,7 @@ export const traverseObjectTreeWithTFilter = (o: any) => typeof o.t === "string"
 
 export interface TraverseObjectTreeOpts {
     resultArray: any[];
-    addParents: boolean;
+    parentFilter?: TraverseObjectTreeFilter;
 }
 
 export const traverseObjectTree = (
@@ -30,17 +30,17 @@ export const traverseObjectTree = (
             c.knownValues.add(a);
             if (Array.isArray(a)) {
                 for (const item of a) {
-                    traverseObjectTree(item, filter, c.resultArray, c, a);
+                    traverseObjectTree(item, filter, opts, c, parent);
                 }
             } else {
                 if (filter(a)) {
-                    if (opts?.addParents && parent) {
+                    if (opts?.parentFilter && parent) {
                         a.parent = parent;
                     }
                     c.resultArray.push(a);
                 }
                 for (const k in a) {
-                    traverseObjectTree(a[k], filter, c.resultArray, c, a);
+                    traverseObjectTree(a[k], filter, opts, c, opts?.parentFilter ? (opts?.parentFilter(a) ? a : parent) : parent);
                 }
             }
             break;
