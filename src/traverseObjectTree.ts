@@ -35,7 +35,17 @@ export const traverseObjectTree = (
             } else {
                 if (filter(a)) {
                     if (opts?.parentFilter && parent) {
-                        a.parent = parent;
+                        let v_parent = parent;
+                        while (true) {
+                            if (opts?.parentFilter(v_parent)) {
+                                a.parent = v_parent;
+                                break;
+                            } else if (!v_parent?.parent) {
+                                break;
+                            } else {
+                                v_parent = v_parent?.parent;
+                            }
+                        }
                     }
                     c.resultArray.push(a);
                 }
