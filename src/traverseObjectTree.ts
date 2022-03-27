@@ -1,16 +1,20 @@
 export type TraverseObjectTreeFilter = (o: any) => boolean | undefined;
 export const traverseObjectTreeWithTFilter = (o: any) => typeof o.t === "string";
 
-export interface TraverseObjectTreeOpts {
-    resultArray: any[];
+export interface TraverseObjectTreeOptsWoResult {
+    filter: TraverseObjectTreeFilter;
     parentFilter?: TraverseObjectTreeFilter;
+    mutate?: boolean; // mutate object for setting parent. Default = no - creates a new object instead
+}
+
+export interface TraverseObjectTreeOpts extends TraverseObjectTreeOptsWoResult {
+    resultArray: any[];
 }
 
 export const traverseObjectTree = (
     a: any,
-    filter: TraverseObjectTreeFilter = traverseObjectTreeWithTFilter,
-    opts?: TraverseObjectTreeOpts,
-    c: any = { knownValues: new Set(), resultArray: opts?.resultArray || [] },
+    opts: TraverseObjectTreeOpts,
+    c: any = { knownValues: new Set(), resultArray: opts.resultArray || [] },
     parent?: any,
 ): unknown[] => {
     switch (typeof a) {
@@ -30,15 +34,16 @@ export const traverseObjectTree = (
             c.knownValues.add(a);
             if (Array.isArray(a)) {
                 for (const item of a) {
-                    traverseObjectTree(item, filter, opts, c, parent);
+                    traverseObjectTree(item, opts, c, parent);
                 }
             } else {
-                if (filter(a)) {
+                if (opts.filter(a)) {
+                    let a_parent;
                     if (opts?.parentFilter && parent) {
                         let v_parent = parent;
                         while (true) {
                             if (opts?.parentFilter(v_parent)) {
-                                a.parent = v_parent;
+                                a_parent = v_parent;
                                 break;
                             } else if (!v_parent?.parent) {
                                 break;
@@ -46,11 +51,18 @@ export const traverseObjectTree = (
                                 v_parent = v_parent?.parent;
                             }
                         }
+                        if (opts.mutate) {
+                            a.parent = a_parent;
+                            c.resultArray.push(a);
+                        } else {
+                            c.resultArray.push({ ...a, parent: a_parent });
+                        }
+                    } else {
+                        c.resultArray.push(a);
                     }
-                    c.resultArray.push(a);
                 }
                 for (const k in a) {
-                    traverseObjectTree(a[k], filter, opts, c, opts?.parentFilter ? (opts?.parentFilter(a) ? a : parent) : parent);
+                    traverseObjectTree(a[k], opts, c, opts?.parentFilter ? (opts?.parentFilter(a) ? a : parent) : parent);
                 }
             }
             break;

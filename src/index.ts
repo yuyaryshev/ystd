@@ -21,6 +21,8 @@ export * from "./StopCursorSymbol.js";
 export * from "./StringBuilder.js";
 export * from "./Writeable.js";
 export * from "./YDict.js";
+export * from "./YJsPathArray.js";
+export * from "./YJsPathSet.js";
 export * from "./YSet.js";
 export * from "./YTimeIntervals.js";
 export * from "./addToField.js";
