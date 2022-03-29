@@ -4,7 +4,7 @@ function asArray(x: any) {
     return x === undefined ? [] : Array.isArray(x) ? x : [x];
 }
 
-function pushAsArray(accumulator: Set<any>, x: any) {
+function addAsArray(accumulator: Set<any>, x: any) {
     if (x !== undefined) {
         if (Array.isArray(x)) {
             for (const xItem of x) {
@@ -40,7 +40,7 @@ export class YJsPathSet<T = any> {
     property<R = any>(propertyName: string) {
         const resultItems: Set<any> = new Set();
         for (let item of this.items) {
-            pushAsArray(resultItems, (item as any)[propertyName]);
+            addAsArray(resultItems, (item as any)[propertyName]);
         }
         return this._makeSubpath<R>(resultItems);
     }
@@ -57,19 +57,59 @@ export class YJsPathSet<T = any> {
     map<RESULT_T = any>(callback: YJsPathMapCallback<T, RESULT_T>) {
         const resultItems: Set<any> = new Set();
         for (let item of this.items) {
-            pushAsArray(resultItems, callback(item));
+            addAsArray(resultItems, callback(item));
         }
         return this._makeSubpath<RESULT_T>(resultItems);
     }
 
-    filter(callback: YJsPathFilterCallback<T>) {
+    filter<RESULT_T = T>(callback: YJsPathFilterCallback) {
         const resultItems: Set<any> = new Set();
         for (let item of this.items) {
             if (callback(item)) {
                 resultItems.add(item);
             }
         }
-        return this._makeSubpath<T>(resultItems);
+        return this._makeSubpath<RESULT_T>(resultItems);
+    }
+
+    propertyRecursive<RESULT_T = T>(propertyName: string, callback: YJsPathFilterCallback) {
+        const resultItems: Set<any> = new Set();
+
+        let sourceSet: Set<any> = this.items;
+        while (sourceSet.size) {
+            let currentSet: Set<any> = new Set();
+            for (let item of sourceSet) {
+                addAsArray(currentSet, (item as any)[propertyName]);
+            }
+
+            sourceSet = new Set();
+            for (const item of currentSet) {
+                if (callback(item)) {
+                    resultItems.add(item);
+                } else {
+                    sourceSet.add(item);
+                }
+            }
+        }
+
+        return this._makeSubpath<RESULT_T>(resultItems);
+    }
+
+    expectLink<RESULT_T = T>(lookupObj: any, callback: YJsPathFilterCallback) {
+        const resultItems: Set<any> = new Set();
+        for (let item of this.items) {
+            const name = lookupObj[item];
+            const lookupCandidates = asArray(name).filter(callback);
+            switch (lookupCandidates.length) {
+                case 0:
+                    throw new Error(`CODE00000178 expectLink failed to find name '${name}'`);
+                default:
+                    throw new Error(`CODE00000179 expectLink name '${name}' is umbigious. There are ${lookupCandidates.length} candidates with this name found!`);
+                case 1:
+                    break;
+            }
+        }
+        return this._makeSubpath<RESULT_T>(resultItems);
     }
 
     join(sep: string = ""): string {

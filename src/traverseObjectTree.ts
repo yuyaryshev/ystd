@@ -28,6 +28,10 @@ export const traverseObjectTree = (
 
         case "function":
         case "object":
+            if (!c.knownValues) {
+                debugger;
+            }
+
             if (c.knownValues.has(a) || !a) {
                 return c.resultArray;
             }
