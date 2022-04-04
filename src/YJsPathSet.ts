@@ -1,4 +1,5 @@
 import { traverseObjectTree, TraverseObjectTreeOpts, TraverseObjectTreeOptsWoResult } from "./traverseObjectTree.js";
+import { GenericGenResult, mergeGenResults } from "./GenericGenResult";
 
 function asArray(x: any) {
     return x === undefined ? [] : Array.isArray(x) ? x : [x];
@@ -104,7 +105,9 @@ export class YJsPathSet<T = any> {
                 case 0:
                     throw new Error(`CODE00000178 expectLink failed to find name '${name}'`);
                 default:
-                    throw new Error(`CODE00000179 expectLink name '${name}' is umbigious. There are ${lookupCandidates.length} candidates with this name found!`);
+                    throw new Error(
+                        `CODE00000179 expectLink name '${name}' is umbigious. There are ${lookupCandidates.length} candidates with this name found!`,
+                    );
                 case 1:
                     break;
             }
@@ -147,5 +150,13 @@ export class YJsPathSet<T = any> {
 
     asSet(): Set<T> {
         return this.items;
+    }
+
+    mergeAgg<RESULT_T extends GenericGenResult>(callback: YJsPathMapCallback<T, RESULT_T>): RESULT_T {
+        const resultItems: Set<any> = new Set();
+        for (let item of this.items) {
+            addAsArray(resultItems, callback(item));
+        }
+        return mergeGenResults(...resultItems);
     }
 }
