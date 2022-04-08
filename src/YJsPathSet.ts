@@ -1,5 +1,5 @@
 import { traverseObjectTree, TraverseObjectTreeOpts, TraverseObjectTreeOptsWoResult } from "./traverseObjectTree.js";
-import { GenericGenResult, mergeGenResults } from "./GenericGenResult";
+import { GenericGenResult, mergeGenResults } from "./GenericGenResult.js";
 
 function asArray(x: any) {
     return x === undefined ? [] : Array.isArray(x) ? x : [x];
@@ -18,6 +18,7 @@ function addAsArray(accumulator: Set<any>, x: any) {
 }
 
 export type YJsPathMapCallback<ITEM_T = any, RESULT_T = any> = (item: ITEM_T) => RESULT_T | undefined;
+export type YJsPathLinkOneCallback<ITEM_T = any, LINKED_T = any, RESULT_T = any> = (item: ITEM_T, linked: LINKED_T) => RESULT_T | undefined;
 export type YJsPathFilterCallback<ITEM_T = any> = (item: ITEM_T) => boolean | undefined;
 
 export function newYJsPathSet<T = any>(itemOrItems: T | T[] | Set<T>) {
@@ -109,6 +110,7 @@ export class YJsPathSet<T = any> {
                         `CODE00000179 expectLink name '${name}' is umbigious. There are ${lookupCandidates.length} candidates with this name found!`,
                     );
                 case 1:
+                    resultItems.add(lookupCandidates[0]);
                     break;
             }
         }

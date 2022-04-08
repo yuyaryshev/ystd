@@ -1,5 +1,6 @@
 import { ITokenLike, Lexer } from "./lexer.js";
 import { Severity, severityLongStr } from "./Severity.js";
+import { globalObj } from "./globalObj.js";
 
 export interface SourcePos {
     line: number;
@@ -152,6 +153,9 @@ export const detectSourcePosToStr = (where0: AnySourcePos[] | AnySourcePos | und
     }
     return (Array.isArray(where0) ? where0 : [where0]).map((item) => detectSourcePos(item).positionStr).join("");
 };
+
+globalObj().detectSourcePosToStr = detectSourcePosToStr;
+globalObj().tokenPos = detectSourcePosToStr;
 
 export class CompilationError<CompilationContextT> extends Error {
     compilationContext?: CompilationContextT | undefined;
