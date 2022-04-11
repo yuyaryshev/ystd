@@ -65,30 +65,21 @@ export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
                 targetGenResult[k] = sourceGenResult[k];
             } else {
                 if (!Array.isArray(targetGenResult[k])) {
-                    throw Error(
-                        `CODE00000185 mergeGenResults can only merge array fields! But field '${k}' is not an array! Field value: ${JSON.stringify(
-                            targetGenResult[k],
-                        )}`,
-                    );
+                    if (targetGenResult[k] !== sourceGenResult[k]) {
+                        throw Error(
+                            `CODE00000185 mergeGenResults can only merge array fields! But field '${k}' is not an array and has different values in different sources! Field value: ${JSON.stringify(
+                                { v1: targetGenResult[k], v2: sourceGenResult[k] },
+                            )}`,
+                        );
+                    }
+                } else {
+                    try {
+                        (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]);
+                    } catch (e: any) {
+                        console.trace(`CODE00000188 appendGenResults failed!`, e);
+                        (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]); // retry for debug purposes
+                    }
                 }
-                try {
-                    (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]);
-                } catch (e: any) {
-                    console.trace(`CODE00000188 appendGenResults failed!`, e);
-                    (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]); // retry for debug purposes
-                }
-
-                // switch (expectMatchingGenResultTypes(targetGenResult[k], sourceGenResult[k])) {
-                //     case "array":
-                //         targetGenResult[k].push(sourceGenResult[k]);
-                //         break;
-                //     case "object":
-                //         throw new Error(`CODE00000186 mergeGenResults @notSupported`);
-                //         break;
-                //     case "string":
-                //         throw new Error(`CODE00000187 mergeGenResults @notSupported`);
-                //         break;
-                // }
             }
         }
     }
