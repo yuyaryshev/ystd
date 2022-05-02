@@ -97,6 +97,7 @@ export * from "./repeatStr.js";
 export * from "./replaceThis.js";
 export * from "./returnSame.js";
 export * from "./setIntervalEx.js";
+export * from "./setUtils.js";
 export * from "./single.js";
 export * from "./sortObjects.js";
 export * from "./sourceMacrosAndStack.js";
