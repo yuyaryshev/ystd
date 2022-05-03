@@ -55,10 +55,18 @@ export interface GenericGenResult {
 //     }
 //     return r;
 // }
-
+// let DEBUG_GLOBAL_COUNTER03234 = 1;
 export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
+    if (Array.isArray(targetGenResult)) {
+        throw Error(`CODE00000185 appendGenResults expects an array of objects as targetGenResult, but got Array of Arrays!`);
+    }
+
     for (const sourceGenResult of genResults) {
         for (let k in sourceGenResult) {
+            if (Array.isArray(sourceGenResult)) {
+                throw Error(`CODE00000185 appendGenResults expects an array of objects as genResults, but got Array of Arrays!`);
+            }
+
             if (sourceGenResult[k] === undefined) {
                 continue;
             } else if (targetGenResult[k] === undefined) {
@@ -74,6 +82,7 @@ export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
                     }
                 } else {
                     try {
+                        // console.log("DEBUG_GLOBAL_COUNTER03234 = ", DEBUG_GLOBAL_COUNTER03234++);
                         (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]);
                     } catch (e: any) {
                         console.trace(`CODE00000188 appendGenResults failed!`, e);

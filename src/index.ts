@@ -46,6 +46,7 @@ export * from "./dbgMonitorValue.js";
 export * from "./dbgStr.js";
 export * from "./dbgStringify.js";
 export * from "./dbgToString.js";
+export * from "./debugMode.js";
 export * from "./debugStringify.js";
 export * from "./deepClone.js";
 export * from "./deepEqual.js";
