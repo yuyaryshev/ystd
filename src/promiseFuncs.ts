@@ -7,6 +7,10 @@ export interface SavedPromise<T> {
     reject: (err: any) => void;
 }
 
+export function isSavedPromise<T = unknown>(x: unknown): x is SavedPromise<T> {
+    return !!(x as any).promise;
+}
+
 /**
  *
  */
@@ -304,4 +308,61 @@ export const maybePromiseAll = (...args: MaybePromise<any>[]): MaybePromise<void
         }
     }
     return promises.length ? (Promise.all(promises) as Promise<any>) : (undefined as any);
+};
+
+export const maybeAwaitForeach = <T, R>(
+    iterable: Iterable<T> | AsyncIterable<T>,
+    body: (a: T) => MaybePromise<void>,
+    finalizer?: () => MaybePromise<R>,
+): MaybePromise<R> => {
+    // @ts-ignore
+    const cursor = iterable[Symbol.iterator]?.() || iterable[Symbol.asyncIterator]?.();
+
+    let cursorResult;
+    while (true) {
+        let cursorResult = cursor.next();
+        if (!isPromise(cursorResult)) {
+            if (cursorResult.done) {
+                if (finalizer) {
+                    return finalizer();
+                } else {
+                    return undefined as any;
+                }
+            }
+
+            let bodyResult = body(cursorResult.value);
+            if (isPromise(bodyResult)) {
+                return (async () => {
+                    //  Become async because of body
+                    await bodyResult;
+                    while (true) {
+                        let cursorResultAwaited = await cursor.next();
+                        if ((await cursorResultAwaited).done) {
+                            if (finalizer) {
+                                return await finalizer();
+                            } else {
+                                return undefined as any;
+                            }
+                            break;
+                        }
+                        await body(cursorResultAwaited.value);
+                    }
+                })();
+            }
+        } else {
+            return (async () => {
+                //  Become async because of cursor
+                let cursorResultAwaited = await cursorResult;
+                while (!(await cursorResultAwaited).done) {
+                    await body(cursorResultAwaited.value);
+                    cursorResultAwaited = await cursor.next();
+                }
+                if (finalizer) {
+                    return await finalizer();
+                } else {
+                    return undefined as any;
+                }
+            })();
+        }
+    }
 };

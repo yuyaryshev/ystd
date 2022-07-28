@@ -58,13 +58,13 @@ export interface GenericGenResult {
 // let DEBUG_GLOBAL_COUNTER03234 = 1;
 export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
     if (Array.isArray(targetGenResult)) {
-        throw Error(`CODE00000185 appendGenResults expects an array of objects as targetGenResult, but got Array of Arrays!`);
+        throw Error(`CODE00000186 appendGenResults expects an array of objects as targetGenResult, but got Array of Arrays!`);
     }
 
     for (const sourceGenResult of genResults) {
         for (let k in sourceGenResult) {
             if (Array.isArray(sourceGenResult)) {
-                throw Error(`CODE00000185 appendGenResults expects an array of objects as genResults, but got Array of Arrays!`);
+                throw Error(`CODE00000187 appendGenResults expects an array of objects as genResults, but got Array of Arrays!`);
             }
 
             if (sourceGenResult[k] === undefined) {
@@ -75,12 +75,22 @@ export function appendGenResults<T>(targetGenResult: T, ...genResults: T[]): T {
                 if (!Array.isArray(targetGenResult[k])) {
                     if (targetGenResult[k] !== sourceGenResult[k]) {
                         throw Error(
-                            `CODE00000185 mergeGenResults can only merge array fields! But field '${k}' is not an array and has different values in different sources! Field value: ${JSON.stringify(
+                            `CODE00000180 mergeGenResults can only merge array fields! But field '${k}' is not an array and has different values in different sources! Field value: ${JSON.stringify(
                                 { v1: targetGenResult[k], v2: sourceGenResult[k] },
                             )}`,
                         );
                     }
                 } else {
+                    for (const valueToAdd of (sourceGenResult as any)[k]) {
+                        if (Array.isArray(valueToAdd)) {
+                            throw new Error(`CODE00000181 Aggregated value can't contain another array as an item!`);
+                        }
+
+                        if ((targetGenResult as any)[k].includes((targetGenResult as any)[k])) {
+                            throw new Error(`CODE00000182 Can't add dublicate values!`);
+                        }
+                    }
+
                     try {
                         // console.log("DEBUG_GLOBAL_COUNTER03234 = ", DEBUG_GLOBAL_COUNTER03234++);
                         (targetGenResult as any)[k].push(...(sourceGenResult as any)[k]);

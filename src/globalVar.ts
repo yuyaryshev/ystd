@@ -3,7 +3,9 @@ export const globalVar = globalVarF as () => any;
 
 // @ts-ignore
 export function globalVarF() {
+    // @ts-ignore
     if (typeof global !== "undefined") return global as any;
+    // @ts-ignore
     if (typeof window !== "undefined") return window as any;
 }
 // @ts-ignore

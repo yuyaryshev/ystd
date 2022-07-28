@@ -9,7 +9,7 @@ const nonImportantError = !importantOnly ? 1 : 0;
 module.exports = {
     root: true,
     parser: "@typescript-eslint/parser",
-    plugins: ["@typescript-eslint", "eslint-plugin-tsdoc", "jsdoc", "eslint-plugin-import", "react-hooks", !importantOnly && !disableSonarjs && "sonarjs"].filter(
+    plugins: ["@typescript-eslint", ...(excludeDocs? []:["eslint-plugin-tsdoc", "jsdoc"]), "eslint-plugin-import", "react-hooks", !importantOnly && !disableSonarjs && "sonarjs"].filter(
         (item) => typeof item === "string",
     ),
     extends: [
@@ -49,7 +49,7 @@ module.exports = {
         "jsdoc/require-description": excludeDocs ? 0 : nonImportantError,
         "prefer-const": 0,
 
-        "tsdoc/syntax": 1,
+        ...(excludeDocs?{}:{"tsdoc/syntax": 1}),
         // "require-jsdoc": ["error", {
         //     "require": {
         //         "FunctionDeclaration": true,

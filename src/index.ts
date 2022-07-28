@@ -61,6 +61,7 @@ export * from "./expectDefined.js";
 export * from "./expectOne.js";
 export * from "./expectThrow.js";
 export * from "./extractFields.js";
+export * from "./failTimeoutInTestMode.js";
 export * from "./filterObject.js";
 export * from "./firstChar.js";
 export * from "./fjmap.js";

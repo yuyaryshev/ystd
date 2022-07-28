@@ -25,4 +25,8 @@ export class YstdHasherFactory {
     create() {
         return new YstdHasher(this.algorithm, this.digest);
     }
+
+    exec(data: any) {
+        return this.create().update(data).digest();
+    }
 }

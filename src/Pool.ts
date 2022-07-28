@@ -1,4 +1,5 @@
 import { makePromise, SavedPromise, SavedPromiseArray } from "./promiseFuncs.js";
+import { failTimeoutInTestMode, smallTimeoutInTests } from "./failTimeoutInTestMode.js";
 
 export interface Poolable {
     pool?: AbstractPool<any>;
@@ -121,9 +122,10 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
     scheduleRegularWork() {
         this.regularWorkRunsLeft = this.regularWorkRuns;
         if (!this.regularWorkScheduled) {
+            failTimeoutInTestMode();
             setTimeout(() => {
                 this._regularWork().then();
-            }, this.regularWorkDelay);
+            }, smallTimeoutInTests() || this.regularWorkDelay);
         }
     }
 
@@ -156,11 +158,12 @@ export class Pool<T extends Poolable> extends PoolBase<T> implements AbstractPoo
 
         if (this.busyCount > 0) this.regularWorkRunsLeft = this.regularWorkRuns;
 
-        if (--this.regularWorkRunsLeft > 0)
+        if (--this.regularWorkRunsLeft > 0) {
+            failTimeoutInTestMode();
             setTimeout(() => {
                 this._regularWork();
-            }, this.regularWorkDelay);
-        else this.regularWorkScheduled = false;
+            }, smallTimeoutInTests() || this.regularWorkDelay);
+        } else this.regularWorkScheduled = false;
     }
 
     /**

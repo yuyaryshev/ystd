@@ -2,14 +2,14 @@
  *
  */
 export function __STACK__(offset: number = 0): any {
-    const orig = Error.prepareStackTrace;
-    Error.prepareStackTrace = function (_, stack) {
+    const orig = (Error as any).prepareStackTrace;
+    (Error as any).prepareStackTrace = function (_: any, stack: any) {
         return stack;
     };
     const err = new Error();
-    Error.captureStackTrace(err); //, arguments.callee);
+    (Error as any).captureStackTrace(err); //, arguments.callee);
     const stack = err.stack;
-    Error.prepareStackTrace = orig;
+    (Error as any).prepareStackTrace = orig;
     (stack as any).splice(0, offset + 1);
     return stack;
 }
