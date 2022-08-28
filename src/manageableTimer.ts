@@ -164,3 +164,47 @@ export function manageableSetInterval<Env extends EnvWithTimers = EnvWithTimers>
 ) {
     return manageableTimer(env, timeout, cpl, name, callback).setInterval();
 }
+
+export type JobSetJobRes = number | undefined | boolean | void | null;
+export type JobSetJob = () => JobSetJobRes | Promise<JobSetJobRes>;
+export class JobSet {
+    public readonly timeout: number;
+    public readonly cpl: string;
+    public readonly name: string;
+    private jobs: Set<JobSetJob> = new Set();
+    private mTimer: ManageableTimer;
+
+    constructor(env: EnvWithTimers, timeout: number, cpl: string, name: string) {
+        this.timeout = timeout;
+        this.cpl = cpl;
+        this.name = name;
+        const JobSet_doJobs = async () => {
+            for (const job of this.jobs) {
+                let r: JobSetJobRes;
+                try {
+                    r = await job();
+                } catch (e: any) {
+                    console.warn(`CODE00000161 Jobs in JobSet shouldn't throw!`, e);
+                    r = -1;
+                }
+                if (r === undefined || r === null || r === false || r < 0) {
+                    this.remove(job);
+                }
+            }
+            if (this.jobs.size) {
+                this.mTimer.setTimeout();
+            }
+        };
+        this.mTimer = manageableTimer(env, timeout, cpl, name, JobSet_doJobs);
+    }
+
+    add(job: JobSetJob) {
+        this.jobs.add(job);
+        this.mTimer.enable();
+        this.mTimer.setTimeout();
+    }
+
+    remove(job: JobSetJob) {
+        this.jobs.delete(job);
+    }
+}

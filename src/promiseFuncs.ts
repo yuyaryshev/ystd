@@ -8,7 +8,7 @@ export interface SavedPromise<T> {
 }
 
 export function isSavedPromise<T = unknown>(x: unknown): x is SavedPromise<T> {
-    return !!(x as any).promise;
+    return !!(x && (x as any).promise);
 }
 
 /**
@@ -202,20 +202,41 @@ export const maybeAwaitReduce = <A>(
     }
 };
 
-export const maybeAwaitWhile = (f: (index: number) => MaybePromise<boolean | undefined>): MaybePromise<void> => {
+export const maybeAwaitWhile = <T>(
+    f: (index: number, prevR: T | undefined) => MaybePromise<T | undefined>,
+    a?: T | undefined,
+): MaybePromise<void> => {
     let index = 0;
     while (true) {
-        const r = f(index++);
+        const r = f(index++, a);
         if (isPromise(r)) {
             return (async () => {
-                await r;
-                while (await f(index++)) {}
+                a = await r;
+                while (await f(index++, a)) {}
             })();
         }
-        if (!r) {
+        if (r === undefined) {
             return;
         }
+        a = r;
     }
+};
+
+export const maybeAwaitSeries = (r: any, ...callbacks: ((p: any) => MaybePromise<any>)[]): MaybePromise<void> => {
+    let i = 0;
+    for (; i < callbacks.length; i++) {
+        r = callbacks[i](r);
+        if (isPromise(r)) {
+            i++;
+            return (async () => {
+                for (; i < callbacks.length; i++) {
+                    r = callbacks[i](await r);
+                }
+                return await r;
+            })();
+        }
+    }
+    return r;
 };
 
 export interface ReversePromise {
