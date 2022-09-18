@@ -5,6 +5,6 @@ export function replaceThis<A, B>(oldThis: A, newThis: B): B {
     }
 
     Object.setPrototypeOf(oldThis, Object.getPrototypeOf(newThis));
-    Object.assign(oldThis, newThis);
+    Object.assign(oldThis as any, newThis);
     return oldThis as any as B;
 }

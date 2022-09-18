@@ -1,9 +1,10 @@
 import { expect } from "chai";
-import { stringify } from "json5";
+import json5 from "json5";
+const { stringify } = json5;
 
-export function expectDeepEqual<T = unknown>(expected: T, actual: T) {
+export function expectDeepEqual<T = unknown>(actual: T, expected: T) {
     try {
-        expect(expected).to.deep.equal(actual);
+        expect(actual).to.deep.equal(expected);
     } catch (e) {
         console.log(`Actual res=\n${stringify(actual, undefined, 4)}`);
         throw e;
