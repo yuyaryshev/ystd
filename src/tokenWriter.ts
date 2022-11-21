@@ -71,7 +71,7 @@ export function makeTokenWriter(lexer: Lexer) {
         //         // ДЛЯ КАЖДОГО СИМВОЛА индекс исходного символа -> индекс результирующего символа
         //         const coordmap = {"22":0,"23":1,"24":2,"25":3,"26":4,"27":5,"28":6,"29":7,"31":8,"33":9,"37":10,"38":11,"40":12,"41":13,"42":14,"44":15,"45":16};
         //
-        //         throw new Error(`CODE00000472 generate withSourceMap=true - not implemented. Find npm sourcemap  library and add it herer`)
+        //         throw new Error(`CODE00000030 generate withSourceMap=true - not implemented. Find npm sourcemap  library and add it herer`)
         //
         //         // TODO унести инициализацию отсюда. SourceMapIndexGenerator будет общий для нескольких файлов!
         //         const GenProps = {

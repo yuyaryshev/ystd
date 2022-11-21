@@ -1,7 +1,7 @@
 export class JsRef<T = unknown> {
     constructor(public readonly o: any, public readonly f: string | number) {
         if (typeof o !== "object") {
-            throw new Error(`CODE00000018 Invalid 'o' passed to JsRef! typeof === '${typeof o}', but expected 'object'!`);
+            throw new Error(`CODE00000233 Invalid 'o' passed to JsRef! typeof === '${typeof o}', but expected 'object'!`);
         }
     }
 
@@ -11,7 +11,7 @@ export class JsRef<T = unknown> {
 
     set(v: T) {
         if (typeof this.o !== "object") {
-            throw new Error(`CODE00000019 Invalid LbUnresolvedRef!`);
+            throw new Error(`CODE00000234 Invalid LbUnresolvedRef!`);
         }
 
         if (this.o instanceof Map || this.o.constructor.name === "SortedMap") {
@@ -23,7 +23,7 @@ export class JsRef<T = unknown> {
 
     del() {
         if (typeof this.o !== "object") {
-            throw new Error(`CODE00000020 Invalid LbUnresolvedRef!`);
+            throw new Error(`CODE00000235 Invalid LbUnresolvedRef!`);
         }
 
         if (this.o instanceof Map || this.o.constructor.name === "SortedMap") {

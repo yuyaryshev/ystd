@@ -1,6 +1,6 @@
 {
     "name": "ystd",
-    "version": "3.5.2",
+    "version": "3.5.5",
     "description": "",
     "isApp": false,
     "author": "Yuri Yaryshev",
@@ -122,7 +122,7 @@
         "moment": "^2.29.1",
         "rusha": "^0.8.14",
         "sql-prettier": "0.2.12",
-		"chai": "^4.3.6",
+        "chai": "^4.3.6",
         "uuid": "9.0.0"
     },
     "jest_DISABLES": {

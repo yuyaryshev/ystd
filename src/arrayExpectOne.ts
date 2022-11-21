@@ -6,8 +6,8 @@ export function arrayExpectOne<T>(array: T[], cond: (v: T) => boolean, msg?: str
     for (const v of array)
         if (cond(v)) {
             if (v1 === undefined) v1 = v;
-            else throw new Error(`CODE00000628 ${msg} arrayExpectOne found more than one value`);
+            else throw new Error(`CODE00000243 ${msg} arrayExpectOne found more than one value`);
         }
-    if (v1 === undefined) throw new Error(`CODE00000629 ${msg} arrayExpectOne found no values`);
+    if (v1 === undefined) throw new Error(`CODE00000244 ${msg} arrayExpectOne found no values`);
     return v1;
 }

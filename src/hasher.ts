@@ -5,7 +5,7 @@ export class YstdHasher {
     private __hash: any;
     constructor(algorithm: string = "sha1", digest: string = "base64") {
         if (algorithm !== "sha1") {
-            throw new Error(`CODE00000289 Only sha1 is supported. @notSupported`);
+            throw new Error(`CODE00000254 Only sha1 is supported. @notSupported`);
         }
         this.__hash = createHash();
     }

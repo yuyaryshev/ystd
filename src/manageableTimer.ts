@@ -40,7 +40,7 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
             await callback();
         } catch (e) {
             pthis.lastRun = new Date();
-            console.error(`CODE00001008`, `Unhandled exception in timer!`);
+            console.error(`CODE00000269`, `Unhandled exception in timer!`);
         }
     }
 
@@ -184,7 +184,7 @@ export class JobSet {
                 try {
                     r = await job();
                 } catch (e: any) {
-                    console.warn(`CODE00000161 Jobs in JobSet shouldn't throw!`, e);
+                    console.warn(`CODE00000270 Jobs in JobSet shouldn't throw!`, e);
                     r = -1;
                 }
                 if (r === undefined || r === null || r === false || r < 0) {

@@ -53,7 +53,7 @@ export function isPlainWithNoLoops(v: any, opts: PlainWithNoLoopsOpts = DefaultP
 
 export function expectPlainWithNoLoops(v: any, opts: PlainWithNoLoopsOpts = DefaultPlainWithNoLoopsOpts) {
     if (!isPlainWithNoLoops(v, opts)) {
-        const e = new Error(`CODE00000284 expectPlainWithNoLoops failed. See value in error.v for details.`);
+        const e = new Error(`CODE00000271 expectPlainWithNoLoops failed. See value in error.v for details.`);
         (e as any).v = v;
         throw e;
     }

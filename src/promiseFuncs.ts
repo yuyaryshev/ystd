@@ -64,9 +64,9 @@ export const maybeAwait = <S, R>(v: MaybePromise<S>, f: (v: S) => MaybePromise<R
     // if (maybePromiseDebug) {
     //     const v_isPromise = typeof v === "object" && (v as any).then ? 1 : 0;
     //     if (v_isPromise) {
-    //         console.trace(`maybePromiseDebug CODE00000162 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.trace(`maybePromiseDebug CODE00000272 - maybePromiseApply isPromise=${v_isPromise}`);
     //     } else {
-    //         console.log(`maybePromiseDebug CODE00000163 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.log(`maybePromiseDebug CODE00000273 - maybePromiseApply isPromise=${v_isPromise}`);
     //     }
     // }
     // =================== maybePromiseDebug END =====================
@@ -79,14 +79,14 @@ export const syncMaybeAwait = <S, R>(v: S, f: (v: S) => R): R => {
     // if (maybePromiseDebug) {
     //     const v_isPromise = typeof v === "object" && (v as any).then ? 1 : 0;
     //     if (v_isPromise) {
-    //         console.trace(`maybePromiseDebug CODE00000164 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.trace(`maybePromiseDebug CODE00000274 - maybePromiseApply isPromise=${v_isPromise}`);
     //     } else {
-    //         console.log(`maybePromiseDebug CODE00000165 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.log(`maybePromiseDebug CODE00000275 - maybePromiseApply isPromise=${v_isPromise}`);
     //     }
     // }
     // =================== maybePromiseDebug END =====================
     if (typeof v === "object" && (v as any).then) {
-        throw new Error(`CODE00000166 syncMaybeAwait expects initalAccumulator to be a value, not a Promise`);
+        throw new Error(`CODE00000276 syncMaybeAwait expects initalAccumulator to be a value, not a Promise`);
     }
     return f(v as any);
 };
@@ -100,9 +100,9 @@ export const maybeAwaitAll = <R, T = unknown>(
     // if (maybePromiseDebug) {
     //     const v_isPromise = typeof v === "object" && (v as any).then ? 1 : 0;
     //     if (v_isPromise) {
-    //         console.trace(`maybePromiseDebug CODE00000282 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.trace(`maybePromiseDebug CODE00000277 - maybePromiseApply isPromise=${v_isPromise}`);
     //     } else {
-    //         console.log(`maybePromiseDebug CODE00000283 - maybePromiseApply isPromise=${v_isPromise}`);
+    //         console.log(`maybePromiseDebug CODE00000021 - maybePromiseApply isPromise=${v_isPromise}`);
     //     }
     // }
     // =================== maybePromiseDebug END =====================
@@ -139,7 +139,7 @@ export const maybeAwaitSequentalMap = <T, R>(array: T[], f: (v: T) => MaybePromi
         if (!isPromise(r)) {
             // =================== maybePromiseDebug START ===================
             // if (maybePromiseDebug) {
-            //     console.log(`maybePromiseDebug CODE00000477 - maybeAwaitSequentalMap isPromise=0`);
+            //     console.log(`maybePromiseDebug CODE00000022 - maybeAwaitSequentalMap isPromise=0`);
             // }
             // =================== maybePromiseDebug END =====================
             if (r !== undefined) {
@@ -148,7 +148,7 @@ export const maybeAwaitSequentalMap = <T, R>(array: T[], f: (v: T) => MaybePromi
         } else {
             // =================== maybePromiseDebug START ===================
             // if (maybePromiseDebug) {
-            //     console.trace(`maybePromiseDebug CODE00000279 - maybeAwaitSequentalMap isPromise=1`);
+            //     console.trace(`maybePromiseDebug CODE00000023 - maybeAwaitSequentalMap isPromise=1`);
             // }
             // =================== maybePromiseDebug END =====================
             return (async () => {
@@ -222,7 +222,7 @@ export const maybeAwaitReduce = <A>(
 export const syncMaybeAwaitReduce = <A>(initalAccumulator: A, f: (accumulator: A, index: number) => [A, boolean | undefined]): A => {
     let index = 0;
     if (isPromise(initalAccumulator)) {
-        throw new Error(`CODE00000167 syncMaybeAwaitReduce expects initalAccumulator to be a value, not a Promise`);
+        throw new Error(`CODE00000024 syncMaybeAwaitReduce expects initalAccumulator to be a value, not a Promise`);
     }
 
     let accumulator: A = initalAccumulator;
@@ -231,7 +231,7 @@ export const syncMaybeAwaitReduce = <A>(initalAccumulator: A, f: (accumulator: A
         const r = f(accumulator, index);
         index++;
         if (isPromise(r)) {
-            throw new Error(`CODE00000168 syncMaybeAwaitReduce expects callback return value to be a value, not a Promise`);
+            throw new Error(`CODE00000025 syncMaybeAwaitReduce expects callback return value to be a value, not a Promise`);
         }
 
         accumulator = r[0];
