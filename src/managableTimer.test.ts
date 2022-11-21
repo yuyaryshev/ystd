@@ -5,7 +5,7 @@ import { awaitDelay } from "./awaitDelay.js";
 describe(`managableTimer.test.ts`, function () {
     it(`JobSet`, async function () {
         const env: EnvWithTimers = { timers: new Set() };
-        const jobSet = new JobSet(env, 10, "CODE00000268", "JobSetTest1");
+        const jobSet = new JobSet(env, 10, "CODE00000129", "JobSetTest1");
         const log: string[] = [];
         jobSet.add(() => {
             log.push("single-run job 1");

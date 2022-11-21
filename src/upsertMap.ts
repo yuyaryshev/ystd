@@ -15,12 +15,12 @@ export function upsertMap<K, V>(map: Map<K, V>, key: K, newValueOrFunc: V | (() 
 export function lookupMap<K, V>(map: Map<K, V>, key: K, cpl?: string, mapName?: string): V {
     const v = map.get(key);
     if (v !== undefined) return v;
-    throw new Error(`${cpl || "CODE00000031"} Expected key '${key}' not found in map ${mapName || ""}`.trim());
+    throw new Error(`${cpl || "CODE00000149"} Expected key '${key}' not found in map ${mapName || ""}`.trim());
 }
 
 export function optLookupMap<K, V>(map: Map<K, V>, key: K | undefined, cpl?: string, mapName?: string): V | undefined {
     if (!key) return undefined;
     const v = map.get(key);
     if (v !== undefined) return v;
-    throw new Error(`${cpl || "CODE00000032"} Expected key '${key}' not found in map ${mapName || ""}`.trim());
+    throw new Error(`${cpl || "CODE00000150"} Expected key '${key}' not found in map ${mapName || ""}`.trim());
 }

@@ -50,7 +50,7 @@ const tokenFilterStr = (token_filter: ITokenFilterType): string => {
 
     if (Array.isArray(token_filter)) return token_filter.join(" ");
 
-    throw new LexerError("E", "CODE00000255", undefined as any, `Unknown token_filter type`);
+    throw new LexerError("E", "CODE00000116", undefined as any, `Unknown token_filter type`);
 };
 
 const lexer_debug_mode = true;
@@ -179,10 +179,10 @@ export class Lexer<CompilationContextT = unknown> {
         this.linestartp = 0;
 
         this.onBreakpoint = (token: IToken) => {
-            console.log(`CODE00000256 Triggered lexer debugger! token = `, token);
+            console.log(`CODE00000117 Triggered lexer debugger! token = `, token);
             // eslint-disable-next-line no-debugger
             debugger;
-            console.log(`CODE00000257 Triggered lexer debugger! token = `, token);
+            console.log(`CODE00000118 Triggered lexer debugger! token = `, token);
         };
         // HINT
         // Всегда можно ограничить длину, даже для строк. Потому что если строка будет длиннее оперативки,
@@ -392,7 +392,7 @@ export class Lexer<CompilationContextT = unknown> {
             return r as IToken;
         }
 
-        throw new LexerError("E", "CODE00000258", this, `Unknown token filter type`);
+        throw new LexerError("E", "CODE00000119", this, `Unknown token filter type`);
     }
 
     expect(token_filter: 32 | 64, expected_name?: string, cpl?: string): IToken<number>;
@@ -401,7 +401,7 @@ export class Lexer<CompilationContextT = unknown> {
 
     expect(token_filter: ITokenFilterType, expected_name?: string, cpl?: string): IToken {
         const r = this.read(token_filter);
-        if (!r) throw new LexerError("E", cpl || "CODE00000259", this, `Expected ${expected_name || tokenFilterStr(token_filter)}`);
+        if (!r) throw new LexerError("E", cpl || "CODE00000120", this, `Expected ${expected_name || tokenFilterStr(token_filter)}`);
         return r;
     }
 
@@ -655,7 +655,7 @@ export class Lexer<CompilationContextT = unknown> {
                         break;
                 }
             // noinspection UnreachableCodeJS
-            throw new LexerError("E", "CODE00000260", this, `Missing closing */`);
+            throw new LexerError("E", "CODE00000121", this, `Missing closing */`);
         }
         return undefined;
     }
@@ -683,7 +683,7 @@ export class Lexer<CompilationContextT = unknown> {
                         break;
                 }
             // noinspection UnreachableCodeJS
-            throw new LexerError("E", "CODE00000261", this, `Missing closing }CODE.`);
+            throw new LexerError("E", "CODE00000122", this, `Missing closing }CODE.`);
         }
         return undefined;
     }
@@ -694,7 +694,7 @@ export class Lexer<CompilationContextT = unknown> {
         while (true)
             switch (this.s.charAt(p2)) {
                 case "":
-                    throw new LexerError("E", "CODE00000262", this, `Missing closing quote ['].`);
+                    throw new LexerError("E", "CODE00000123", this, `Missing closing quote ['].`);
                 case "\\":
                     p2++;
                     switch (this.s.charAt(p2)) {
@@ -728,7 +728,7 @@ export class Lexer<CompilationContextT = unknown> {
         while (true)
             switch (this.s.charAt(p2)) {
                 case "":
-                    throw new LexerError("E", "CODE00000263", this, `Missing closing quote ["].`);
+                    throw new LexerError("E", "CODE00000124", this, `Missing closing quote ["].`);
                 case "\\":
                     p2++;
                     switch (this.s.charAt(p2)) {
@@ -762,7 +762,7 @@ export class Lexer<CompilationContextT = unknown> {
         while (true)
             switch (this.s.charAt(p2)) {
                 case "":
-                    throw new LexerError("E", "CODE00000264", this, `Missing closing quote [\`].`);
+                    throw new LexerError("E", "CODE00000125", this, `Missing closing quote [\`].`);
                 case "`":
                     p2++;
                     return this.readToken(p2 - this.p, tt.tquoted, parseEscapedStringValue);
@@ -1000,7 +1000,7 @@ export class Lexer<CompilationContextT = unknown> {
                 default: {
                     const s = "Char '" + this.s.charAt(this.p) + "' not in switch";
                     console.log(s);
-                    throw new LexerError("E", "CODE00000265", this, s);
+                    throw new LexerError("E", "CODE00000126", this, s);
                 }
             }
         }

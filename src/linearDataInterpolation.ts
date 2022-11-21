@@ -11,7 +11,7 @@ export interface AnimatedDataItem {
 export function linearDataInterpolation<T extends AnimatedDataItem>(items: T[], timePos: number = new Date().getTime(), timeScale: number = 1): T {
     if (items.length === 1) return items[0];
 
-    if (items.length < 2) throw new Error(`CODE00000266 Can only animate if have more than 2 items in array`);
+    if (items.length < 2) throw new Error(`CODE00000127 Can only animate if have more than 2 items in array`);
 
     let total: number = 0;
     for (const item of items) total += item.ms * timeScale;
@@ -38,5 +38,5 @@ export function linearDataInterpolation<T extends AnimatedDataItem>(items: T[], 
         current += b.ms * timeScale;
     }
 
-    throw new Error(`CODE00000267 Animated data internal error - should be unreachable!`);
+    throw new Error(`CODE00000128 Animated data internal error - should be unreachable!`);
 }

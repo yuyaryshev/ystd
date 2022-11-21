@@ -5,7 +5,7 @@ export const removeSuffix = (s: string, suffix: string): string => {
 
 export const removeExpectedSuffix = (s: string, suffix: string): string => {
     if (!s.endsWith(suffix)) {
-        throw new Error(`CODE00000027 removeExpectedSuffix failed! Expected suffix '${suffix}' in string '${s}'!`);
+        throw new Error(`CODE00000145 removeExpectedSuffix failed! Expected suffix '${suffix}' in string '${s}'!`);
     }
     return s.substr(0, s.length - suffix.length);
 };

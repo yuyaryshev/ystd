@@ -244,6 +244,6 @@ export function isOnlyMsDuration(durationObj: DurationObj | undefined) {
  *
  */
 export function expectOnlyMsDuration(durationObj: DurationObj | undefined): DurationMs {
-    if (!isOnlyMsDuration(durationObj)) throw new Error(`CODE00000242 onlyMsDuration failed!\ndurationObj = ${JSON.stringify(durationObj)}`);
+    if (!isOnlyMsDuration(durationObj)) throw new Error(`CODE00000103 onlyMsDuration failed!\ndurationObj = ${JSON.stringify(durationObj)}`);
     return (durationObj?.milliseconds || 0) * (durationObj?.sign || 1);
 }

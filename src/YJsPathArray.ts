@@ -66,14 +66,14 @@ export class YJsPathArray<T = any> {
         return this.items.join(sep);
     }
 
-    expectOne(errorMessage: string = `CODE00000236 YJsPath expects exactly one item as output`): T {
+    expectOne(errorMessage: string = `CODE00000097 YJsPath expects exactly one item as output`): T {
         if (this.items.length !== 1) {
             throw new Error(errorMessage);
         }
         return this.items[0];
     }
 
-    expectOneOrUndefined(errorMessage: string = `CODE00000237 YJsPath expects exactly one item as output`): T | undefined {
+    expectOneOrUndefined(errorMessage: string = `CODE00000098 YJsPath expects exactly one item as output`): T | undefined {
         if (this.items.length > 1) {
             throw new Error(errorMessage);
         }
