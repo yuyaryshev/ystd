@@ -1,7 +1,7 @@
 import { strSwitchEndsWith, strSwitchStartsWith } from "./strSwitch.js";
 import { expectDeepEqual } from "./expectDeepEqual.js";
 
-describe.only("strSwitch", () => {
+describe("strSwitch", () => {
     it("strSwitchEndsWith", () => {
         const switchDict = {
             ab: 1,
