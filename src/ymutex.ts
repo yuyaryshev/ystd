@@ -6,6 +6,8 @@ export type YSemaphore = {
     lock: <T>(asyncCallback: () => Promise<T>) => Promise<T>;
 };
 
+export type YMutex = YSemaphore;
+
 /**
  *
  */
@@ -14,7 +16,7 @@ export function ysemaphore(n: number = 1, releaseDelay: number = 0): YSemaphore 
         lockCount: 0,
         lockCountNow: 0,
         lock: async function (asyncCallback: () => Promise<any>, count: number = 1) {
-            while (m.lockCount + count > n && m.lockCount) await awaitDelay(100);
+            while (m.lockCount + count > n && m.lockCount) await awaitDelay(10);
 
             let r: any;
             m.lockCount += count;

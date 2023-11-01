@@ -1,14 +1,17 @@
 import { expect } from "chai";
-import json5 from "json5";
-const { stringify } = json5;
+import { tryStringify } from "./tryStringify.js";
 
-export function expectDeepEqual<T = unknown>(actual: T, expected: T) {
+//v2
+
+export function expectDeepEqual<T = unknown>(actual: T, expected: T, cpl: string = "CODE00000001") {
     try {
         if (actual !== expected) {
             expect(actual).to.deep.equal(expected);
         }
-    } catch (e) {
-        console.log(`Actual res=\n${stringify(actual, undefined, 4)}`);
+    } catch (e: any) {
+        console.log(`${cpl} Actual res=\n${tryStringify(actual, 4, 5000)}`);
+        e.message = cpl + " " + e.message;
+        e.stack = cpl + " " + e.stack;
         throw e;
     }
 }

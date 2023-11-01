@@ -130,10 +130,10 @@ export class IntIdManager {
                 } else if (r.m === 1) {
                     // TODO C=2 => интервал, m=1 конец
                 } else {
-                    throw new Error(`CODE00000092 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`);
+                    throw new Error(`CODE00000462 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`);
                 }
             } else {
-                throw new Error(`CODE00000093 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`);
+                throw new Error(`CODE00000463 Invalid row in intervalsSqlRowsToIntervals. Use correct sql!`);
             }
         }
     }

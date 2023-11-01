@@ -104,10 +104,10 @@ export class YJsPathSet<T = any> {
             const lookupCandidates = asArray(name).filter(callback);
             switch (lookupCandidates.length) {
                 case 0:
-                    throw new Error(`CODE00000099 expectLink failed to find name '${name}'`);
+                    throw new Error(`CODE00000220 expectLink failed to find name '${name}'`);
                 default:
                     throw new Error(
-                        `CODE00000100 expectLink name '${name}' is umbigious. There are ${lookupCandidates.length} candidates with this name found!`,
+                        `CODE00000221 expectLink name '${name}' is umbigious. There are ${lookupCandidates.length} candidates with this name found!`,
                     );
                 case 1:
                     resultItems.add(lookupCandidates[0]);
@@ -121,14 +121,14 @@ export class YJsPathSet<T = any> {
         return [...this.items].join(sep);
     }
 
-    expectOne(errorMessage: string = `CODE00000101 YJsPath expects exactly one item as output`): T {
+    expectOne(errorMessage: string = `CODE00000222 YJsPath expects exactly one item as output`): T {
         if (this.items.size !== 1) {
             throw new Error(errorMessage);
         }
         return [...this.items][0];
     }
 
-    expectOneOrUndefined(errorMessage: string = `CODE00000102 YJsPath expects exactly one item as output`): T | undefined {
+    expectOneOrUndefined(errorMessage: string = `CODE00000223 YJsPath expects exactly one item as output`): T | undefined {
         if (this.items.size > 1) {
             throw new Error(errorMessage);
         }

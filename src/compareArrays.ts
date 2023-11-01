@@ -1,4 +1,4 @@
-import { boolean } from "@mojotech/json-type-validation";
+import { boolean } from "yuyaryshev-json-type-validation";
 
 export interface CompareArraysResult<T> {
     same: T[];

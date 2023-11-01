@@ -63,13 +63,13 @@ export class SplitParser<T = { [key: string]: string }> {
             }
             if (ct.sep === "") {
                 if (ctIndex < this.patternTokens.length - 1) {
-                    throw new Error(`CODE00000146 SplitParser couldn't fully parse expression!`);
+                    throw new Error(`CODE00000210 SplitParser couldn't fully parse expression!`);
                 }
                 r[ct.name] = token.trim();
                 return r;
             } else {
                 if (ctIndex < this.patternTokens.length) {
-                    throw new Error(`CODE00000147 SplitParser couldn't fully parse expression!`);
+                    throw new Error(`CODE00000211 SplitParser couldn't fully parse expression!`);
                 }
                 return r;
             }

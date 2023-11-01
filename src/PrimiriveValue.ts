@@ -1,4 +1,4 @@
-import { anyJson, array, Decoder } from "@mojotech/json-type-validation";
+import { anyJson, array, Decoder } from "yuyaryshev-json-type-validation";
 
 export type PrimitiveValue = undefined | null | boolean | number | string | Date;
 export type PrimitiveArray = PrimitiveValue[];

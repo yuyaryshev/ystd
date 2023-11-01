@@ -21,7 +21,7 @@ export async function execOnce(symbolOrObject: Symbol | Object, delay: number, c
             try {
                 await callback();
             } catch (e) {
-                console.error(`CODE00000106 Unhandled error inside execOnce`, e);
+                console.error(`CODE00000442 Unhandled error inside execOnce`, e);
             }
             execOnceMap.delete(symbolOrObject);
             execOnceRecord.running = false;

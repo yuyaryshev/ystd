@@ -1,14 +1,14 @@
 export function expectDefined<T>(v: T | null | undefined, errorMessage?: string): T {
     if (v === undefined || v === null) {
-        throw new Error(errorMessage || "CODE00000107 Error: expectDefined - failed!");
+        throw new Error(errorMessage || "CODE00000443 Error: expectDefined - failed!");
     }
     return v;
 }
 
-export function expectDefinedF(errorMessage0: string = "CODE00000108 Error: expectDefined - failed!") {
+export function expectDefinedF(errorMessage0: string = "CODE00000444 Error: expectDefined - failed!") {
     return function expectDefined<T>(v: T | null | undefined, errorMessage: string = errorMessage0): T {
         if (v === undefined || v === null) {
-            throw new Error(errorMessage || "CODE00000109 Error: expectDefined - failed!");
+            throw new Error(errorMessage || "CODE00000445 Error: expectDefined - failed!");
         }
         return v;
     };

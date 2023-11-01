@@ -31,6 +31,10 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     name: string,
     callback: () => void | Promise<void>,
 ) {
+    if (!env) {
+        throw new Error(`${cpl} ERROR Can't create manageableTimer because 'env' is empty!`);
+    }
+
     /**
      *
      */
@@ -40,7 +44,7 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
             await callback();
         } catch (e) {
             pthis.lastRun = new Date();
-            console.error(`CODE00000130`, `Unhandled exception in timer!`);
+            console.error(`CODE00000194`, `Unhandled exception in timer!`);
         }
     }
 
@@ -59,7 +63,9 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
      *
      */
     function mSetTimeout(timeoutOverride?: number) {
-        if (!env) throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
+        if (!env) {
+            throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
+        }
         stop();
         if (pthis.disabled) return;
         env.timers.add(pthis);
@@ -76,7 +82,9 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
      *
      */
     function mSetInterval(timeoutOverride?: number) {
-        if (!env) throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
+        if (!env) {
+            throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
+        }
         stop();
         if (pthis.disabled) return;
         env.timers.add(pthis);
@@ -175,6 +183,9 @@ export class JobSet {
     private mTimer: ManageableTimer;
 
     constructor(env: EnvWithTimers, timeout: number, cpl: string, name: string) {
+        if (!env) {
+            throw new Error(`${cpl} ERROR Can't create JobSet 'env' is empty!`);
+        }
         this.timeout = timeout;
         this.cpl = cpl;
         this.name = name;
@@ -184,10 +195,10 @@ export class JobSet {
                 try {
                     r = await job();
                 } catch (e: any) {
-                    console.warn(`CODE00000131 Jobs in JobSet shouldn't throw!`, e);
+                    console.warn(`CODE00000195 Jobs in JobSet shouldn't throw!`, e);
                     r = -1;
                 }
-                if (r === undefined || r === null || r === false || r < 0) {
+                if (r === undefined || r === null || r === false || (typeof r === "number" && r < 0)) {
                     this.remove(job);
                 }
             }
