@@ -1,8 +1,5 @@
 export class JsRef<T = unknown> {
-    constructor(
-        public readonly o: any,
-        public readonly f: string | number,
-    ) {
+    constructor(public readonly o: any, public readonly f: string | number) {
         if (typeof o !== "object") {
             throw new Error(`CODE00000464 Invalid 'o' passed to JsRef! typeof === '${typeof o}', but expected 'object'!`);
         }

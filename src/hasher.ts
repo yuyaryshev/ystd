@@ -5,10 +5,7 @@ const { createHash } = pkg;
 
 export class YstdHasher {
     private __hash: any;
-    constructor(
-        algorithm: string = "sha1",
-        private digestMethod: string = "base64",
-    ) {
+    constructor(algorithm: string = "sha1", private digestMethod: string = "base64") {
         if (algorithm !== "sha1") {
             throw new Error(`CODE00000461 Only sha1 is supported. @notSupported`);
         }
@@ -29,10 +26,7 @@ export class YstdHasher {
 }
 
 export class YstdHasherFactory {
-    constructor(
-        public readonly algorithm: string = "sha1",
-        public readonly digest: string = "base64",
-    ) {}
+    constructor(public readonly algorithm: string = "sha1", public readonly digest: string = "base64") {}
     create() {
         return new YstdHasher(this.algorithm, this.digest);
     }
