@@ -1,15 +1,12 @@
 import { expect } from "chai";
 import { slowButSimplePosToRc, strPosConverter, strPosToRC, strRCToPos } from "./strPosToRC.js";
-import { joinCplFile, splitCplFile } from "./ycplmonLib";
 
-describe.only("strPosToRC", () => {
-    xit("strPosToRCConverter.linesSE", () => {
-        expect(strPosConverter(`\n123 abc \r\n  абв\t `).linesSE).to.deep.equal([0, 1, 11, 18]);
-
-        expect(strPosConverter(`dd\n123 abc \r\n  абв\t `).linesSE).to.deep.equal([0, 3, 13, 20]);
-
-        expect(strPosConverter(``).linesSE).to.deep.equal([0, 0]);
-        expect(strPosConverter(`a`).linesSE).to.deep.equal([0, 1]);
+describe("strPosToRC", () => {
+    it("strPosToRCConverter.linesSE", () => {
+        expect(strPosConverter(`\n123 abc \r\n  абв\t `).linesSE).to.deep.equal([0, 1, 11]);
+        expect(strPosConverter(`dd\n123 abc \r\n  абв\t `).linesSE).to.deep.equal([0, 3, 13]);
+        expect(strPosConverter(``).linesSE).to.deep.equal([0]);
+        expect(strPosConverter(`a`).linesSE).to.deep.equal([0]);
         expect(strPosConverter(`\n`).linesSE).to.deep.equal([0, 1]);
         expect(strPosConverter(`\n\n`).linesSE).to.deep.equal([0, 1, 2]);
         expect(strPosConverter(`\r\n\r\r\n`).linesSE).to.deep.equal([0, 2, 3, 5]);

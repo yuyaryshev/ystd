@@ -68,6 +68,7 @@ src\removePrefix.ts:416:CODE00000208
 src\removeSuffix.ts:440:CODE00000209
 src\splitParse.ts:2328:CODE00000210
 src\splitParse.ts:2572:CODE00000211
+src\strPosToRC.test.ts:4596:CODE00000171
 src\tokenWriter.ts:4446:CODE00000212
 src\tryStringify.ts:1155:CODE00000213
 src\tryStringify.ts:1602:CODE00000214
