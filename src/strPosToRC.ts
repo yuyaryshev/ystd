@@ -9,75 +9,115 @@
 //  strPosToRC(pos) -> {r,c}
 //  strRCToPos(r,c) -> pos
 
-export interface Line {
-    s: number;
-    e: number;
-}
-
 export function strPosConverter(s: string) {
     const l = s.length;
-    const linesSE: Line[] = [];
+    const linesStarts: number[] = [0];
     let lineStart = 0;
     for (let p = 0; p < l; p++) {
         if (s[p] === "\r" && s[p + 1] === "\n") {
-            linesSE.push({ s: lineStart, e: p });
-            lineStart = p + 2;
             p++;
+            linesStarts.push(p + 1);
         } else if (s[p] === "\n" || s[p] === "\r") {
-            linesSE.push({ s: lineStart, e: p });
-            lineStart = p + 1;
+            linesStarts.push(p + 1);
         }
     }
-    linesSE.push({ s: lineStart, e: l });
+    // linesStarts.push(s.length);
+    const linesCount = linesStarts.length;
 
     function fromPos(pos: number) {
+        if (s[pos] === "\r") {
+            pos++;
+        }
+        if (s[pos] === "\n") {
+            pos++;
+        }
+
         let a = 0;
-        let b = linesSE.length + 1;
-        while (true) {
+        let b = linesCount - 1;
+        while (b - a > 1) {
             let row = Math.floor((a + b) / 2);
-            if (linesSE[row].e < pos) a = row;
-            else if (linesSE[row].s > pos) b = row;
-            else {
-                return { r: row + 1, c: pos - linesSE[row].s + 1 };
+            if (linesStarts[row] < pos) a = row;
+            else if (linesStarts[row + 1] > pos) b = row;
+        }
+
+        for (let i = b; i >= a; i--) {
+            if (linesStarts[i] <= pos) {
+                let r = i + 1;
+                let c = pos - linesStarts[i] + 1;
+                if (c <= 0) c = 1;
+                return { r, c };
             }
         }
+
+        // Should be unreachable
+        return { r: 0, c: 0 };
     }
 
     function toPos(r: number, c: number): number {
-        return linesSE[r - 1].s + c - 1;
+        return linesStarts[r - 1] + c - 1;
     }
-    return { linesSE, fromPos, toPos };
+    return { linesSE: linesStarts, fromPos, toPos };
 }
 
 export function strPosToRC(s: string, pos: number) {
-    const l = s.length;
+    if (s[pos] === "\r") {
+        pos++;
+    }
+    if (s[pos] === "\n") {
+        pos++;
+    }
+
     let r = 0;
     let lineStart = 0;
-    for (let p = 0; p <= pos; p++) {
+    for (let p = 0; p < pos; p++) {
         if (s[p] === "\r" && s[p + 1] === "\n") {
             lineStart = p + 2;
+            p++;
             r++;
         } else if (s[p] === "\n" || s[p] === "\r") {
             lineStart = p + 1;
             r++;
         }
     }
-    return { r: r + 1, c: pos - lineStart + 1 };
+
+    r++;
+    let c = pos - lineStart + 1;
+    if (c <= 0) c = 1;
+
+    return { r, c };
 }
 
 export function strRCToPos(s: string, r: number, c: number): number {
-    const l = s.length;
-    let r2 = 1;
-    let lineStart = 0;
-    for (let p = 0; r2 < r; p++) {
+    const ln = s.length;
+    let p = 0;
+
+    r--;
+    for (; r > 0 && p < ln; p++) {
         if (s[p] === "\r" && s[p + 1] === "\n") {
-            lineStart = p + 2;
-            r2++;
+            p++;
+            r--;
         } else if (s[p] === "\n" || s[p] === "\r") {
-            lineStart = p + 1;
-            r2++;
+            r--;
         }
     }
 
-    return lineStart + c - 1;
+    // HINT: Still checking all chars till "c" in case that it was incorrect and was outside of actual string.
+    c--;
+    for (; c > 0 && p < ln; p++) {
+        c--;
+        if (s[p] === "\n" || s[p] === "\r") {
+            return p;
+        }
+    }
+
+    return p;
+}
+
+export function slowButSimplePosToRc(s0: string, pos: number) {
+    const s = s0.substring(0, pos + 1);
+    const lines = s.split(/\r\n|\r|\n/);
+    const r = lines.length;
+    let c = lines[r - 1].length;
+    if (c == 0) c = 1;
+    return { r, c };
 }
