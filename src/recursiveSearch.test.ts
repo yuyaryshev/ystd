@@ -10,7 +10,7 @@ const newExampleObj = () => ({
     },
 });
 
-describe.only(`recursiveSearch`, function () {
+describe(`recursiveSearch`, function () {
     it(`recursiveSearch - one value`, function () {
         const r = recursiveSearch(newExampleObj(), "d");
         expectDeepEqual(r, 4);

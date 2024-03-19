@@ -73,5 +73,5 @@ src\tokenWriter.ts:4446:CODE00000212
 src\tryStringify.ts:1155:CODE00000213
 src\tryStringify.ts:1602:CODE00000214
 src\tryStringify.ts:1675:CODE00000215
-src\upsertMap.ts:1017:CODE00000217
-src\upsertMap.ts:938:CODE00000216
+src\upsertMap.ts:1120:CODE00000216
+src\upsertMap.ts:1199:CODE00000217

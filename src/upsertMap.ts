@@ -12,6 +12,13 @@ export function upsertMap<K, V>(map: Map<K, V>, key: K, newValueOrFunc: V | (() 
     }
 }
 
+export function upsertObject<T extends object>(obj: { [key: string]: T }, k: string, newV: T): T {
+    if (obj[k] === undefined) {
+        obj[k] = newV;
+    }
+    return obj[k];
+}
+
 export function lookupMap<K, V>(map: Map<K, V>, key: K, cpl?: string, mapName?: string): V {
     const v = map.get(key);
     if (v !== undefined) return v;
