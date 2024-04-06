@@ -8,7 +8,7 @@ export function assertNever(x: never, msg?: string, data?: any): never {
 /**
  *
  */
-export function assertNeverNoThrow(x: never, msg?: string, data?: any): never {
+export function assertNeverNoThrow(x: never, msg?: string, data?: any): any {
     // @ts-ignore
-    return;
+    return x;
 }

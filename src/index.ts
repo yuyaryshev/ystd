@@ -20,6 +20,7 @@ export * from "./ReturnClassTest.js";
 export * from "./Severity.js";
 export * from "./StopCursorSymbol.js";
 export * from "./StringBuilder.js";
+export * from "./StringOrNumber.js";
 export * from "./Writeable.js";
 export * from "./YDict.js";
 export * from "./YJsPathArray.js";
