@@ -1,3 +1,5 @@
+import { IdManager } from "./IdManager.js";
+
 export interface IntInterval {
     a: number; // Включая
     b: number; // Не включая
@@ -11,7 +13,7 @@ export interface IntervalsSqlRow {
     c: number;
 }
 
-export class IntIdManager {
+export class IntIdManager implements IdManager {
     protected _intervals: IntInterval[];
     changed: boolean;
     constructor(public readonly defaultInterval: IntInterval = { a: 1, b: 100000000 }) {
