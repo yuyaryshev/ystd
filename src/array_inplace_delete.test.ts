@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { array_inplace_defrag_delete, array_inplace_filter } from "./array_inplace_delete.js";
+import { array_inplace_defrag_delete, array_inplace_defrag_delete_value, array_inplace_filter } from "./array_inplace_delete.js";
 
 describe(`array_inplace_delete`, function () {
     it(`array_strict_delete - 1`, function () {
@@ -58,5 +58,11 @@ describe(`array_inplace_delete`, function () {
         const a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         expect(array_inplace_defrag_delete(a, 10)).to.equal(undefined);
         expect(a.join("\n")).to.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].join("\n"));
+    });
+
+    it(`array_inplace_defrag_delete_value - 1`, function () {
+        const a = [0, 11, 22, 33, 44, 55, 66, 77, 88, 99];
+        expect(array_inplace_defrag_delete_value(a, 33)).to.equal(true);
+        expect(a.join("\n")).to.deep.equal([0, 11, 22, 99, 44, 55, 66, 77, 88].join("\n"));
     });
 });

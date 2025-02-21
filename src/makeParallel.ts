@@ -63,9 +63,16 @@ export const makeParallel = (input?: MakeParallelInput): PromisesContainer => {
 
     const waitAll = (): MaybePromise<void> => {
         (async () => {
-            while (promises.length) {
+            let knownPromises: Set<Promise<any>> = new Set();
+            let hasNewPromises = true;
+            while (hasNewPromises) {
+                hasNewPromises = false;
                 for (let p of promises) {
-                    await p;
+                    if (!knownPromises.has(p)) {
+                        knownPromises.add(p);
+                        hasNewPromises = true;
+                        await p;
+                    }
                 }
             }
         })();

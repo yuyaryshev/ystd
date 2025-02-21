@@ -35,7 +35,7 @@ src\expectOne.ts:601:CODE00000447
 src\failTimeoutInTestMode.ts:634:CODE00000448
 src\failTimeoutInTestMode.ts:900:CODE00000449
 src\globalHandler.ts:295:CODE00000460
-src\hasher.ts:1017:CODE00000461
+src\hasher.ts:1109:CODE00000461
 src\internalCheckDeepEqual.ts:473:CODE00000002
 src\lexer.ts:13517:CODE00000469
 src\lexer.ts:14051:CODE00000470
@@ -51,8 +51,8 @@ src\lexer.ts:5749:CODE00000468
 src\linearDataInterpolation.ts:1254:CODE00000191
 src\linearDataInterpolation.ts:1322:CODE00000192
 src\managableTimer.test.ts:887:CODE00000193
-src\manageableTimer.ts:4851:CODE00000194
-src\manageableTimer.ts:5498:CODE00000195
+src\manageableTimer.ts:5145:CODE00000194
+src\manageableTimer.ts:5792:CODE00000195
 src\plainWithNoLoops.ts:1869:CODE00000196
 src\promiseFuncs.ts:14526:CODE00000207
 src\promiseFuncs.ts:2473:CODE00000197
@@ -67,6 +67,15 @@ src\promiseFuncs.ts:8401:CODE00000205
 src\promiseFuncs.ts:8689:CODE00000206
 src\removePrefix.ts:416:CODE00000208
 src\removeSuffix.ts:440:CODE00000209
+src\replaceInObject.test.ts:1175:CODE00000175
+src\replaceInObject.test.ts:1481:CODE00000177
+src\replaceInObject.test.ts:1539:CODE00000179
+src\replaceInObject.test.ts:1864:CODE00000180
+src\replaceInObject.test.ts:2092:CODE00000182
+src\replaceInObject.test.ts:2346:CODE00000184
+src\replaceInObject.test.ts:2717:CODE00000003
+src\replaceInObject.test.ts:2741:CODE00000005
+src\replaceInObject.test.ts:905:CODE00000173
 src\splitParse.ts:2328:CODE00000210
 src\splitParse.ts:2572:CODE00000211
 src\strPosToRC.test.ts:4596:CODE00000171

@@ -25,6 +25,10 @@ export class YstdHasher {
     }
 }
 
+export function ystdHash(data: any) {
+    return new YstdHasher().update(data).digest();
+}
+
 export class YstdHasherFactory {
     constructor(public readonly algorithm: string = "sha1", public readonly digest: string = "base64") {}
     create() {

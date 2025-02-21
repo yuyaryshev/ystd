@@ -39,3 +39,17 @@ export function array_inplace_defrag_delete<T>(a: T[], index: number) {
     }
     return undefined;
 }
+
+export function array_inplace_defrag_delete_value<T>(arr: T[], value: T) {
+    const ix = arr.indexOf(value);
+    if (ix < 0) {
+        return false;
+    }
+
+    const newLen = arr.length - 1;
+    if (ix < newLen) {
+        arr[ix] = arr[newLen];
+    }
+    arr.length = newLen;
+    return true;
+}

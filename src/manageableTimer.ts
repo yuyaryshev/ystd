@@ -13,7 +13,8 @@ export interface ManageableTimer<Env extends EnvWithTimers = EnvWithTimers> {
 
     stop: () => void;
     cancel: () => void;
-    setTimeout: (timeoutOverride?: number) => void;
+    schedule: () => void; // Starts timer if it wasn't already running
+    setTimeout: (timeoutOverride?: number) => void; // Starts timer, if it was running - restarts it
     setInterval: (timeoutOverride?: number) => void;
     notSoonerThan: () => undefined | Promise<void>;
     disable: () => void;
@@ -81,6 +82,16 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
     /**
      *
      */
+    function mSchedule() {
+        if (pthis.timeoutHandle) {
+            return;
+        }
+        mSetTimeout();
+    }
+
+    /**
+     *
+     */
     function mSetInterval(timeoutOverride?: number) {
         if (!env) {
             throw new Error(`${cpl} ERROR Can't start timer because 'env' is empty!`);
@@ -134,6 +145,7 @@ export function manageableTimer<Env extends EnvWithTimers = EnvWithTimers>(
         timeout,
         stop,
         cancel: stop,
+        schedule: mSchedule,
         setTimeout: mSetTimeout,
         setInterval: mSetInterval,
         disable,
