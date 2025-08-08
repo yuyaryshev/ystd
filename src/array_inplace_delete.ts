@@ -53,3 +53,13 @@ export function array_inplace_defrag_delete_value<T>(arr: T[], value: T) {
     arr.length = newLen;
     return true;
 }
+
+export function array_delete_value<T>(arr: T[], value: T) {
+    const ix = arr.indexOf(value);
+    if (ix < 0) {
+        return false;
+    }
+
+    arr.splice(ix, 1);
+    return true;
+}
